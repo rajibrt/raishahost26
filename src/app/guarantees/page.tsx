@@ -93,12 +93,14 @@ export default function GuaranteesPage() {
           ))}
         </ScrollReveal>
 
-        <ScrollReveal className="mt-14 rounded-2xl p-10 border border-[#05CCF7]/20 text-center" style={{ background: 'linear-gradient(135deg, rgba(5,204,247,0.08), transparent)' } as React.CSSProperties}>
-          <h2 className="text-2xl font-black text-white mb-3">যেকোনো প্রশ্ন আছে?</h2>
-          <p className="text-gray-400 mb-6 font-bn">আমাদের সাপোর্ট টিম সর্বদা আপনাকে সাহায্য করতে প্রস্তুত।</p>
-          <Link href="/contact" className="btn-primary">
-            Contact Support
-          </Link>
+        <ScrollReveal>
+          <div className="mt-14 rounded-2xl p-10 border border-[#05CCF7]/20 text-center" style={{ background: 'linear-gradient(135deg, rgba(5,204,247,0.08), transparent)' }}>
+            <h2 className="text-2xl font-black text-white mb-3">যেকোনো প্রশ্ন আছে?</h2>
+            <p className="text-gray-400 mb-6 font-bn">আমাদের সাপোর্ট টিম সর্বদা আপনাকে সাহায্য করতে প্রস্তুত।</p>
+            <Link href="/contact" className="btn-primary">
+              Contact Support
+            </Link>
+          </div>
         </ScrollReveal>
       </section>
 
