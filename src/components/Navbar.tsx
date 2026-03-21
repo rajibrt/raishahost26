@@ -185,7 +185,7 @@ export default function Navbar() {
                 ref={glowRef}
                 className="pointer-events-none absolute bottom-0 opacity-0"
                 style={{
-                  height: 2,
+                  height: 1,
                   borderRadius: 9999,
                   background: '#05CCF7',
                   boxShadow: '0 0 8px 2px #05CCF7, 0 0 20px 4px rgba(5,204,247,0.4)',

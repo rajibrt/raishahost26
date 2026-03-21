@@ -3,6 +3,7 @@ import { Inter, Hind_Siliguri } from 'next/font/google'
 import './globals.css'
 import LenisProvider from '@/providers/LenisProvider'
 import MessengerWidget from '@/components/MessengerWidget'
+import CustomCursor from '@/components/CustomCursor'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -139,6 +140,7 @@ export default function RootLayout({
       <body className="bg-[#030712] text-gray-100 overflow-x-hidden antialiased">
         <LenisProvider>{children}</LenisProvider>
         <MessengerWidget />
+        <CustomCursor />
       </body>
     </html>
   )
