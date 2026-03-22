@@ -179,8 +179,10 @@ export default function CustomCursor() {
       if (!t) return
       mouseX = t.clientX
       mouseY = t.clientY
+      // Reset all trail points to tap position so no line from previous tap
       head.x = t.clientX
       head.y = t.clientY
+      pts.forEach((p) => { p.x = t.clientX; p.y = t.clientY; p.o = 0 })
       gsap.set(ball,  { x: t.clientX, y: t.clientY })
       gsap.set(pulse, { x: t.clientX, y: t.clientY })
       gsap.fromTo(ball,  { scale: 0, opacity: 1 }, { scale: 1.4, opacity: 0, duration: 0.6, ease: 'power2.out' })
