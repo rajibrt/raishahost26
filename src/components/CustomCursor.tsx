@@ -23,7 +23,12 @@ export default function CustomCursor() {
     const canvas = canvasRef.current
     if (!ball || !pulse || !canvas) return
 
-    document.documentElement.style.cursor = 'none'
+    // Touch device — special behaviour (no persistent cursor)
+    const isTouch = window.matchMedia('(hover: none)').matches
+
+    if (!isTouch) {
+      document.documentElement.style.cursor = 'none'
+    }
 
     const resize = () => {
       canvas.width  = window.innerWidth
@@ -168,6 +173,29 @@ export default function CustomCursor() {
     }
     draw()
 
+    // Touch: show burst at tap position then fade
+    const onTouch = (e: TouchEvent) => {
+      const t = e.touches[0] || e.changedTouches[0]
+      if (!t) return
+      mouseX = t.clientX
+      mouseY = t.clientY
+      head.x = t.clientX
+      head.y = t.clientY
+      gsap.set(ball,  { x: t.clientX, y: t.clientY })
+      gsap.set(pulse, { x: t.clientX, y: t.clientY })
+      gsap.fromTo(ball,  { scale: 0, opacity: 1 }, { scale: 1.4, opacity: 0, duration: 0.6, ease: 'power2.out' })
+      gsap.fromTo(pulse, { scale: 0, opacity: 0.8 }, { scale: 3, opacity: 0, duration: 0.8, ease: 'power2.out' })
+      // Spawn a few smoke particles on tap
+      for (let i = 0; i < 6; i++) {
+        const angle  = Math.random() * Math.PI * 2
+        particles.push({
+          x: t.clientX, y: t.clientY,
+          vx: Math.cos(angle) * 0.8, vy: Math.sin(angle) * 0.8 - 0.3,
+          life: 1, maxLife: 45 + Math.random() * 20, size: 2 + Math.random() * 2,
+        })
+      }
+    }
+
     const onEnter = () => gsap.to(ball, { scale: 1.8, duration: 0.2 })
     const onLeave = () => gsap.to(ball, { scale: 1,   duration: 0.2 })
     const addHover = () => {
@@ -176,16 +204,23 @@ export default function CustomCursor() {
         el.addEventListener('mouseleave', onLeave)
       })
     }
-    addHover()
-    const observer = new MutationObserver(addHover)
-    observer.observe(document.body, { childList: true, subtree: true })
-    window.addEventListener('mousemove', onMove)
+
+    let observer: MutationObserver | null = null
+    if (isTouch) {
+      window.addEventListener('touchstart', onTouch, { passive: true })
+    } else {
+      addHover()
+      observer = new MutationObserver(addHover)
+      observer.observe(document.body, { childList: true, subtree: true })
+      window.addEventListener('mousemove', onMove)
+    }
 
     return () => {
-      document.documentElement.style.cursor = ''
+      if (!isTouch) document.documentElement.style.cursor = ''
       window.removeEventListener('mousemove', onMove)
+      window.removeEventListener('touchstart', onTouch)
       window.removeEventListener('resize', resize)
-      observer.disconnect()
+      observer?.disconnect()
       cancelAnimationFrame(rafId)
       clearTimeout(velocityTimer)
       pulseTween.kill()
