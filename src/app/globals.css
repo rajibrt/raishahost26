@@ -105,6 +105,21 @@ html.lenis, html.lenis body {
   transform: translateY(-4px);
 }
 
+/* When glass-card is inside BorderGlow, the outer wrapper handles the hover
+   transform — prevent the inner card from moving independently. */
+.border-glow-outer .glass-card:hover {
+  transform: none;
+}
+
+/* Float the entire wrapper (ring + card together) on hover */
+.feature-card.border-glow-outer:hover {
+  transform: translateY(-4px);
+}
+
+.pricing-card.border-glow-outer:hover {
+  transform: translateY(-8px);
+}
+
 .border-gradient {
   position: relative;
   background: linear-gradient(#030712, #030712) padding-box,
@@ -222,6 +237,47 @@ html.lenis, html.lenis body {
 .testimonial-card:hover {
   border-color: rgba(5, 204, 247, 0.2);
   background: rgba(5, 204, 247, 0.04);
+}
+
+/*
+ * isolation: isolate creates a stacking context so z-index: -1 on the ring
+ * stays within this card — not behind the whole page.
+ */
+.border-glow-outer {
+  position: relative;
+  border-radius: var(--bg-border-radius, 1rem);
+  overflow: visible;
+  isolation: isolate;
+  transition: transform 0.3s ease;
+}
+
+/*
+ * The ring uses background-clip: padding-box (opaque fill) + border-box (conic gradient).
+ * z-index: -1 puts it BEHIND the inner card, so the opaque fill is hidden.
+ * Only the 2px border area (outside the inner card) is ever visible —
+ * showing the conic-gradient glow that follows the cursor.
+ */
+.border-glow-ring {
+  position: absolute;
+  inset: -2px;
+  border-radius: calc(var(--bg-border-radius, 1rem) + 2px);
+  border: 2px solid transparent;
+  /* opacity drives visibility — 0 at rest, 1 when hovering */
+  opacity: var(--bg-proximity, 0);
+  background:
+    linear-gradient(var(--background, #030712), var(--background, #030712)) padding-box,
+    conic-gradient(
+      from calc(var(--bg-angle, 45deg) - 50deg),
+      transparent                                                    0deg,
+      color-mix(in srgb, var(--bg-glow-color, #05ccf7)  8%, transparent)  8deg,
+      color-mix(in srgb, var(--bg-glow-color, #05ccf7) 60%, transparent) 22deg,
+      var(--bg-glow-color, #05ccf7)                                       50deg,
+      color-mix(in srgb, var(--bg-glow-color, #05ccf7) 60%, transparent) 78deg,
+      color-mix(in srgb, var(--bg-glow-color, #05ccf7)  8%, transparent) 92deg,
+      transparent                                                        100deg
+    ) border-box;
+  pointer-events: none;
+  z-index: -1;
 }
 
 .hero-gradient {

@@ -5,6 +5,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Check, Zap, Star, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
+import BorderGlow from '@/components/ui/BorderGlow'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -158,14 +159,20 @@ export default function PricingSection() {
           style={{ perspective: '1000px' }}
         >
           {plans.map((plan) => (
-            <div
+            <BorderGlow
               key={plan.name}
-              className={`pricing-card relative flex flex-col rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-2 ${
-                plan.featured
-                  ? 'featured-card shadow-2xl shadow-[#05CCF7]/20 border-[#05CCF7]/40'
-                  : 'glass-card'
-              }`}
+              glowColor={plan.color}
+              edgeSensitivity={30}
+              borderRadius='1rem'
+              className='pricing-card flex flex-col'
             >
+              <div
+                className={`relative z-1 flex flex-col flex-1 rounded-2xl overflow-hidden ${
+                  plan.featured
+                    ? 'featured-card shadow-2xl shadow-[#05CCF7]/20 border-[#05CCF7]/40'
+                    : 'glass-card'
+                }`}
+              >
               {/* Badge */}
               {plan.badge && (
                 <div className='absolute top-4 right-4 z-10'>
@@ -254,7 +261,8 @@ export default function PricingSection() {
                   <ArrowRight className='w-4 h-4' />
                 </a>
               </div>
-            </div>
+              </div>
+            </BorderGlow>
           ))}
         </div>
 

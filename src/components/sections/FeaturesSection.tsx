@@ -17,6 +17,7 @@ import {
   Mail,
   Boxes,
 } from 'lucide-react';
+import BorderGlow from '@/components/ui/BorderGlow';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -224,19 +225,26 @@ export default function FeaturesSection() {
         {/* Features grid */}
         <div className="features-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {features.map(({ icon: Icon, title, description, color, gradient, border }) => (
-            <div
+            <BorderGlow
               key={title}
-              className={`feature-card glass-card rounded-2xl p-6 border ${border} bg-gradient-to-br ${gradient} hover:scale-[1.02] transition-all duration-300 group cursor-default`}
+              glowColor={color}
+              edgeSensitivity={30}
+              borderRadius='1rem'
+              className='feature-card'
             >
               <div
-                className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300"
-                style={{ backgroundColor: `${color}15` }}
+                className={`relative z-1 glass-card rounded-2xl p-6 border ${border} bg-linear-to-br ${gradient} group cursor-default h-full`}
               >
-                <Icon className="w-6 h-6" style={{ color }} />
+                <div
+                  className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300"
+                  style={{ backgroundColor: `${color}15` }}
+                >
+                  <Icon className="w-6 h-6" style={{ color }} />
+                </div>
+                <h3 className="text-white font-bold text-lg mb-2">{title}</h3>
+                <p className="text-gray-400 text-sm leading-relaxed">{description}</p>
               </div>
-              <h3 className="text-white font-bold text-lg mb-2">{title}</h3>
-              <p className="text-gray-400 text-sm leading-relaxed">{description}</p>
-            </div>
+            </BorderGlow>
           ))}
         </div>
       </div>
