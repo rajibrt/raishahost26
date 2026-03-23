@@ -5,6 +5,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Zap, ArrowRight, PhoneCall } from 'lucide-react';
 import Link from 'next/link';
+import BorderGlow from '@/components/ui/BorderGlow';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -31,7 +32,8 @@ export default function CTASection() {
       <div className="absolute inset-0 grid-pattern opacity-20 pointer-events-none" />
 
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="cta-content relative rounded-3xl overflow-hidden">
+        <BorderGlow glowColor="#05CCF7" borderRadius="1.5rem" className="cta-content">
+        <div className="relative rounded-3xl overflow-hidden">
           {/* BG gradient */}
           <div className="absolute inset-0 bg-gradient-to-br from-[#05CCF7]/15 via-[#6366f1]/10 to-[#f59e0b]/10" />
           <div className="absolute inset-0 border border-[#05CCF7]/20 rounded-3xl" />
@@ -59,7 +61,7 @@ export default function CTASection() {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
                 href="#pricing"
-                className="flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#05CCF7] to-[#0284c7] text-white font-bold rounded-xl hover:shadow-2xl hover:shadow-[#05CCF7]/30 hover:-translate-y-1 transition-all duration-300"
+                className="flex items-center gap-2 px-8 py-4 bg-linear-to-r from-[#05CCF7] to-[#0284c7] text-white font-bold rounded-xl hover:shadow-2xl hover:shadow-[#05CCF7]/30 hover:-translate-y-1 transition-all duration-300"
               >
                 <Zap className="w-5 h-5" />
                 Start Hosting Now
@@ -82,6 +84,7 @@ export default function CTASection() {
             </div>
           </div>
         </div>
+        </BorderGlow>
       </div>
     </section>
   );

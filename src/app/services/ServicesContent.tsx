@@ -11,6 +11,7 @@ import {
   ShoppingCart, BarChart2, Palette, Cpu, Check,
 } from 'lucide-react';
 import Link from 'next/link';
+import BorderGlow from '@/components/ui/BorderGlow';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -220,27 +221,28 @@ export default function ServicesContent() {
         </div>
         <div className="srv-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {services.map(({ icon: Icon, title, color, desc, tags }) => (
-            <div
-              key={title}
-              className="srv-card group glass-card rounded-2xl p-7 border border-white/5 hover:border-opacity-40 transition-all duration-300 hover:-translate-y-1"
-              style={{ '--hover-color': color } as React.CSSProperties}
-            >
-              <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style={{ background: `${color}18` }}>
-                <Icon className="w-6 h-6" style={{ color }} />
+            <BorderGlow key={title} glowColor={color} className="srv-card">
+              <div
+                className="group glass-card rounded-2xl p-7 border border-white/5 hover:border-opacity-40 transition-all duration-300 hover:-translate-y-1"
+                style={{ '--hover-color': color } as React.CSSProperties}
+              >
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style={{ background: `${color}18` }}>
+                  <Icon className="w-6 h-6" style={{ color }} />
+                </div>
+                <h3 className="text-white font-bold text-lg mb-2">{title}</h3>
+                <p className="text-gray-400 text-sm leading-relaxed mb-5">{desc}</p>
+                <div className="flex flex-wrap gap-2 mb-5">
+                  {tags.map((tag) => (
+                    <span key={tag} className="text-xs px-2.5 py-1 rounded-full font-medium" style={{ background: `${color}15`, color }}>
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                <Link href="/contact" className="flex items-center gap-2 text-sm font-semibold group-hover:gap-3 transition-all" style={{ color }}>
+                  Get Quote <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
               </div>
-              <h3 className="text-white font-bold text-lg mb-2">{title}</h3>
-              <p className="text-gray-400 text-sm leading-relaxed mb-5">{desc}</p>
-              <div className="flex flex-wrap gap-2 mb-5">
-                {tags.map((tag) => (
-                  <span key={tag} className="text-xs px-2.5 py-1 rounded-full font-medium" style={{ background: `${color}15`, color }}>
-                    {tag}
-                  </span>
-                ))}
-              </div>
-              <Link href="/contact" className="flex items-center gap-2 text-sm font-semibold group-hover:gap-3 transition-all" style={{ color }}>
-                Get Quote <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
-            </div>
+            </BorderGlow>
           ))}
         </div>
       </section>
@@ -283,43 +285,44 @@ export default function ServicesContent() {
 
           <div className="pkg-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {packages.map(({ name, type, price, color, features, featured }) => (
-              <div
-                key={`${name}-${type}`}
-                className={`pkg-card rounded-2xl overflow-hidden border transition-all duration-300 hover:-translate-y-2 ${
-                  featured
-                    ? 'border-[#6366f1]/40 bg-gradient-to-br from-[#6366f1]/15 to-[#6366f1]/5 shadow-2xl shadow-[#6366f1]/20'
-                    : 'border-white/[0.06] bg-white/[0.03]'
-                }`}
-              >
-                {featured && (
-                  <div className="text-center text-xs font-bold uppercase tracking-widest py-1.5 text-white" style={{ background: `linear-gradient(90deg, ${color}, ${color}80)` }}>
-                    Most Popular
+              <BorderGlow key={`${name}-${type}`} glowColor={color} className="pkg-card">
+                <div
+                  className={`rounded-2xl overflow-hidden border transition-all duration-300 hover:-translate-y-2 ${
+                    featured
+                      ? 'border-[#6366f1]/40 bg-linear-to-br from-[#6366f1]/15 to-[#6366f1]/5 shadow-2xl shadow-[#6366f1]/20'
+                      : 'border-white/6 bg-white/3'
+                  }`}
+                >
+                  {featured && (
+                    <div className="text-center text-xs font-bold uppercase tracking-widest py-1.5 text-white" style={{ background: `linear-gradient(90deg, ${color}, ${color}80)` }}>
+                      Most Popular
+                    </div>
+                  )}
+                  <div className="h-1 w-full" style={{ background: `linear-gradient(90deg, ${color}, ${color}50)` }} />
+                  <div className="p-7">
+                    <div className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color }}>{type}</div>
+                    <h3 className="text-white font-bold text-xl mb-2">{name}</h3>
+                    <div className="text-3xl font-black mb-6" style={{ color }}>{price}</div>
+                    <ul className="space-y-2.5 mb-8">
+                      {features.map((f) => (
+                        <li key={f} className="flex items-center gap-2.5 text-sm text-gray-300">
+                          <div className="w-5 h-5 rounded-full flex items-center justify-center shrink-0" style={{ background: `${color}20` }}>
+                            <Check className="w-3 h-3" style={{ color }} />
+                          </div>
+                          {f}
+                        </li>
+                      ))}
+                    </ul>
+                    <Link
+                      href="/contact"
+                      className="flex items-center justify-center gap-2 w-full py-3 rounded-xl font-semibold text-sm transition-all hover:gap-3"
+                      style={featured ? { background: `linear-gradient(135deg, ${color}, ${color}99)`, color: 'white' } : { background: `${color}10`, color }}
+                    >
+                      Get Started <ArrowRight className="w-4 h-4" />
+                    </Link>
                   </div>
-                )}
-                <div className="h-1 w-full" style={{ background: `linear-gradient(90deg, ${color}, ${color}50)` }} />
-                <div className="p-7">
-                  <div className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color }}>{type}</div>
-                  <h3 className="text-white font-bold text-xl mb-2">{name}</h3>
-                  <div className="text-3xl font-black mb-6" style={{ color }}>{price}</div>
-                  <ul className="space-y-2.5 mb-8">
-                    {features.map((f) => (
-                      <li key={f} className="flex items-center gap-2.5 text-sm text-gray-300">
-                        <div className="w-5 h-5 rounded-full flex items-center justify-center shrink-0" style={{ background: `${color}20` }}>
-                          <Check className="w-3 h-3" style={{ color }} />
-                        </div>
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
-                  <Link
-                    href="/contact"
-                    className="flex items-center justify-center gap-2 w-full py-3 rounded-xl font-semibold text-sm transition-all hover:gap-3"
-                    style={featured ? { background: `linear-gradient(135deg, ${color}, ${color}99)`, color: 'white' } : { background: `${color}10`, color }}
-                  >
-                    Get Started <ArrowRight className="w-4 h-4" />
-                  </Link>
                 </div>
-              </div>
+              </BorderGlow>
             ))}
           </div>
         </div>

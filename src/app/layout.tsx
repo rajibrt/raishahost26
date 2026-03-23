@@ -86,7 +86,7 @@ export const metadata: Metadata = {
     images: [ogImage],
   },
   verification: {
-    google: 'add-your-google-search-console-verification-code-here',
+    google: 'yKZ59WI2rXd3PXTSYUdft1AtyR2K1aMnZUijRdmjozI',
   },
   category: 'technology',
 }
@@ -103,7 +103,8 @@ export default function RootLayout({
     url: siteUrl,
     logo: `${siteUrl}/raisha-host-logo.svg`,
     foundingDate: '2008',
-    description: 'Affordable Linux SSD web hosting and digital services company in Bangladesh',
+    description:
+      'Affordable Linux SSD web hosting and digital services company in Bangladesh',
     address: {
       '@type': 'PostalAddress',
       addressCountry: 'BD',
@@ -130,14 +131,18 @@ export default function RootLayout({
   }
 
   return (
-    <html lang="en" data-scroll-behavior="smooth" className={`${inter.variable} ${hindSiliguri.variable}`}>
+    <html
+      lang='en'
+      data-scroll-behavior='smooth'
+      className={`${inter.variable} ${hindSiliguri.variable}`}
+    >
       <head>
         <script
-          type="application/ld+json"
+          type='application/ld+json'
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="bg-[#030712] text-gray-100 overflow-x-hidden antialiased">
+      <body className='bg-[#030712] text-gray-100 overflow-x-hidden antialiased'>
         <LenisProvider>{children}</LenisProvider>
         <MessengerWidget />
         <CustomCursor />

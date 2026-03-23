@@ -8,6 +8,7 @@ import Footer from '@/components/Footer';
 import CTASection from '@/components/sections/CTASection';
 import { Palette, Brush, Layers, Check, ArrowRight, ImageIcon, Printer, MonitorSmartphone, FileImage, PenTool, Sparkles } from 'lucide-react';
 import Link from 'next/link';
+import BorderGlow from '@/components/ui/BorderGlow';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -160,13 +161,15 @@ export default function LogoDesignContent() {
         </div>
         <div ref={logoFeaturesRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {logoFeatures.map(({ icon: Icon, title, desc }) => (
-            <div key={title} className="glass-card rounded-2xl p-6 border border-[#f59e0b]/10 hover:border-[#f59e0b]/30 transition-all">
-              <div className="w-12 h-12 rounded-xl bg-[#f59e0b]/10 flex items-center justify-center mb-4">
-                <Icon className="w-6 h-6 text-[#f59e0b]" />
+            <BorderGlow key={title} glowColor="#f59e0b">
+              <div className="glass-card rounded-2xl p-6 border border-[#f59e0b]/10 hover:border-[#f59e0b]/30 transition-all">
+                <div className="w-12 h-12 rounded-xl bg-[#f59e0b]/10 flex items-center justify-center mb-4">
+                  <Icon className="w-6 h-6 text-[#f59e0b]" />
+                </div>
+                <h3 className="text-white font-bold mb-2">{title}</h3>
+                <p className="text-gray-400 text-sm leading-relaxed">{desc}</p>
               </div>
-              <h3 className="text-white font-bold mb-2">{title}</h3>
-              <p className="text-gray-400 text-sm leading-relaxed">{desc}</p>
-            </div>
+            </BorderGlow>
           ))}
         </div>
       </section>
@@ -189,20 +192,21 @@ export default function LogoDesignContent() {
         </div>
         <div ref={graphicGridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {graphicServices.map(({ icon: Icon, title, desc, color }) => (
-            <div
-              key={title}
-              className="glass-card rounded-2xl p-7 border border-white/6 hover:border-opacity-40 transition-all group"
-              style={{ '--hover-color': color } as React.CSSProperties}
-            >
+            <BorderGlow key={title} glowColor={color}>
               <div
-                className="w-12 h-12 rounded-xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300"
-                style={{ background: `${color}18` }}
+                className="glass-card rounded-2xl p-7 border border-white/6 hover:border-opacity-40 transition-all group"
+                style={{ '--hover-color': color } as React.CSSProperties}
               >
-                <Icon className="w-6 h-6" style={{ color }} />
+                <div
+                  className="w-12 h-12 rounded-xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300"
+                  style={{ background: `${color}18` }}
+                >
+                  <Icon className="w-6 h-6" style={{ color }} />
+                </div>
+                <h3 className="text-white font-bold text-lg mb-2">{title}</h3>
+                <p className="text-gray-400 text-sm leading-relaxed">{desc}</p>
               </div>
-              <h3 className="text-white font-bold text-lg mb-2">{title}</h3>
-              <p className="text-gray-400 text-sm leading-relaxed">{desc}</p>
-            </div>
+            </BorderGlow>
           ))}
         </div>
       </section>
