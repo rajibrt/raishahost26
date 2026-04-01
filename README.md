@@ -27,7 +27,10 @@ CONTACT_RECEIVER_EMAIL=
 NEXT_PUBLIC_SITE_URL=
 NEXT_PUBLIC_TURNSTILE_SITE_KEY=
 TURNSTILE_SECRET_KEY=
+IP_GEOLOCATION_API_URL=
 ```
+
+`IP_GEOLOCATION_API_URL` is optional. If you want IP-based location in the admin email, set a URL template with `{ip}` placeholder, for example `https://ipwho.is/{ip}`.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
