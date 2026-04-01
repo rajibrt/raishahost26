@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import Script from 'next/script';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Navbar from '@/components/Navbar';
@@ -9,14 +10,46 @@ import { Mail, Phone, Clock, MapPin, Send, CheckCircle } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
+declare global {
+  interface Window {
+    turnstile?: {
+      render: (
+        container: string | HTMLElement,
+        options: {
+          sitekey: string;
+          callback?: (token: string) => void;
+          'expired-callback'?: () => void;
+          'error-callback'?: () => void;
+          theme?: 'light' | 'dark' | 'auto';
+        }
+      ) => string;
+      remove: (widgetId: string) => void;
+      reset: (widgetId?: string) => void;
+    };
+  }
+}
+
+const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+
 export default function ContactContent() {
   const heroRef = useRef<HTMLDivElement>(null);
   const infoRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLDivElement>(null);
+  const formStartedAtRef = useRef(Date.now());
+  const turnstileContainerRef = useRef<HTMLDivElement>(null);
+  const turnstileWidgetIdRef = useRef<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
+  const [captchaReady, setCaptchaReady] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState('');
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: '',
+    website: '',
+  });
 
   useEffect(() => {
     gsap.fromTo(
@@ -44,15 +77,64 @@ export default function ContactContent() {
     );
   }, []);
 
+  useEffect(() => {
+    if (!captchaReady || !turnstileSiteKey || !turnstileContainerRef.current || !window.turnstile) {
+      return;
+    }
+
+    if (turnstileWidgetIdRef.current) {
+      window.turnstile.remove(turnstileWidgetIdRef.current);
+      turnstileWidgetIdRef.current = null;
+    }
+
+    turnstileWidgetIdRef.current = window.turnstile.render(turnstileContainerRef.current, {
+      sitekey: turnstileSiteKey,
+      theme: 'dark',
+      callback: (token: string) => {
+        setCaptchaToken(token);
+        setError('');
+      },
+      'expired-callback': () => {
+        setCaptchaToken('');
+      },
+      'error-callback': () => {
+        setCaptchaToken('');
+        setError('Captcha যাচাই করা যায়নি। আবার চেষ্টা করুন।');
+      },
+    });
+
+    return () => {
+      if (turnstileWidgetIdRef.current && window.turnstile) {
+        window.turnstile.remove(turnstileWidgetIdRef.current);
+        turnstileWidgetIdRef.current = null;
+      }
+    };
+  }, [captchaReady]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!turnstileSiteKey) {
+      setError('Captcha এখনো configure করা হয়নি।');
+      return;
+    }
+
+    if (!captchaToken) {
+      setError('Please complete the captcha first.');
+      return;
+    }
+
     setLoading(true);
     setError('');
     try {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({
+          ...form,
+          formStartedAt: formStartedAtRef.current,
+          turnstileToken: captchaToken,
+        }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Something went wrong.');
@@ -66,6 +148,14 @@ export default function ContactContent() {
 
   return (
     <main>
+      {turnstileSiteKey ? (
+        <Script
+          src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
+          strategy="afterInteractive"
+          onLoad={() => setCaptchaReady(true)}
+        />
+      ) : null}
+
       <Navbar />
 
       {/* Hero */}
@@ -153,6 +243,18 @@ export default function ContactContent() {
                 <form onSubmit={handleSubmit} className="space-y-5">
                   <h2 className="text-xl font-bold text-white mb-6">Send us a Message</h2>
 
+                  <div className="hidden" aria-hidden="true">
+                    <label htmlFor="company-website">Website</label>
+                    <input
+                      id="company-website"
+                      type="text"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      value={form.website}
+                      onChange={(e) => setForm({ ...form, website: e.target.value })}
+                    />
+                  </div>
+
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div>
                       <label className="block text-sm text-gray-400 mb-2">Your Name</label>
@@ -197,9 +299,19 @@ export default function ContactContent() {
                       value={form.message}
                       onChange={(e) => setForm({ ...form, message: e.target.value })}
                       placeholder="Tell us about your project or question..."
+                      minLength={10}
                       rows={6}
                       className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-4 py-3 text-white placeholder-gray-600 text-sm outline-none focus:border-[#05CCF7]/40 focus:bg-white/[0.06] transition-all resize-none"
                     />
+                  </div>
+
+                  <div className="space-y-2">
+                    <div ref={turnstileContainerRef} className="min-h-[65px]" />
+                    {!turnstileSiteKey ? (
+                      <p className="text-amber-300 text-sm">
+                        Turnstile site key set করা হয়নি। `NEXT_PUBLIC_TURNSTILE_SITE_KEY` add করুন।
+                      </p>
+                    ) : null}
                   </div>
 
                   {error && (
@@ -208,7 +320,7 @@ export default function ContactContent() {
 
                   <button
                     type="submit"
-                    disabled={loading}
+                    disabled={loading || !captchaToken || !turnstileSiteKey}
                     className="w-full flex items-center justify-center gap-2 py-4 bg-gradient-to-r from-[#05CCF7] to-[#0284c7] text-white font-bold rounded-xl hover:shadow-xl hover:shadow-[#05CCF7]/20 hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none"
                   >
                     <Send className="w-4 h-4" />
