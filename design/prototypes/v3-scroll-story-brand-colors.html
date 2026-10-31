@@ -1,0 +1,418 @@
+<title>RaishaHost Homepage Prototype</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+/* Layout: "Navy to light". A deep-navy scroll story (domain -> journey -> server -> SSL -> live) pinned while you scroll, then the business content on a clean light page: plans, VPS, work, trust, footer. */
+:root{
+  --navy:#0e2236; --navy-2:#15304a; --navy-line:#264766; --on-navy:#eef4fa; --on-navy-muted:#9db3c9;
+  --cyan:#4fa8ea; --indigo:#1b75bb; --indigo-lite:#ffffff; --live:#22c58b;
+  --bg:#f6f8fa; --surface:#ffffff; --ink:#2b2a2d; --muted:#5c5f66; --line:#e3e6ea; --chip:#e8f1f9;
+  --f-display:"Manrope",system-ui,sans-serif; --f-body:"Manrope",system-ui,sans-serif; --f-mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111417; --surface:#1a1e23; --ink:#eceef1; --muted:#a3a8b1; --line:#2b3138; --chip:#16304a; --indigo:#5aaeea; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111417; --surface:#1a1e23; --ink:#eceef1; --muted:#a3a8b1; --line:#2b3138; --chip:#16304a; --indigo:#5aaeea; color-scheme:dark}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6}
+.gut{padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.in{max-width:1120px;margin:0 auto}
+h1,h2,h3{font-family:var(--f-display);margin:0;text-wrap:balance;letter-spacing:-.02em}
+p{margin:0}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+.mono{font-family:var(--f-mono)}
+.proto-note{background:#ffd34d;color:#2a2000;font-size:13px;font-weight:600;text-align:center;padding-block:6px}
+
+/* nav */
+.nav{background:var(--navy);color:var(--on-navy);position:sticky;top:env(safe-area-inset-top,0px);z-index:20;border-bottom:1px solid var(--navy-line)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--navy)}
+.nav .in{display:flex;align-items:center;gap:28px;padding-block:14px}
+.nav svg.logo{width:168px;height:auto;--l1:var(--cyan);--l2:#ffffff;flex:none}
+.nav ul{display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:14.5px;font-weight:600;color:var(--on-navy-muted)}
+.nav ul a{text-decoration:none}
+.nav ul a:hover{color:var(--on-navy)}
+.nav .sp{flex:1}
+.btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--f-body);font-weight:700;font-size:14.5px;border-radius:10px;padding:11px 18px;text-decoration:none;border:0;cursor:pointer;white-space:nowrap}
+.btn.cy{background:var(--cyan);color:#071a2c}
+.btn.ghost{color:var(--on-navy);border:1px solid var(--navy-line);background:transparent}
+.btn.ind{background:var(--indigo);color:#fff}
+.btn.line{background:transparent;color:var(--ink);border:1px solid var(--line)}
+
+/* hero */
+.hero{background:var(--navy);color:var(--on-navy)}
+.hero .in{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:48px;padding-block:72px 56px;align-items:center}
+.eyebrow{font-family:var(--f-mono);font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--cyan)}
+.hero h1{font-size:clamp(36px,5.4vw,64px);line-height:1.04;font-weight:800;margin-top:14px}
+.hero h1 span{color:var(--cyan)}
+.hero .lede{color:var(--on-navy-muted);font-size:18px;max-width:52ch;margin-top:18px}
+.search{margin-top:28px;display:flex;gap:8px;background:var(--navy-2);border:1px solid var(--navy-line);border-radius:14px;padding:8px;max-width:560px}
+.search label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.search input{flex:1;min-width:0;background:transparent;border:0;color:var(--on-navy);font:600 16px var(--f-mono);padding:8px 10px;outline:none}
+.search input::placeholder{color:#6f81ab}
+.tlds{display:flex;gap:16px;flex-wrap:wrap;margin-top:12px;font:500 13px var(--f-mono);color:var(--on-navy-muted)}
+.tlds b{color:var(--on-navy)}
+.facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--navy-line);border:1px solid var(--navy-line);border-radius:16px;overflow:hidden}
+.facts div{background:var(--navy-2);padding:20px}
+.facts b{display:block;font-family:var(--f-display);font-size:30px;font-weight:800;letter-spacing:-.02em}
+.facts span{font-size:13.5px;color:var(--on-navy-muted)}
+.scrollcue{display:flex;align-items:center;gap:10px;font:500 13px var(--f-mono);color:var(--on-navy-muted);padding-block:0 28px}
+.scrollcue i{width:22px;height:1px;background:var(--cyan)}
+
+/* story */
+.story{background:var(--navy);color:var(--on-navy);position:relative}
+.story-track{height:520vh;position:relative}
+.stage{position:sticky;top:calc(env(safe-area-inset-top,0px) + 63px);height:calc(100vh - 63px);height:calc(100dvh - 63px);display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:24px;align-items:center;overflow:hidden}
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.steps li{padding:14px 16px;border-left:2px solid var(--navy-line);opacity:.45;transition:opacity .35s,border-color .35s}
+.steps li.on{opacity:1;border-color:var(--cyan)}
+.steps .k{font:600 12px var(--f-mono);color:var(--cyan);letter-spacing:.05em}
+.steps h3{font-size:21px;font-weight:800;margin-top:2px}
+.steps p{color:var(--on-navy-muted);font-size:14.5px;max-width:42ch;margin-top:4px}
+.canvas-wrap{position:relative;height:100%;min-height:320px}
+canvas#scene{position:absolute;inset:0;width:100%;height:100%;display:block}
+.bar{position:absolute;left:0;right:0;bottom:22px;height:2px;background:var(--navy-line)}
+.bar i{display:block;height:100%;width:0;background:var(--cyan)}
+
+/* light sections */
+section.light{padding-block:88px}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:32px}
+.sec-head h2{font-size:clamp(28px,3.6vw,42px);font-weight:800;line-height:1.1}
+.sec-head p{color:var(--muted);max-width:52ch;margin-top:10px}
+.k2{font:600 12.5px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--indigo)}
+
+.seg{display:inline-flex;background:var(--chip);border-radius:12px;padding:4px;gap:4px}
+.seg button{border:0;background:transparent;color:var(--muted);font:700 14px var(--f-body);padding:8px 14px;border-radius:9px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgb(0 0 0 / .12)}
+.controls{display:flex;gap:12px;flex-wrap:wrap}
+
+.plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.plan{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:16px;min-width:0}
+.plan.pop{border-color:var(--indigo);box-shadow:0 0 0 1px var(--indigo)}
+.plan .top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.plan h3{font-size:19px;font-weight:800}
+.pill{font:600 11.5px var(--f-mono);background:var(--chip);color:var(--indigo);padding:3px 9px;border-radius:999px;white-space:nowrap}
+.price{display:flex;align-items:baseline;gap:6px;font-variant-numeric:tabular-nums}
+.price b{font-family:var(--f-display);font-size:38px;font-weight:800;letter-spacing:-.03em}
+.price span{color:var(--muted);font-size:14px}
+.price s{color:var(--muted);font-size:14px}
+.tag{color:var(--muted);font-size:14px;min-height:1.6em}
+.specs{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.specs li{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--line);font-size:14.5px}
+.specs li span{color:var(--muted)}
+.specs li b{font-family:var(--f-mono);font-weight:600;font-size:13.5px;text-align:right}
+.plan .btn{justify-content:center;margin-top:auto}
+.incl{margin-top:20px;display:flex;flex-wrap:wrap;gap:8px 18px;color:var(--muted);font-size:14px}
+.incl span::before{content:"✓ ";color:var(--live);font-weight:800}
+.fine{margin-top:14px;font-size:13px;color:var(--muted)}
+
+.work{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.case{background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.case .shot{aspect-ratio:16/10;max-width:100%;background:repeating-linear-gradient(135deg,var(--chip) 0 10px,transparent 10px 20px);display:grid;place-items:center;color:var(--muted);font:600 12.5px var(--f-mono);border-bottom:1px solid var(--line)}
+.case .body{padding:18px 20px;display:flex;flex-direction:column;gap:6px}
+.case .meta{font:600 12px var(--f-mono);color:var(--indigo)}
+.case h3{font-size:17px;font-weight:800}
+.case p{color:var(--muted);font-size:14px}
+
+.trust{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.trust div{border-top:2px solid var(--ink);padding-top:14px}
+.trust b{display:block;font-family:var(--f-display);font-weight:800;font-size:17px}
+.trust p{color:var(--muted);font-size:14px;margin-top:4px}
+
+footer{background:var(--navy);color:var(--on-navy-muted);padding-block:48px;font-size:14px}
+footer .in{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
+footer svg{width:160px;height:auto;--l1:var(--cyan);--l2:#ffffff}
+
+@media (max-width:900px){
+  .nav ul{display:none}
+  .hero .in{grid-template-columns:minmax(0,1fr);padding-block:48px 40px}
+  .stage{grid-template-columns:minmax(0,1fr);grid-template-rows:auto 1fr;align-content:start;padding-top:16px}
+  .steps li{display:none}
+  .steps li.on{display:block;border-left:0;padding:0}
+  .plans,.work{grid-template-columns:1fr}
+  .trust{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:480px){.nav .btn.ghost{display:none}.trust{grid-template-columns:1fr}}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}.steps li{transition:none}}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="rh-logo" viewBox="0 0 160 20.3"> <g> <g> <path style="fill:var(--l1,#1b75bb)" d="M44,1.2h3.3c2.2,0,3.7,0.1,4.5,0.3c0.8,0.2,1.4,0.6,1.9,1.3c0.5,0.7,0.7,1.8,0.7,3.3c0,1.4-0.2,2.3-0.5,2.8 c-0.3,0.5-1,0.8-2,0.9c0.9,0.2,1.5,0.5,1.9,0.9c0.3,0.4,0.5,0.7,0.6,1.1c0.1,0.3,0.1,1.2,0.1,2.6v4.7H50v-5.9c0-1-0.1-1.6-0.2-1.8 c-0.2-0.2-0.5-0.3-1.2-0.3v8.1H44V1.2z M48.6,4.2v4c0.5,0,0.9-0.1,1.1-0.2C49.9,7.9,50,7.4,50,6.6v-1c0-0.6-0.1-0.9-0.3-1.1 C49.5,4.3,49.2,4.2,48.6,4.2z"/> <path style="fill:var(--l1,#1b75bb)" d="M64.2,1.2l2.7,17.9h-4.8l-0.2-3.2h-1.7l-0.3,3.2h-4.8l2.4-17.9H64.2z M61.8,12.7c-0.2-2-0.5-4.5-0.7-7.5 c-0.5,3.4-0.8,5.9-0.9,7.5H61.8z"/> <path style="fill:var(--l1,#1b75bb)" d="M72.3,1.2v17.9h-4.7V1.2H72.3z"/> <path style="fill:var(--l1,#1b75bb)" d="M84.1,6.6h-4.3V5.3c0-0.6-0.1-1-0.2-1.2c-0.1-0.2-0.3-0.3-0.6-0.3c-0.3,0-0.5,0.1-0.6,0.3 c-0.1,0.2-0.2,0.6-0.2,1c0,0.6,0.1,1,0.2,1.3c0.2,0.3,0.6,0.7,1.3,1.1c2.1,1.2,3.4,2.2,3.9,3c0.5,0.8,0.8,2.1,0.8,3.8 c0,1.3-0.1,2.2-0.4,2.8c-0.3,0.6-0.9,1.1-1.7,1.5c-0.9,0.4-1.9,0.6-3,0.6c-1.2,0-2.3-0.2-3.2-0.7c-0.9-0.5-1.5-1.1-1.7-1.8 c-0.3-0.7-0.4-1.8-0.4-3.1v-1.2h4.3v2.2c0,0.7,0.1,1.1,0.2,1.3c0.1,0.2,0.3,0.3,0.6,0.3c0.3,0,0.5-0.1,0.7-0.4 c0.2-0.2,0.2-0.6,0.2-1.1c0-1.1-0.1-1.7-0.4-2.1c-0.3-0.3-1-0.9-2.2-1.6c-1.2-0.8-1.9-1.3-2.3-1.7c-0.4-0.3-0.7-0.8-0.9-1.4 c-0.2-0.6-0.4-1.4-0.4-2.3c0-1.4,0.2-2.4,0.5-3c0.3-0.6,0.9-1.1,1.7-1.5c0.8-0.4,1.7-0.5,2.8-0.5c1.2,0,2.2,0.2,3.1,0.6 c0.9,0.4,1.4,0.9,1.7,1.5c0.3,0.6,0.4,1.6,0.4,3V6.6z"/> <path style="fill:var(--l1,#1b75bb)" d="M96.6,1.2v17.9H92v-7.5h-1.4v7.5h-4.7V1.2h4.7v6.4H92V1.2H96.6z"/> <path style="fill:var(--l1,#1b75bb)" d="M106.5,1.2l2.7,17.9h-4.8l-0.2-3.2h-1.7l-0.3,3.2h-4.8l2.4-17.9H106.5z M104.1,12.7c-0.2-2-0.5-4.5-0.7-7.5 c-0.5,3.4-0.8,5.9-0.9,7.5H104.1z"/> <path style="fill:var(--l2,#3b3a3c)" d="M124.7,1.2v17.9H120v-7.5h-1.4v7.5H114V1.2h4.7v6.4h1.4V1.2H124.7z"/> <path style="fill:var(--l2,#3b3a3c)" d="M137.2,11.7c0,1.8,0,3.1-0.1,3.8c-0.1,0.7-0.4,1.4-0.8,2.1c-0.4,0.6-1,1.1-1.8,1.4c-0.8,0.3-1.6,0.5-2.7,0.5 c-1,0-1.8-0.2-2.6-0.5c-0.8-0.3-1.4-0.8-1.8-1.4c-0.5-0.6-0.7-1.3-0.8-2c-0.1-0.7-0.1-2-0.1-3.9V8.6c0-1.8,0-3.1,0.1-3.8 c0.1-0.7,0.4-1.4,0.8-2.1c0.4-0.6,1-1.1,1.8-1.4c0.8-0.3,1.6-0.5,2.7-0.5c1,0,1.8,0.2,2.6,0.5c0.8,0.3,1.4,0.8,1.8,1.4 c0.5,0.6,0.7,1.3,0.8,2c0.1,0.7,0.1,2,0.1,3.9V11.7z M132.5,5.8c0-0.8,0-1.4-0.1-1.6c-0.1-0.2-0.3-0.3-0.6-0.3 c-0.2,0-0.4,0.1-0.6,0.3c-0.1,0.2-0.2,0.7-0.2,1.7v8.4c0,1,0,1.7,0.1,1.9c0.1,0.2,0.3,0.4,0.6,0.4c0.3,0,0.5-0.1,0.6-0.4 c0.1-0.3,0.1-0.9,0.1-2V5.8z"/> <path style="fill:var(--l2,#3b3a3c)" d="M148.8,6.6h-4.3V5.3c0-0.6-0.1-1-0.2-1.2c-0.1-0.2-0.3-0.3-0.6-0.3c-0.3,0-0.5,0.1-0.6,0.3 c-0.1,0.2-0.2,0.6-0.2,1c0,0.6,0.1,1,0.2,1.3c0.2,0.3,0.6,0.7,1.3,1.1c2.1,1.2,3.4,2.2,3.9,3c0.5,0.8,0.8,2.1,0.8,3.8 c0,1.3-0.1,2.2-0.4,2.8c-0.3,0.6-0.9,1.1-1.7,1.5c-0.9,0.4-1.9,0.6-3,0.6c-1.2,0-2.3-0.2-3.2-0.7c-0.9-0.5-1.5-1.1-1.7-1.8 c-0.3-0.7-0.4-1.8-0.4-3.1v-1.2h4.3v2.2c0,0.7,0.1,1.1,0.2,1.3c0.1,0.2,0.3,0.3,0.6,0.3s0.5-0.1,0.7-0.4c0.2-0.2,0.2-0.6,0.2-1.1 c0-1.1-0.1-1.7-0.4-2.1c-0.3-0.3-1-0.9-2.2-1.6c-1.2-0.8-1.9-1.3-2.3-1.7c-0.4-0.3-0.7-0.8-0.9-1.4c-0.2-0.6-0.4-1.4-0.4-2.3 c0-1.4,0.2-2.4,0.5-3c0.4-0.6,0.9-1.1,1.7-1.5c0.8-0.4,1.7-0.5,2.8-0.5c1.2,0,2.2,0.2,3.1,0.6c0.9,0.4,1.4,0.9,1.7,1.5 c0.3,0.6,0.4,1.6,0.4,3V6.6z"/> <path style="fill:var(--l2,#3b3a3c)" d="M160,1.2v3.6h-2.8v14.3h-4.7V4.8h-2.8V1.2H160z"/> </g> <g> <g> <g> <g> <path style="fill:var(--l2,#3b3a3c)" d="M35.1,2.3h-5.7l-1,5.2h-4.6l1.1-5.2h-5.2c0.6,0.3,1.2,0.6,1.7,1.1c0.9,0.9,1.3,2.1,1.2,3.5l0,0 c0,0-0.1,1.2-0.9,2.4c-0.6,1-1.7,2.2-3.7,2.7c0.7,0.8,1.9,2.4,3.6,5.4l1.2-4.8h4.3l-1,5.4h6.2c0.7,0,1.3-0.5,1.4-1.1L36.5,4 C36.7,3.1,36,2.3,35.1,2.3z"/> </g> </g> <g> <g> <path style="fill:var(--l1,#1b75bb)" d="M3.8,10.1h8.7c3.7-0.7,2.9-4.5,0-4.5H4.6L5,3.4c0.1-0.7,0.7-1.2,1.4-1.2h10.4c0,0,5.2-0.1,5.3,4.2 c0,0.3,0,0.7-0.1,1c-0.3,1.2-1.4,3.9-5,4.3c0,0,1.5,1.4,4.4,6.3h-8.7l-2-4.7l-0.3,0.1l-1.1,4.6H3.9c-0.9,0-1.6-0.8-1.4-1.7 L3.8,10.1z"/> </g> </g> </g> <g> <path style="fill:var(--l2,#3b3a3c)" d="M19.1,0.4c0,0.1,0,0.2,0.1,0.2H6.1c-1.3,0-2.4,0.9-2.7,2.2L2,9.9c0-0.1-0.1-0.1-0.2-0.1c-0.1,0-0.2,0-0.2,0 L3,2.7c0.3-1.5,1.6-2.5,3.1-2.5h13.1C19.1,0.2,19.1,0.3,19.1,0.4z"/> </g> <g> <path style="fill:var(--l1,#1b75bb)" d="M19.8,19.9c0,0.1,0,0.2-0.1,0.2c-0.1,0.1-0.2,0.1-0.3,0.1H3.3c-1,0-1.9-0.4-2.5-1.2 c-0.6-0.8-0.9-1.8-0.7-2.7l1.3-6.2c0-0.1,0.1-0.2,0.2-0.3c0.1,0,0.1,0,0.2,0c0.1,0,0.1,0.1,0.2,0.1c0.1,0.1,0.1,0.2,0.1,0.3 l-1.3,6.2c-0.2,0.8,0,1.5,0.5,2.1c0.5,0.6,1.2,0.9,2,0.9h16.2c0.1,0,0.2,0.1,0.3,0.1C19.8,19.7,19.8,19.8,19.8,19.9z"/> </g> <g> <path style="fill:var(--l2,#3b3a3c)" d="M37.4,10.5l-1.5,7.2c-0.3,1.5-1.6,2.5-3.1,2.5H19.8c0-0.1,0.1-0.1,0.1-0.2c0-0.1,0-0.2-0.1-0.2h13.1 c1.3,0,2.4-0.9,2.7-2.2l1.5-7.1c0,0.1,0.1,0.1,0.2,0.1c0,0,0,0,0.1,0C37.3,10.5,37.3,10.5,37.4,10.5z"/> </g> <g> <path style="fill:var(--l1,#1b75bb)" d="M38.9,4l-1.3,6.2c0,0.1-0.1,0.2-0.2,0.3c0,0-0.1,0-0.2,0c0,0,0,0-0.1,0c-0.1,0-0.1-0.1-0.2-0.1 c-0.1-0.1-0.1-0.2-0.1-0.3l1.3-6.2c0.2-0.8,0-1.5-0.5-2.1c-0.5-0.6-1.2-0.9-2-0.9H19.5c-0.1,0-0.2-0.1-0.3-0.1 c0-0.1-0.1-0.1-0.1-0.2c0-0.1,0-0.2,0.1-0.2C19.2,0.1,19.3,0,19.5,0h16.2c1,0,1.9,0.4,2.5,1.2C38.8,2,39.1,3,38.9,4z"/> </g> </g> </g> </symbol><symbol id="rh-mark" viewBox="0 0 263.4 137.1"> <g> <path style="fill:var(--l2,#3b3a3c)" d="M237.4,15.3h-38.5l-6.5,34.9h-31.2l7.2-34.9h-35c4.1,1.7,8.2,4.2,11.6,7.7,5.8,6,8.6,14,8.2,23.6v.2c0,.3-1,8.2-6,16.5-4.1,6.8-11.7,15-25.1,18.2,4.6,5.6,12.8,16.6,24.5,36.2l8-32.4h29.4l-7.1,36.5h42.3c4.6,0,8.6-3.2,9.5-7.8l18.1-87.2c1.3-6-3.4-11.7-9.5-11.7Z"/> <path style="fill:var(--l1,#1b75bb)" d="M25.5,68.5h59.1c25.3-4.6,19.3-30.3,0-30.3H31l3-15.5c.9-4.6,4.9-7.9,9.6-7.9h70.4s34.9-.4,35.8,28.7c0,2.3-.2,4.6-.8,6.8-2.1,8.1-9.5,26.2-33.6,28.9,0,0,10.1,9.4,29.8,42.9h-58.7l-13.3-31.6-1.8.5-7.3,31.2H26.1c-6.2,0-10.8-5.7-9.5-11.8l9-41.9Z"/> </g> <path style="fill:var(--l2,#3b3a3c)" d="M129.3,2.4c0,.5.2,1.1.5,1.5H41.4c-8.7,0-16.2,6.2-18,14.6l-10,48.4c-.3-.4-.8-.7-1.3-.8-.5-.1-1.1,0-1.5.2l10-48.4C22.6,8.1,31.3,1,41.4,1h88.4c-.3.4-.5.9-.5,1.5Z"/> <path style="fill:var(--l1,#1b75bb)" d="M134.1,134.6c0,.5-.2,1.1-.5,1.5-.4.6-1.1,1-1.9,1H22.3c-6.7,0-13-3-17.3-8.2C.8,123.6-.9,116.9.5,110.3l8.7-42.3c.2-.8.7-1.4,1.3-1.7.5-.2,1-.3,1.5-.2.5.1,1,.4,1.3.8.5.6.7,1.3.6,2.1l-8.7,42.3c-1.1,5.1.2,10.4,3.5,14.5,3.3,4.1,8.2,6.4,13.5,6.4h109.4c.8,0,1.5.4,1.9,1,.3.4.5.9.5,1.5Z"/> <path style="fill:var(--l2,#3b3a3c)" d="M252.9,70.7l-10,48.4c-2,9.8-10.8,17-20.8,17h-88.4c.3-.4.5-.9.5-1.5s-.2-1.1-.5-1.5h88.4c8.7,0,16.2-6.2,18-14.6l10-48.4c.3.4.8.7,1.3.8.2,0,.3,0,.5,0,.4,0,.7,0,1-.2Z"/> <path style="fill:var(--l1,#1b75bb)" d="M262.9,26.8l-8.7,42.3c-.2.8-.7,1.4-1.3,1.7-.3.2-.7.2-1,.2s-.3,0-.5,0c-.5-.1-1-.4-1.3-.8-.5-.6-.7-1.3-.6-2.1l8.7-42.3c1.1-5.1-.2-10.4-3.5-14.5-3.3-4.1-8.2-6.4-13.5-6.4h-109.4c-.8,0-1.5-.4-1.9-1-.3-.4-.5-.9-.5-1.5s.2-1.1.5-1.5c.4-.6,1.1-1,1.9-1h109.4c6.7,0,13,3,17.3,8.2,4.2,5.2,5.9,12,4.5,18.6Z"/> </symbol></svg>
+
+<div class="proto-note gut">Prototype for review. Layout, copy and motion are proposals; case studies are placeholders.</div>
+
+<nav class="nav gut" aria-label="Main">
+  <div class="in">
+    <svg class="logo" viewBox="0 0 160 20.3" role="img" aria-label="RaishaHost"><use href="#rh-logo"/></svg>
+    <ul><li><a href="#plans">Hosting</a></li><li><a href="#vps">VPS</a></li><li><a href="#work">Our Work</a></li><li><a href="#why">Why Us</a></li></ul>
+    <span class="sp"></span>
+    <a class="btn ghost" href="https://hosting.raishahost.com/login" target="_blank" rel="noopener">Client Area</a>
+    <a class="btn cy" href="#plans">See Plans</a>
+  </div>
+</nav>
+
+<header class="hero gut">
+  <div class="in">
+    <div>
+      <span class="eyebrow">Web hosting since 2008</span>
+      <h1>Your website, <span>always on.</span></h1>
+      <p class="lede">cPanel hosting, VPS servers and websites built for businesses in Bangladesh and the US. Real engineers answer when you need help.</p>
+      <form class="search" id="domainForm">
+        <label for="domain">Search for a domain</label>
+        <input id="domain" name="domain" placeholder="yourbrand" autocomplete="off" spellcheck="false">
+        <button class="btn cy" type="submit">Check domain</button>
+      </form>
+      <div class="tlds"><span><b>.com</b></span><span><b>.com.bd</b></span><span><b>.net</b></span><span><b>.org</b></span><span><b>.xyz</b></span></div>
+    </div>
+    <div class="facts">
+      <div><b>2008</b><span>Hosting websites since</span></div>
+      <div><b>99.9%</b><span>Uptime on every VPS</span></div>
+      <div><b>30 days</b><span>Money-back guarantee</span></div>
+      <div><b>24/7</b><span>Support by real people</span></div>
+    </div>
+  </div>
+  <div class="in scrollcue"><i></i>Scroll to see how your site goes live</div>
+</header>
+
+<div class="story gut" id="story">
+  <div class="story-track" id="track">
+    <div class="stage in">
+      <ol class="steps" id="steps">
+        <li class="on"><span class="k">01 · DOMAIN</span><h3>It starts with a name</h3><p>You pick a domain. We register it and point it to your hosting in one step.</p></li>
+        <li><span class="k">02 · REQUEST</span><h3>Visitors find you</h3><p>Every visit travels to our servers and back in milliseconds, from Dhaka or from Dallas.</p></li>
+        <li><span class="k">03 · SERVER</span><h3>Your space on fast hardware</h3><p>NVMe storage, daily backups and a firewall come with every plan.</p></li>
+        <li><span class="k">04 · SECURITY</span><h3>Locked with free SSL</h3><p>HTTPS is set up automatically and renews itself. No extra fee.</p></li>
+        <li><span class="k">05 · LIVE</span><h3>Your site is live</h3><p>Launch, then grow from shared hosting to your own VPS without moving providers.</p></li>
+      </ol>
+      <div class="canvas-wrap">
+        <canvas id="scene" aria-hidden="true"></canvas>
+        <div class="bar"><i id="bar"></i></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="light gut" id="plans">
+  <div class="in">
+    <div class="sec-head">
+      <div>
+        <span class="k2">Hosting plans</span>
+        <h2>Pick the plan that fits today.</h2>
+        <p>Upgrade any time. Your files, email and settings move with you.</p>
+      </div>
+      <div class="controls">
+        <div class="seg" role="group" aria-label="Plan type">
+          <button type="button" id="t-shared" aria-pressed="true">cPanel Hosting</button>
+          <button type="button" id="t-vps" aria-pressed="false">VPS</button>
+        </div>
+        <div class="seg" role="group" aria-label="Currency">
+          <button type="button" id="c-bdt" aria-pressed="true">৳ BDT</button>
+          <button type="button" id="c-usd" aria-pressed="false">$ USD</button>
+        </div>
+      </div>
+    </div>
+    <div class="plans" id="planGrid"></div>
+    <div class="incl" id="incl"></div>
+    <p class="fine" id="fine"></p>
+  </div>
+</section>
+
+<section class="light gut" id="work" style="padding-top:0">
+  <div class="in">
+    <div class="sec-head">
+      <div>
+        <span class="k2">Our work</span>
+        <h2>Websites we built and host.</h2>
+        <p>Projects for clients in Bangladesh and the United States. Each case study shows the problem, what we built and the result.</p>
+      </div>
+      <a class="btn line" href="#work">All case studies</a>
+    </div>
+    <div class="work">
+      <article class="case"><div class="shot">Client screenshot</div><div class="body"><span class="meta">USA · Web design + hosting</span><h3>Case study placeholder</h3><p>Real client, with permission, added after approval.</p></div></article>
+      <article class="case"><div class="shot">Client screenshot</div><div class="body"><span class="meta">Bangladesh · E-commerce + VPS</span><h3>Case study placeholder</h3><p>Real client, with permission, added after approval.</p></div></article>
+      <article class="case"><div class="shot">Client screenshot</div><div class="body"><span class="meta">Bangladesh · Logo + website</span><h3>Case study placeholder</h3><p>Real client, with permission, added after approval.</p></div></article>
+    </div>
+  </div>
+</section>
+
+<section class="light gut" id="why" style="padding-top:0">
+  <div class="in">
+    <div class="sec-head"><div><span class="k2">Why RaishaHost</span><h2>Small enough to know you. Old enough to trust.</h2></div></div>
+    <div class="trust">
+      <div><b>Since 2008</b><p>Over fifteen years of keeping Bangladeshi businesses online.</p></div>
+      <div><b>30-day refund</b><p>Not happy in the first month? Get your hosting fee back.</p></div>
+      <div><b>Pay your way</b><p>bKash, Nagad, bank transfer or card, in taka or dollars.</p></div>
+      <div><b>One team</b><p>Domain, hosting, website and logo from the same people.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer class="gut">
+  <div class="in">
+    <svg viewBox="0 0 160 20.3" role="img" aria-label="RaishaHost"><use href="#rh-logo"/></svg>
+    <span>© RaishaHost · Web hosting since 2008</span>
+  </div>
+</footer>
+
+<script>
+(() => {
+/* ---------- plans (mirrors src/data/plans.ts) ---------- */
+const STORE='https://hosting.raishahost.com/store';
+const shared=[
+ {name:'Economy',bdt:3800,was:4600,specs:[['SSD storage','5 GB'],['Websites','3'],['Bandwidth','30 GB/mo'],['Email accounts','20']],url:STORE+'/linux-shared-hosting/economy',tag:'Blogs, portfolios and small sites'},
+ {name:'Standard',bdt:6000,was:8000,pop:true,specs:[['SSD storage','10 GB'],['Websites','4'],['Bandwidth','60 GB/mo'],['Email accounts','50']],url:STORE+'/linux-shared-hosting/standard',tag:'Growing businesses with several sites'},
+ {name:'Pro',bdt:12000,was:17000,specs:[['SSD storage','30 GB'],['Websites','7'],['Bandwidth','100 GB/mo'],['Email accounts','100']],url:STORE+'/linux-shared-hosting/pro',tag:'High-traffic and demanding projects'}];
+const vps=[
+ {name:'VPS Starter',bdt:3599,usd:29.99,specs:[['CPU','2 vCPU'],['RAM','4 GB'],['NVMe SSD','40 GB'],['Bandwidth','20 TB']],url:STORE+'/vps',tag:'Apps, staging and small stores'},
+ {name:'VPS Business',bdt:5599,usd:46.99,pop:true,specs:[['CPU','4 vCPU'],['RAM','8 GB'],['NVMe SSD','40 GB'],['Bandwidth','20 TB']],url:STORE+'/vps',tag:'Business apps and busy websites'},
+ {name:'VPS Pro',bdt:6599,usd:54.99,specs:[['CPU','4 vCPU'],['RAM','8 GB'],['NVMe SSD','80 GB'],['Bandwidth','20 TB']],url:STORE+'/vps',tag:'Busy websites, e-commerce and ERP'}];
+let type='shared', cur='bdt';
+const grid=document.getElementById('planGrid'), incl=document.getElementById('incl'), fine=document.getElementById('fine');
+const fmtB=n=>'৳'+n.toLocaleString('en-US'), fmtU=n=>'$'+n.toFixed(2);
+function render(){
+  const list=type==='shared'?shared:vps, per=type==='shared'?'/year':'/month';
+  grid.innerHTML=list.map(p=>{
+    const hasUsd=p.usd!=null, showUsd=cur==='usd'&&hasUsd;
+    const price=showUsd?fmtU(p.usd):fmtB(p.bdt);
+    const was=!showUsd&&p.was?`<s>${fmtB(p.was)}</s>`:'';
+    return `<article class="plan${p.pop?' pop':''}"><div class="top"><h3>${p.name}</h3>${p.pop?'<span class="pill">Most popular</span>':''}</div>
+    <div class="price"><b>${price}</b><span>${per}</span>${was}</div><p class="tag">${p.tag}</p>
+    <ul class="specs">${p.specs.map(([k,v])=>`<li><span>${k}</span><b>${v}</b></li>`).join('')}</ul>
+    <a class="btn ${p.pop?'ind':'line'}" href="${p.url}" target="_blank" rel="noopener">Order ${p.name}</a></article>`}).join('');
+  incl.innerHTML=(type==='shared'
+    ?['Free SSL','cPanel','Email autoresponders','30-day money-back']
+    :['1 dedicated IPv4 + IPv6','Full root access','Ubuntu / Debian / AlmaLinux','DDoS protection','99.9% uptime']).map(s=>`<span>${s}</span>`).join('');
+  fine.textContent=type==='shared'
+    ?(cur==='usd'?'cPanel hosting is billed yearly in taka. USD pricing for these plans is still to be set, so prices are shown in BDT.':'cPanel hosting is billed yearly.')
+    :'VPS is billed monthly.';
+}
+const setP=(a,b,on)=>{a.setAttribute('aria-pressed',on);b.setAttribute('aria-pressed',!on)};
+const tS=document.getElementById('t-shared'),tV=document.getElementById('t-vps'),cB=document.getElementById('c-bdt'),cU=document.getElementById('c-usd');
+tS.onclick=()=>{type='shared';setP(tS,tV,true);render()};
+tV.onclick=()=>{type='vps';setP(tS,tV,false);render()};
+cB.onclick=()=>{cur='bdt';setP(cB,cU,true);render()};
+cU.onclick=()=>{cur='usd';setP(cB,cU,false);render()};
+render();
+
+const input=document.getElementById('domain');
+document.getElementById('domainForm').addEventListener('submit',e=>{e.preventDefault();
+  const v=(input.value.trim()||'yourbrand').toLowerCase().replace(/[^a-z0-9.-]/g,'');
+  document.getElementById('story').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+  domainText=v.includes('.')?v:v+'.com';});
+
+/* ---------- scroll story ---------- */
+const cv=document.getElementById('scene'), ctx=cv.getContext('2d');
+const track=document.getElementById('track'), steps=[...document.querySelectorAll('#steps li')], bar=document.getElementById('bar');
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let W=0,H=0,DPR=1,domainText='yourbrand.com';
+const C={cy:'#4fa8ea',ind:'#1b75bb',line:'#264766',txt:'#eef4fa',mut:'#9db3c9',live:'#22c58b',bg2:'#15304a'};
+function size(){const r=cv.getBoundingClientRect();DPR=Math.min(2,devicePixelRatio||1);W=r.width;H=r.height;cv.width=W*DPR;cv.height=H*DPR;ctx.setTransform(DPR,0,0,DPR,0,0)}
+addEventListener('resize',()=>{size();draw()});
+
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+const seg=(p,a,b)=>clamp((p-a)/(b-a));
+function progress(){const r=track.getBoundingClientRect();return clamp(-r.top/(r.height-innerHeight*0.9))}
+
+// 3D helpers
+function proj(x,y,z,rot,cx,cy,s){const c=Math.cos(rot),si=Math.sin(rot);const X=x*c-z*si,Z=x*si+z*c;const f=4/(4+Z);return[cx+X*s*f,cy-y*s*f,Z]}
+function poly(pts,fill,stroke){ctx.beginPath();pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.closePath();if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.stroke()}}
+
+const nodes=[...Array(46)].map((_,i)=>({x:Math.sin(i*12.9898)*.5+.5,y:Math.sin(i*78.233)*.5+.5,r:1+((i*7)%3)}));
+
+function draw(){
+  const p=reduce?1:progress();
+  if(!W) size();
+  ctx.clearRect(0,0,W,H);
+  const cx=W/2, cyy=H*.48, S=Math.min(W,H);
+  // step state
+  const idx=Math.min(4,Math.floor(p*5+.0001));
+  steps.forEach((li,i)=>li.classList.toggle('on',reduce?true:i===idx));
+  bar.style.width=(p*100)+'%';
+
+  // backdrop network
+  ctx.globalAlpha=.55;
+  nodes.forEach(n=>{ctx.fillStyle=C.line;ctx.beginPath();ctx.arc(n.x*W,n.y*H,n.r,0,7);ctx.fill()});
+  ctx.globalAlpha=1;
+
+  // scene weights
+  const sDom=1-seg(p,.16,.24), sTrip=seg(p,.16,.24)*(1-seg(p,.38,.46)), sRack=seg(p,.38,.46), sLock=seg(p,.58,.66)*(1-seg(p,.78,.84)), sLive=seg(p,.8,.88);
+
+  // 1. domain bar
+  if(sDom>0){ctx.globalAlpha=sDom;
+    const w=Math.min(W*.8,460),h=58,x=cx-w/2,y=cyy-h/2;
+    ctx.fillStyle=C.bg2;ctx.strokeStyle=C.cy;ctx.lineWidth=1.5;ctx.beginPath();ctx.roundRect(x,y,w,h,14);ctx.fill();ctx.stroke();
+    const t=ease(seg(p,0,.14)), n=Math.max(1,Math.round(domainText.length*t));
+    ctx.fillStyle=C.txt;ctx.font='600 22px "IBM Plex Mono",monospace';ctx.textBaseline='middle';
+    const s=domainText.slice(0,n);ctx.fillText(s,x+22,cyy);
+    const tw=ctx.measureText(s).width;if(Math.floor(performance.now()/500)%2||reduce){ctx.fillStyle=C.cy;ctx.fillRect(x+24+tw,cyy-13,2,26)}
+    ctx.fillStyle=C.mut;ctx.font='500 13px "IBM Plex Mono",monospace';ctx.fillText(t>=1?'✓ available':'checking…',x+22,y+h+24);
+    ctx.globalAlpha=1}
+
+  // 2. trip: visitor -> server arc
+  if(sTrip>0){ctx.globalAlpha=sTrip;
+    const a=[W*.16,H*.68],b=[W*.84,H*.34],c=[W*.5,H*.04];
+    ctx.strokeStyle=C.line;ctx.lineWidth=2;ctx.setLineDash([4,6]);ctx.beginPath();ctx.moveTo(...a);ctx.quadraticCurveTo(...c,...b);ctx.stroke();ctx.setLineDash([]);
+    const t=ease(seg(p,.2,.38));
+    for(let k=0;k<6;k++){const tt=clamp(t-k*.035);const q=(1-tt)*(1-tt),r=2*(1-tt)*tt,u=tt*tt;
+      const X=q*a[0]+r*c[0]+u*b[0],Y=q*a[1]+r*c[1]+u*b[1];ctx.fillStyle=k?`rgba(79,168,234,${.5-k*.08})`:C.cy;ctx.beginPath();ctx.arc(X,Y,k?5-k*.6:7,0,7);ctx.fill()}
+    [[a,'VISITOR','Dhaka · Dallas'],[b,'RAISHAHOST','your server']].forEach(([pt,l,s])=>{ctx.fillStyle=C.bg2;ctx.strokeStyle=C.cy;ctx.beginPath();ctx.arc(pt[0],pt[1],16,0,7);ctx.fill();ctx.stroke();
+      ctx.fillStyle=C.txt;ctx.font='600 12px "IBM Plex Mono",monospace';ctx.textAlign='center';ctx.fillText(l,pt[0],pt[1]+34);ctx.fillStyle=C.mut;ctx.fillText(s,pt[0],pt[1]+50);ctx.textAlign='left'});
+    ctx.fillStyle=C.cy;ctx.font='600 15px "IBM Plex Mono",monospace';ctx.textAlign='center';ctx.fillText(Math.round(12+t*26)+' ms',W*.5,H*.86);ctx.textAlign='left';
+    ctx.globalAlpha=1}
+
+  // 3/4/5. rack (3D), lock, live
+  if(sRack>0){
+    const rot=-.7+p*1.1, s=S*.2*(1-sLive*.35), ox=cx-sLive*W*.24, oy=cyy+S*.18;
+    ctx.globalAlpha=sRack*(1-sLive*.25);ctx.lineWidth=1.2;
+    const w=1.1,d=.8,h=2.2;
+    const P=(x,y,z)=>proj(x,y,z,rot,ox,oy,s);
+    // body faces
+    const top=[P(-w/2,h,-d/2),P(w/2,h,-d/2),P(w/2,h,d/2),P(-w/2,h,d/2)];
+    const front=[P(-w/2,0,-d/2),P(w/2,0,-d/2),P(w/2,h,-d/2),P(-w/2,h,-d/2)];
+    const side=[P(w/2,0,-d/2),P(w/2,0,d/2),P(w/2,h,d/2),P(w/2,h,-d/2)];
+    poly(side,'#0b1c2d',C.line);poly(front,C.bg2,C.line);poly(top,'#1b3856',C.line);
+    const labels=['NVMe SSD','Daily backup','Firewall','Your account'];
+    const lit=seg(p,.44,.58);
+    for(let i=0;i<4;i++){const y0=.25+i*.48,y1=y0+.34;const on=lit*4>i+.2;
+      const u=[P(-w/2+.08,y0,-d/2),P(w/2-.08,y0,-d/2),P(w/2-.08,y1,-d/2),P(-w/2+.08,y1,-d/2)];
+      poly(u,on?(i===3?'#1b4f80':'#16416a'):'#11283f',on?C.cy:C.line);
+      const L=P(w/2-.2,(y0+y1)/2,-d/2);ctx.fillStyle=on?C.live:'#35506c';ctx.beginPath();ctx.arc(L[0],L[1],3.2,0,7);ctx.fill();
+      if(on&&sLive<.5){const T=P(w/2+.15,(y0+y1)/2,-d/2);ctx.fillStyle=C.txt;ctx.font='600 12.5px "IBM Plex Mono",monospace';ctx.fillText(labels[i],T[0]+8,T[1]+4)}}
+    ctx.globalAlpha=1;
+
+    // lock
+    if(sLock>0){ctx.globalAlpha=sLock;const lx=ox,ly=oy-h*s-58,k=ease(seg(p,.62,.72));
+      ctx.strokeStyle=C.cy;ctx.lineWidth=5;ctx.beginPath();ctx.arc(lx,ly-10-(1-k)*14,17,Math.PI,0);ctx.stroke();
+      ctx.fillStyle=C.cy;ctx.beginPath();ctx.roundRect(lx-26,ly-10,52,40,8);ctx.fill();
+      ctx.fillStyle='#071a2c';ctx.beginPath();ctx.arc(lx,ly+6,5,0,7);ctx.fill();ctx.fillRect(lx-2,ly+6,4,12);
+      ctx.fillStyle=C.txt;ctx.font='600 13px "IBM Plex Mono",monospace';ctx.textAlign='center';ctx.fillText(k>=1?'https:// · SSL active':'issuing certificate…',lx,ly-44);ctx.textAlign='left';ctx.globalAlpha=1}
+  }
+
+  if(sLive>0){ctx.globalAlpha=sLive;
+    const bw=Math.min(W*.56,420),bh=bw*.66,bx=W*.4+(1-ease(sLive))*40,by=cyy-bh/2;
+    ctx.fillStyle='#f6f8fb';ctx.beginPath();ctx.roundRect(bx,by,bw,bh,12);ctx.fill();
+    ctx.fillStyle='#e1e6ef';ctx.beginPath();ctx.roundRect(bx,by,bw,30,[12,12,0,0]);ctx.fill();
+    ['#ff6b6b','#ffc94d','#22c58b'].forEach((c,i)=>{ctx.fillStyle=c;ctx.beginPath();ctx.arc(bx+16+i*14,by+15,4.5,0,7);ctx.fill()});
+    ctx.fillStyle='#fff';ctx.beginPath();ctx.roundRect(bx+64,by+7,bw-80,16,8);ctx.fill();
+    ctx.fillStyle='#13795b';ctx.font='600 10.5px "IBM Plex Mono",monospace';ctx.fillText('🔒 '+domainText,bx+74,by+19);
+    const g=ease(seg(p,.86,.98));
+    ctx.fillStyle='#3b3a3c';ctx.fillRect(bx+22,by+52,(bw*.55)*g,16);
+    ctx.fillStyle='#c9d2e3';ctx.fillRect(bx+22,by+78,(bw*.7)*g,8);ctx.fillRect(bx+22,by+92,(bw*.62)*g,8);
+    ctx.fillStyle='#1b75bb';ctx.beginPath();ctx.roundRect(bx+22,by+112,90*g,26,7);ctx.fill();
+    for(let i=0;i<3;i++){ctx.fillStyle='#e7ebf3';ctx.beginPath();ctx.roundRect(bx+22+i*((bw-44)/3),by+bh-62,(bw-44)/3-10,44,8);ctx.fill()}
+    ctx.fillStyle=C.live;ctx.beginPath();ctx.arc(bx+bw-18,by+bh+22,6,0,7);ctx.fill();
+    ctx.fillStyle=C.txt;ctx.font='700 14px "IBM Plex Mono",monospace';ctx.textAlign='right';ctx.fillText('LIVE',bx+bw-32,by+bh+27);ctx.textAlign='left';
+    ctx.globalAlpha=1}
+}
+// Animate only while the story is on screen, so phones don't burn battery.
+let raf=0,visible=false;
+function loop(){draw();raf=visible?requestAnimationFrame(loop):0}
+size();
+if(reduce){draw();addEventListener('scroll',draw,{passive:true})}
+else{new IntersectionObserver(([e])=>{visible=e.isIntersecting;if(visible&&!raf)loop()}).observe(track);draw()}
+})();
+</script>
