@@ -1,0 +1,133 @@
+// Single source of truth for RaishaHost plan pricing and specs.
+// Update prices here only; pages should read from this file.
+//
+// Billing periods (confirmed by the business):
+//   - Shared Hosting (cPanel): yearly
+//   - VPS: monthly
+//
+// Policy: never mention the upstream provider, data-center country or our
+// cost price anywhere on the public site.
+
+export type BillingPeriod = 'monthly' | 'yearly'
+
+export interface Price {
+  bdt: number
+  /** USD price, when one is set in WHMCS. */
+  usd?: number
+  /** Pre-discount BDT price shown struck through, if any. */
+  bdtOriginal?: number
+}
+
+export interface Plan {
+  id: string
+  name: string
+  period: BillingPeriod
+  price: Price
+  tagline?: string
+  /** Headline specs shown on cards and in comparison tables. */
+  specs: { label: string; value: string }[]
+  orderUrl: string
+  featured?: boolean
+}
+
+const STORE = 'https://hosting.raishahost.com/store'
+
+export const sharedHostingPlans: Plan[] = [
+  {
+    id: 'shared-economy',
+    name: 'Economy',
+    period: 'yearly',
+    price: { bdt: 3800, bdtOriginal: 4600 },
+    specs: [
+      { label: 'SSD Storage', value: '5 GB' },
+      { label: 'Bandwidth', value: '30 GB/mo' },
+      { label: 'Websites', value: '3' },
+      { label: 'Sub Domains', value: '10' },
+      { label: 'Addon Domains', value: '2' },
+      { label: 'Email Accounts', value: '20' },
+      { label: 'Free SSL', value: 'Yes' },
+      { label: 'Control Panel', value: 'cPanel' },
+    ],
+    orderUrl: `${STORE}/linux-shared-hosting/economy`,
+  },
+  {
+    id: 'shared-standard',
+    name: 'Standard',
+    period: 'yearly',
+    price: { bdt: 6000, bdtOriginal: 8000 },
+    specs: [
+      { label: 'SSD Storage', value: '10 GB' },
+      { label: 'Bandwidth', value: '60 GB/mo' },
+      { label: 'Websites', value: '4' },
+      { label: 'Sub Domains', value: '20' },
+      { label: 'Addon Domains', value: '3' },
+      { label: 'Email Accounts', value: '50' },
+      { label: 'Free SSL', value: 'Yes' },
+      { label: 'Control Panel', value: 'cPanel' },
+    ],
+    orderUrl: `${STORE}/linux-shared-hosting/standard`,
+    featured: true,
+  },
+  {
+    id: 'shared-pro',
+    name: 'Pro',
+    period: 'yearly',
+    price: { bdt: 12000, bdtOriginal: 17000 },
+    specs: [
+      { label: 'SSD Storage', value: '30 GB' },
+      { label: 'Bandwidth', value: '100 GB/mo' },
+      { label: 'Websites', value: '7' },
+      { label: 'Sub Domains', value: '20' },
+      { label: 'Addon Domains', value: '6' },
+      { label: 'Email Accounts', value: '100' },
+      { label: 'Free SSL', value: 'Yes' },
+      { label: 'Control Panel', value: 'cPanel' },
+    ],
+    orderUrl: `${STORE}/linux-shared-hosting/pro`,
+  },
+]
+
+/** Included with every VPS plan. */
+export const vpsCommonFeatures = [
+  '20 TB bandwidth',
+  '1 dedicated IPv4 + IPv6',
+  'Full root access',
+  'Ubuntu / Debian / AlmaLinux',
+  'DDoS protection',
+  '99.9% uptime',
+]
+
+const vpsSpecs = (cpu: number, ram: number, disk: number) => [
+  { label: 'CPU', value: `${cpu} vCPU (ARM64)` },
+  { label: 'RAM', value: `${ram} GB` },
+  { label: 'NVMe SSD', value: `${disk} GB` },
+]
+
+export const vpsPlans: Plan[] = [
+  {
+    id: 'vps-starter',
+    name: 'VPS Starter',
+    period: 'monthly',
+    price: { bdt: 3599, usd: 29.99 },
+    specs: vpsSpecs(2, 4, 40),
+    orderUrl: `${STORE}/vps`,
+  },
+  {
+    id: 'vps-business',
+    name: 'VPS Business',
+    period: 'monthly',
+    price: { bdt: 5599, usd: 46.99 },
+    specs: vpsSpecs(4, 8, 40),
+    orderUrl: `${STORE}/vps`,
+    featured: true,
+  },
+  {
+    id: 'vps-pro',
+    name: 'VPS Pro',
+    period: 'monthly',
+    price: { bdt: 6599, usd: 54.99 },
+    tagline: 'For busy websites, e-commerce & ERP',
+    specs: vpsSpecs(4, 8, 80),
+    orderUrl: `${STORE}/vps`,
+  },
+]
