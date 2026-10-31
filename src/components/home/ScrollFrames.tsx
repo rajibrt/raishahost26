@@ -1,0 +1,165 @@
+'use client'
+
+import { useEffect, useRef, useState } from 'react'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
+
+export interface FrameCaption {
+  /** Scroll progress (0-1) where this caption is shown. */
+  from: number
+  to: number
+  content: React.ReactNode
+  /** Where the caption sits on desktop. */
+  align?: 'left' | 'right' | 'center'
+}
+
+interface Manifest {
+  desktop: { count: number; size: string }
+  mobile: { count: number }
+}
+
+/**
+ * A pinned section that plays a video as you scroll: the video is stored as
+ * WebP frames (see scripts/extract-frames.sh) and drawn onto a canvas, so it
+ * follows the scrollbar exactly, forwards and backwards, on phones too.
+ * If the frames are missing, the captions still show over a plain background.
+ */
+export default function ScrollFrames({
+  name,
+  captions,
+  length = 300,
+  focusX = 0.5,
+  id,
+}: {
+  name: string
+  captions: FrameCaption[]
+  /** Scroll length in viewport heights. */
+  length?: number
+  /** Horizontal focus (0-1) used when cropping the frame on narrow screens. */
+  focusX?: number
+  id?: string
+}) {
+  const wrap = useRef<HTMLElement>(null)
+  const canvas = useRef<HTMLCanvasElement>(null)
+  const [progress, setProgress] = useState(0)
+
+  useEffect(() => {
+    const section = wrap.current
+    const cv = canvas.current
+    if (!section || !cv) return
+    const ctx = cv.getContext('2d')
+    if (!ctx) return
+
+    const mobile = window.innerWidth < 768
+    const dir = mobile ? 'mobile' : 'desktop'
+    const images: (HTMLImageElement | undefined)[] = []
+    let count = 0
+    let current = 0
+    let drawn = -1
+    let raf = 0
+    let alive = true
+
+    const size = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2)
+      cv.width = cv.clientWidth * dpr
+      cv.height = cv.clientHeight * dpr
+      drawn = -1
+    }
+
+    // Draw the nearest loaded frame, cropped to cover the canvas.
+    const draw = () => {
+      raf = 0
+      if (!count) return
+      let i = current
+      while (i > 0 && !images[i]?.complete) i--
+      const img = images[i]
+      if (!img || !img.complete || i === drawn) return
+      drawn = i
+      const cw = cv.width
+      const ch = cv.height
+      const s = Math.max(cw / img.naturalWidth, ch / img.naturalHeight)
+      const w = img.naturalWidth * s
+      const h = img.naturalHeight * s
+      const x = Math.min(0, Math.max(cw - w, cw / 2 - w * focusX))
+      ctx.clearRect(0, 0, cw, ch)
+      ctx.drawImage(img, x, (ch - h) / 2, w, h)
+    }
+    const request = () => {
+      if (!raf) raf = requestAnimationFrame(draw)
+    }
+
+    const load = (i: number) => {
+      if (images[i]) return
+      const img = new Image()
+      img.decoding = 'async'
+      img.src = `/media/${name}/${dir}/${String(i + 1).padStart(4, '0')}.webp`
+      img.onload = () => {
+        if (Math.abs(i - current) < 3 || drawn < 0) {
+          drawn = -1
+          request()
+        }
+      }
+      images[i] = img
+    }
+
+    size()
+    window.addEventListener('resize', size)
+
+    fetch(`/media/${name}/manifest.json`)
+      .then((r) => (r.ok ? (r.json() as Promise<Manifest>) : null))
+      .then((m) => {
+        if (!alive || !m) return
+        count = mobile ? m.mobile.count : m.desktop.count
+        load(0)
+        // Load a coarse pass first so scrubbing works early, then fill the gaps.
+        for (const step of [8, 4, 2, 1]) for (let i = 0; i < count; i += step) load(i)
+      })
+      .catch(() => {})
+
+    const st = ScrollTrigger.create({
+      trigger: section,
+      start: 'top top',
+      end: 'bottom bottom',
+      scrub: true,
+      onUpdate: (self) => {
+        setProgress(self.progress)
+        if (count) {
+          current = Math.min(count - 1, Math.round(self.progress * (count - 1)))
+          request()
+        }
+      },
+    })
+
+    return () => {
+      alive = false
+      st.kill()
+      cancelAnimationFrame(raf)
+      window.removeEventListener('resize', size)
+    }
+  }, [name, focusX])
+
+  return (
+    <section ref={wrap} className='sf' id={id} style={{ height: `${length}vh` }}>
+      <div className='sf-stick'>
+        <canvas ref={canvas} className='sf-canvas' aria-hidden='true' />
+        <div className='sf-shade' aria-hidden='true' />
+        <div className='sf-captions gut'>
+          {captions.map((c, i) => (
+            <div
+              key={i}
+              className={`sf-cap ${c.align ?? 'left'}${progress >= c.from && progress <= c.to ? ' on' : ''}`}
+              aria-hidden={!(progress >= c.from && progress <= c.to)}
+            >
+              {c.content}
+            </div>
+          ))}
+        </div>
+        <div className='sf-bar' aria-hidden='true'>
+          <i style={{ transform: `scaleX(${progress})` }} />
+        </div>
+      </div>
+    </section>
+  )
+}

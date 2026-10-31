@@ -226,6 +226,7 @@ export default function HomeScene() {
     acts.forEach((a) => (prog[a.dataset.act!] = 0))
     const smooth: Record<string, number> = { ...prog }
     const after = document.getElementById('services')
+    const hasHero = acts.some((x) => x.dataset.act === 'hero')
     const measure = () => {
       const vh = window.innerHeight
       acts.forEach((a) => {
@@ -263,7 +264,7 @@ export default function HomeScene() {
       const past = after ? Math.max(0, 1 - after.getBoundingClientRect().top / window.innerHeight) : 0
 
       const wL = 1 - ss(clamp01((h - 0.55) / 0.3))
-      logo.visible = wL > 0.003
+      logo.visible = hasHero && wL > 0.003
       logo.position.set(small ? 1.6 : 4.4, (small ? -5.4 : 0) + (1 - wL) * 3, -(1 - wL) * 6)
       logo.rotation.y = -0.35 + Math.sin(t * 0.4) * 0.3 + mouse.x * 0.6 + (h - 0.5) * 2.4
       logo.rotation.x = mouse.y * 0.3 + Math.sin(t * 0.6) * 0.05
