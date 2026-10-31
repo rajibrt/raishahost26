@@ -38,6 +38,7 @@ export const sharedHostingPlans: Plan[] = [
     name: 'Economy',
     period: 'yearly',
     price: { bdt: 3800, bdtOriginal: 4600 },
+    tagline: 'Blogs, portfolios and small websites',
     specs: [
       { label: 'SSD Storage', value: '5 GB' },
       { label: 'Bandwidth', value: '30 GB/mo' },
@@ -55,6 +56,7 @@ export const sharedHostingPlans: Plan[] = [
     name: 'Standard',
     period: 'yearly',
     price: { bdt: 6000, bdtOriginal: 8000 },
+    tagline: 'Growing businesses with several sites',
     specs: [
       { label: 'SSD Storage', value: '10 GB' },
       { label: 'Bandwidth', value: '60 GB/mo' },
@@ -73,6 +75,7 @@ export const sharedHostingPlans: Plan[] = [
     name: 'Pro',
     period: 'yearly',
     price: { bdt: 12000, bdtOriginal: 17000 },
+    tagline: 'High-traffic and demanding projects',
     specs: [
       { label: 'SSD Storage', value: '30 GB' },
       { label: 'Bandwidth', value: '100 GB/mo' },
@@ -86,6 +89,9 @@ export const sharedHostingPlans: Plan[] = [
     orderUrl: `${STORE}/linux-shared-hosting/pro`,
   },
 ]
+
+/** Included with every cPanel hosting plan. */
+export const sharedCommonFeatures = ['Free SSL', 'cPanel control panel', 'Email accounts', '30-day money-back']
 
 /** Included with every VPS plan. */
 export const vpsCommonFeatures = [
@@ -109,6 +115,7 @@ export const vpsPlans: Plan[] = [
     name: 'VPS Starter',
     period: 'monthly',
     price: { bdt: 3599, usd: 29.99 },
+    tagline: 'Apps, staging servers and small stores',
     specs: vpsSpecs(2, 4, 40),
     orderUrl: `${STORE}/vps`,
   },
@@ -117,6 +124,7 @@ export const vpsPlans: Plan[] = [
     name: 'VPS Business',
     period: 'monthly',
     price: { bdt: 5599, usd: 46.99 },
+    tagline: 'Business apps and busy websites',
     specs: vpsSpecs(4, 8, 40),
     orderUrl: `${STORE}/vps`,
     featured: true,

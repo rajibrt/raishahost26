@@ -1,9 +1,8 @@
 import type { Metadata } from 'next'
-import { Inter, Hind_Siliguri } from 'next/font/google'
+import { Inter, Hind_Siliguri, Manrope, IBM_Plex_Mono } from 'next/font/google'
 import './globals.css'
 import LenisProvider from '@/providers/LenisProvider'
 import MessengerWidget from '@/components/MessengerWidget'
-import CustomCursor from '@/components/CustomCursor'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -14,6 +13,17 @@ const hindSiliguri = Hind_Siliguri({
   subsets: ['bengali'],
   weight: ['400', '500', '600', '700'],
   variable: '--font-hind-siliguri',
+})
+
+const manrope = Manrope({
+  subsets: ['latin'],
+  variable: '--font-manrope',
+})
+
+const plexMono = IBM_Plex_Mono({
+  subsets: ['latin'],
+  weight: ['500', '600'],
+  variable: '--font-plex-mono',
 })
 
 const siteUrl = 'https://raishahost.com'
@@ -101,7 +111,7 @@ export default function RootLayout({
     '@type': 'Organization',
     name: 'RaishaHost',
     url: siteUrl,
-    logo: `${siteUrl}/raisha-host-logo.svg`,
+    logo: `${siteUrl}/brand/raishahost-mark.svg`,
     foundingDate: '2008',
     description:
       'Affordable Linux SSD web hosting and digital services company in Bangladesh',
@@ -134,7 +144,7 @@ export default function RootLayout({
     <html
       lang='en'
       data-scroll-behavior='smooth'
-      className={`${inter.variable} ${hindSiliguri.variable}`}
+      className={`${inter.variable} ${hindSiliguri.variable} ${manrope.variable} ${plexMono.variable}`}
     >
       <head>
         <script
@@ -145,7 +155,6 @@ export default function RootLayout({
       <body className='bg-[#030712] text-gray-100 overflow-x-hidden antialiased'>
         <LenisProvider>{children}</LenisProvider>
         <MessengerWidget />
-        <CustomCursor />
       </body>
     </html>
   )

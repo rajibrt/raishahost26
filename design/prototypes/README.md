@@ -10,3 +10,9 @@ Every design iteration is kept here. Nothing is deleted; new work gets a new ver
 | v4 | `v4-threejs-live.html` | Three.js + GSAP homepage: 3D extruded logo, globe with arcs, server aisle fly-through, SSL lock, horizontal services, plans, policies, steps, work, FAQ. | https://claude.ai/artifact/2rKMxGnMrLzgx9uLPJotRg |
 
 Official logo files: `public/brand/raishahost-logo.svg` (wordmark) and `public/brand/raishahost-mark.svg` (mark).
+
+## In the Next.js app
+
+| Version | Where | What it is |
+|---|---|---|
+| v5 | `src/app/page.tsx`, `src/components/home/`, `src/components/site/`, `src/styles/site.css` | v4 rebuilt as real Next.js pages: homepage with the Three.js scene and GSAP effects, new navigation and footer, plus `/hosting`, `/vps`, `/domains` and `/work`. Prices come from `src/data/plans.ts`. Old section components in `src/components/sections/` are kept, unused by the new homepage. |
