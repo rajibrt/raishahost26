@@ -105,19 +105,73 @@ export default function ScrollFrames({
       if (!raf) raf = requestAnimationFrame(draw)
     }
 
+    // Frames download a few at a time. A video starts with a coarse pass (every 8th frame) so it can be
+    // scrubbed early; the rest waits until the page has finished loading, so the browser's loading
+    // spinner stops quickly. Videos further down only start when you scroll near them, and the frame
+    // you are looking at always jumps the queue. (Requesting every frame of every video at once kept
+    // the page "loading" for minutes and left later sections blank on slower connections.)
+    const PARALLEL = 4
+    const COARSE = 8
+    let queue: number[] = []
+    let inFlight = 0
+    let near = false
+    let started = false
+    const rest: number[] = []
+
     const load = (i: number) => {
-      if (images[i]) return
+      if (images[i] || i < 0 || i >= count) return
       const img = new Image()
       img.decoding = 'async'
-      img.src = `/media/${name}/${dir}/${String(i + 1).padStart(4, '0')}.webp`
+      inFlight++
+      const done = () => {
+        inFlight--
+        pump()
+      }
       img.onload = () => {
         if (Math.abs(i - current) < 3 || drawn < 0) {
           drawn = -1
           request()
         }
+        done()
       }
+      img.onerror = done
+      img.src = `/media/${name}/${dir}/${String(i + 1).padStart(4, '0')}.webp`
       images[i] = img
     }
+    const pump = () => {
+      if (!alive) return
+      while (inFlight < PARALLEL && queue.length) load(queue.shift()!)
+    }
+    const pageLoaded = () => document.readyState === 'complete'
+    const start = () => {
+      if (started || !near || !count) return
+      started = true
+      const coarse: number[] = []
+      for (let i = 0; i < count; i += COARSE) coarse.push(i)
+      for (const step of [4, 2, 1]) for (let i = 0; i < count; i += step) if (i % COARSE) rest.push(i)
+      queue = coarse
+      if (pageLoaded()) queue.push(...rest.splice(0))
+      pump()
+    }
+    const onPageLoad = () => {
+      if (!started) return
+      queue.push(...rest.splice(0))
+      pump()
+    }
+    window.addEventListener('load', onPageLoad)
+
+    // Start this video once it is within about one screen of the viewport.
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          near = true
+          io.disconnect()
+          start()
+        }
+      },
+      { rootMargin: '100% 0px' },
+    )
+    io.observe(section)
 
     size()
     window.addEventListener('resize', size)
@@ -127,9 +181,7 @@ export default function ScrollFrames({
       .then((m) => {
         if (!alive || !m) return
         count = mobile ? m.mobile.count : m.desktop.count
-        load(0)
-        // Load a coarse pass first so scrubbing works early, then fill the gaps.
-        for (const step of [8, 4, 2, 1]) for (let i = 0; i < count; i += step) load(i)
+        start()
       })
       .catch(() => {})
 
@@ -142,6 +194,11 @@ export default function ScrollFrames({
         setProgress(self.progress)
         if (count) {
           current = Math.min(count - 1, Math.round(self.progress * frameEnd * (count - 1)))
+          // The frame on screen goes first if it has not been fetched yet.
+          if (started && !images[current]) {
+            queue = queue.filter((q) => q !== current)
+            load(current)
+          }
           request()
         }
       },
@@ -163,6 +220,8 @@ export default function ScrollFrames({
 
     return () => {
       alive = false
+      io.disconnect()
+      window.removeEventListener('load', onPageLoad)
       st.kill()
       fade?.kill()
       cancelAnimationFrame(raf)
