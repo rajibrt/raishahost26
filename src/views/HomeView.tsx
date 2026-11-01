@@ -8,13 +8,13 @@ import HomeMotion from '@/components/home/HomeMotion'
 import HomeBody from '@/components/home/HomeBody'
 import ScrollFrames, { type FrameCaption } from '@/components/home/ScrollFrames'
 import { sharedHostingPlans, vpsPlans } from '@/data/plans'
-import { alternates, bdt, localPath, usd, type Lang } from '@/i18n'
+import { alternates, bdt, localPath, share, usd, type Lang } from '@/i18n'
 
 const meta = {
   en: {
     title: 'RaishaHost: Web Hosting, VPS & Web Design Since 2008',
     description:
-      'cPanel hosting, VPS servers, domains and custom websites for businesses worldwide, from a team in Bangladesh. Free SSL, 99.9% uptime target, 30-day money-back guarantee.',
+      'cPanel hosting, VPS servers, domains and custom websites for businesses worldwide. Free SSL, 99.9% uptime target and a 30-day money-back guarantee.',
     og: 'cPanel hosting, VPS servers, domains and custom websites. Free SSL, 30-day money-back guarantee, support 24/7.',
   },
   bn: {
@@ -31,7 +31,7 @@ export function homeMetadata(lang: Lang): Metadata {
     title: { absolute: m.title },
     description: m.description,
     alternates: alternates('/', lang),
-    openGraph: { title: m.title, description: m.og, url: alternates('/', lang).canonical, locale: lang === 'bn' ? 'bn_BD' : 'en_US' },
+    ...share(m.title, m.og, alternates('/', lang).canonical, lang, 'home'),
   }
 }
 

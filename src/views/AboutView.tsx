@@ -6,7 +6,7 @@ const t = {
   en: {
     title: 'About Us — RaishaHost Since 2008',
     description:
-      'RaishaHost is a web hosting and digital services company based in Bangladesh, serving clients worldwide since 2008: hosting, VPS servers, domains, websites and design.',
+      'RaishaHost is a Bangladesh-based web hosting and digital services company serving clients worldwide since 2008: hosting, VPS, domains and websites.',
     kicker: 'About us · since 2008',
     h1: <>Hosting with <em className='sky'>people behind it.</em></>,
     lede: 'RaishaHost is a web hosting and digital services company based in Bangladesh. Since 2008 we have hosted, built and looked after websites for businesses around the world.',
@@ -37,7 +37,7 @@ const t = {
   bn: {
     title: 'আমাদের সম্পর্কে — RaishaHost, ২০০৮ থেকে',
     description:
-      'RaishaHost বাংলাদেশভিত্তিক একটি ওয়েব হোস্টিং ও ডিজিটাল সার্ভিস প্রতিষ্ঠান, ২০০৮ সাল থেকে বিশ্বজুড়ে ক্লায়েন্টদের সেবা দিচ্ছে: হোস্টিং, VPS সার্ভার, ডোমেইন, ওয়েবসাইট ও ডিজাইন।',
+      'RaishaHost বাংলাদেশভিত্তিক ওয়েব হোস্টিং ও ডিজিটাল সার্ভিস প্রতিষ্ঠান, ২০০৮ থেকে বিশ্বজুড়ে: হোস্টিং, VPS, ডোমেইন ও ওয়েবসাইট।',
     kicker: 'আমাদের সম্পর্কে · ২০০৮ থেকে',
     h1: <>যে হোস্টিংয়ের পেছনে <em className='sky'>মানুষ আছে।</em></>,
     lede: 'RaishaHost বাংলাদেশভিত্তিক একটি ওয়েব হোস্টিং ও ডিজিটাল সার্ভিস প্রতিষ্ঠান। ২০০৮ সাল থেকে আমরা বিশ্বের বিভিন্ন ব্যবসার ওয়েবসাইট হোস্ট করি, তৈরি করি ও দেখাশোনা করি।',

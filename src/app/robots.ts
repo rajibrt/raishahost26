@@ -6,7 +6,8 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/api/', '/_next/'],
+        // /_next/ must stay crawlable: Google needs the CSS and JavaScript to render pages.
+        disallow: ['/api/', '/preview/'],
       },
     ],
     sitemap: 'https://raishahost.com/sitemap.xml',

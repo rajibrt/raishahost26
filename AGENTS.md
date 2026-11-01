@@ -108,6 +108,14 @@ Before every push: `npm run lint`, `npx tsc --noEmit -p .` and `npm run build` m
 
 Current videos: `server-explode` (hero), `earth-reach` (light lines from Dhaka to the world) and `light-tunnel`.
 
+## 7b. SEO and sharing (check before every release)
+
+- Every page's metadata comes from `pageMeta()` / `share()` in `src/i18n/index.ts`: title (≤ 60–65 characters before " | RaishaHost"), description (70–160 characters), canonical, hreflang (`en`, `bn`, `x-default` → English), Open Graph (`og:type` website or article with published date, `og:locale` + alternate, site name, image with size and alt) and an X `summary_large_image` card.
+- Share images: one per page and language in `public/og/<lang>/<page>.jpg` (1200 × 630), made by `node scripts/make-og.mjs` from frames of the homepage videos. When you add a page or change a page title, add or update its card in that script and run it (needs rsvg-convert, ffmpeg, ImageMagick and the fonts Inter and Noto Sans Bengali UI; rsvg shapes Bangla correctly, Next's image renderer does not).
+- `robots.txt` must not block `/_next/` (Google needs the CSS and JavaScript); it blocks `/api/` and `/preview/`. `/preview/v5` is also `noindex`.
+- `src/app/not-found.tsx` is the branded 404 (noindex). Every URL from the old live sitemap still exists, so no redirects are needed.
+- After a release: in Google Search Console (the site is already verified through the meta tag in `layout.tsx`) submit `https://raishahost.com/sitemap.xml`, request indexing for the homepage, `/hosting`, `/vps` and `/bn`, and watch Page indexing for errors; add the site to Bing Webmaster Tools; test a few links in the Facebook Sharing Debugger.
+
 ## 8. Working rules for agents
 
 - Keep each design iteration: record it in `design/prototypes/README.md` with its version number.

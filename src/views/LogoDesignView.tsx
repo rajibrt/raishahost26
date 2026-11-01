@@ -6,7 +6,7 @@ const t = {
   en: {
     title: 'Logo & Graphic Design Services',
     description:
-      'Custom logo design and graphic design for businesses worldwide: brand identity, social media graphics, print material, UI design, flyers, illustrations and brand style guides.',
+      'Custom logo and graphic design for businesses worldwide: brand identity, social media graphics, print, UI design, flyers and brand style guides.',
     kicker: 'Logo & graphic design',
     h1: <>Your brand, <em className='sky'>clearly designed.</em></>,
     lede: 'From a new logo to a full set of graphics, we create visuals that make your business easy to recognise, online and in print.',
@@ -51,7 +51,7 @@ const t = {
   bn: {
     title: 'লোগো ও গ্রাফিক ডিজাইন সার্ভিস',
     description:
-      'বিশ্বের যেকোনো জায়গার ব্যবসার জন্য কাস্টম লোগো ও গ্রাফিক ডিজাইন: ব্র্যান্ড পরিচিতি, সোশ্যাল মিডিয়া গ্রাফিক্স, প্রিন্টের কাজ, UI ডিজাইন, ফ্লায়ার, ইলাস্ট্রেশন ও ব্র্যান্ড স্টাইল গাইড।',
+      'বিশ্বজুড়ে ব্যবসার জন্য কাস্টম লোগো ও গ্রাফিক ডিজাইন: ব্র্যান্ড পরিচিতি, সোশ্যাল মিডিয়া গ্রাফিক্স, প্রিন্ট, UI ডিজাইন ও স্টাইল গাইড।',
     kicker: 'লোগো ও গ্রাফিক ডিজাইন',
     h1: <>আপনার ব্র্যান্ড, <em className='sky'>স্পষ্ট ডিজাইনে।</em></>,
     lede: 'নতুন লোগো থেকে পুরো গ্রাফিক্স সেট, আমরা এমন ভিজ্যুয়াল বানাই যাতে অনলাইনে ও প্রিন্টে আপনার ব্যবসাকে সহজে চেনা যায়।',

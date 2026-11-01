@@ -66,7 +66,9 @@ export const knowledgeMetadata = (lang: Lang) => pageMeta('/knowledge', lang, t[
 export function articleMetadata(slug: string, lang: Lang) {
   const a = findArticle(slug, lang)
   if (!a) return {}
-  return pageMeta(`/knowledge/${slug}`, lang, { title: `${a.title} | ${t[lang].knowledge}`, description: a.excerpt })
+  // Dates are stored as 'Dec 10, 2023'; Open Graph wants ISO 8601.
+  const published = new Date(`${a.date} 12:00 UTC`).toISOString()
+  return pageMeta(`/knowledge/${slug}`, lang, { title: a.title, description: a.excerpt }, { published, section: a.category })
 }
 
 function PostCard({ a, lang, full = true }: { a: Article; lang: Lang; full?: boolean }) {

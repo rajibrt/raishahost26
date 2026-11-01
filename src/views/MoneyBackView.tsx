@@ -8,7 +8,7 @@ const t = {
   en: {
     title: '30-Day Money-Back Guarantee',
     description:
-      'Not happy with your RaishaHost shared, VPS or reseller hosting? Ask for a refund of the hosting fee within 30 days of sign-up. See what is covered and the conditions.',
+      'Not happy with your RaishaHost shared, VPS or reseller hosting? Ask within 30 days of sign-up for a hosting fee refund. What is covered and the conditions.',
     kicker: 'Refund policy',
     h1: <>30-day <em className='sky'>money-back.</em></>,
     lede: 'Try our hosting without risk. If you are not happy, ask within 30 days of signing up and we refund the hosting fee.',

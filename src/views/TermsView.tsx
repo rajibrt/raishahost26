@@ -7,12 +7,12 @@ const meta = {
   en: {
     title: 'Terms & Conditions',
     description:
-      'RaishaHost terms and conditions: acceptable use, network security, server resources, spam, support, domains, backups, refunds and liability. Please read before using our services.',
+      'RaishaHost terms: acceptable use, network security, server resources, spam, support, domains, backups, refunds and liability. Read before using our services.',
   },
   bn: {
     title: 'শর্তাবলী',
     description:
-      'RaishaHost-এর শর্তাবলী: গ্রহণযোগ্য ব্যবহার, নেটওয়ার্ক নিরাপত্তা, সার্ভার রিসোর্স, স্প্যাম, সাপোর্ট, ডোমেইন, ব্যাকআপ, রিফান্ড ও দায়বদ্ধতা। আমাদের সার্ভিস ব্যবহারের আগে পড়ুন।',
+      'RaishaHost-এর শর্তাবলী: গ্রহণযোগ্য ব্যবহার, নিরাপত্তা, সার্ভার রিসোর্স, স্প্যাম, সাপোর্ট, ডোমেইন, ব্যাকআপ, রিফান্ড ও দায়। ব্যবহারের আগে পড়ুন।',
   },
 }
 

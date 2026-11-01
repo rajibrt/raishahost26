@@ -29,7 +29,8 @@ const plexMono = IBM_Plex_Mono({
 })
 
 const siteUrl = 'https://raishahost.com'
-const ogImage = `${siteUrl}/opengraph-image`
+// Default share image (pages set their own from public/og/, made by scripts/make-og.mjs).
+const ogImage = `${siteUrl}/og/en/home.jpg`
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -86,7 +87,7 @@ export const metadata: Metadata = {
         url: ogImage,
         width: 1200,
         height: 630,
-        alt: 'RaishaHost — Freedom of Host Since 2008',
+        alt: 'RaishaHost — Web Hosting, VPS & Web Design since 2008',
       },
     ],
   },
@@ -140,7 +141,6 @@ export default function RootLayout({
     sameAs: [
       'https://facebook.com/RaishaHost',
       'https://twitter.com/raishahost',
-      'https://youtube.com/c/RaishaHost',
     ],
   }
 

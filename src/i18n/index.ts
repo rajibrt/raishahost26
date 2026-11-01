@@ -136,13 +136,55 @@ export const planWordsBn: Record<string, string> = {
 /** A plans.ts word in the page language (English words pass through). */
 export const planWord = (word: string, lang: Lang) => (lang === 'bn' ? planWordsBn[word] ?? word : word)
 
-/** Metadata for an inner page in one language: title, description, canonical, hreflang and Open Graph. */
-export function pageMeta(path: string, lang: Lang, m: { title: string; description: string }) {
+/** The share-image name for a path (see scripts/make-og.mjs): /hosting -> hosting, /knowledge/x -> x, / -> home. */
+export const ogKey = (path: string) => {
+  const base = basePath(path)
+  if (base === '/') return 'home'
+  return base.startsWith('/knowledge/') ? base.slice('/knowledge/'.length) : base.slice(1)
+}
+
+/** Metadata for a page in one language: title, description, canonical, hreflang, Open Graph and X card. */
+export function pageMeta(
+  path: string,
+  lang: Lang,
+  m: { title: string; description: string },
+  article?: { published: string; section: string },
+) {
   const alt = alternates(path, lang)
   return {
     title: m.title,
     description: m.description,
     alternates: alt,
-    openGraph: { title: `${m.title} | RaishaHost`, description: m.description, url: alt.canonical, locale: lang === 'bn' ? 'bn_BD' : 'en_US' },
+    ...share(`${m.title} | RaishaHost`, m.description, alt.canonical, lang, ogKey(path), article),
+  }
+}
+
+/**
+ * Open Graph + X card. Each page has its own image in public/og/<lang>/<key>.jpg (made by
+ * scripts/make-og.mjs). Pages that set openGraph replace the layout's, so everything is set here.
+ */
+export function share(
+  title: string,
+  description: string,
+  url: string,
+  lang: Lang,
+  key: string,
+  article?: { published: string; section: string },
+) {
+  const image = { url: `/og/${lang}/${key}.jpg`, width: 1200, height: 630, alt: title, type: 'image/jpeg' }
+  const base = {
+    siteName: 'RaishaHost',
+    title,
+    description,
+    url,
+    locale: lang === 'bn' ? 'bn_BD' : 'en_US',
+    alternateLocale: [lang === 'bn' ? 'en_US' : 'bn_BD'],
+    images: [image],
+  }
+  return {
+    openGraph: article
+      ? { ...base, type: 'article' as const, publishedTime: article.published, section: article.section, authors: ['RaishaHost'] }
+      : { ...base, type: 'website' as const },
+    twitter: { card: 'summary_large_image' as const, title, description, images: [image.url] },
   }
 }
