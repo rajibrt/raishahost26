@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import Navbar from '@/components/Navbar'
+import SiteHeader from '@/components/site/SiteHeader'
 import Footer from '@/components/Footer'
 import BlogSection from '@/components/sections/BlogSection'
 
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 export default function KnowledgePage() {
   return (
     <main>
-      <Navbar />
+      <SiteHeader />
       <div className="pt-20">
         <BlogSection />
       </div>

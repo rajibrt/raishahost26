@@ -1,4 +1,4 @@
-import Navbar from '@/components/Navbar'
+import SiteHeader from '@/components/site/SiteHeader'
 import Footer from '@/components/Footer'
 import ScrollReveal from '@/components/ScrollReveal'
 import type { Metadata } from 'next'
@@ -75,7 +75,7 @@ const sections = [
 export default function TermsPage() {
   return (
     <main>
-      <Navbar />
+      <SiteHeader />
 
       <section className="relative pt-36 pb-12 overflow-hidden">
         <div className="absolute inset-0 grid-pattern opacity-20 pointer-events-none" />

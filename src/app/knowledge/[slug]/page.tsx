@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import Navbar from '@/components/Navbar'
+import SiteHeader from '@/components/site/SiteHeader'
 import Footer from '@/components/Footer'
 import ScrollReveal from '@/components/ScrollReveal'
 import { articles, getArticleBySlug, type ContentBlock } from '@/lib/articles'
@@ -80,7 +80,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
 
   return (
     <main>
-      <Navbar />
+      <SiteHeader />
 
       {/* Hero */}
       <section className="relative pt-32 pb-12 overflow-hidden">

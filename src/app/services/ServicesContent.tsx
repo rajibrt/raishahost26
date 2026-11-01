@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Navbar from '@/components/Navbar';
+import SiteHeader from '@/components/site/SiteHeader';
 import Footer from '@/components/Footer';
 import CTASection from '@/components/sections/CTASection';
 import {
@@ -190,7 +190,7 @@ export default function ServicesContent() {
 
   return (
     <main>
-      <Navbar />
+      <SiteHeader />
 
       {/* Hero */}
       <section className="relative pt-36 pb-16 overflow-hidden">

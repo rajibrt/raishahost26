@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import Script from 'next/script';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Navbar from '@/components/Navbar';
+import SiteHeader from '@/components/site/SiteHeader';
 import Footer from '@/components/Footer';
 import { Mail, Phone, Clock, MapPin, Send, CheckCircle } from 'lucide-react';
 
@@ -156,7 +156,7 @@ export default function ContactContent() {
         />
       ) : null}
 
-      <Navbar />
+      <SiteHeader />
 
       {/* Hero */}
       <section className="relative pt-32 pb-20 overflow-hidden">
