@@ -7,6 +7,10 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
+// The page's smooth-scroll instance, for components that need to scroll the page themselves.
+let current: Lenis | null = null;
+export const getLenis = () => current;
+
 export default function LenisProvider({ children }: { children: React.ReactNode }) {
   const lenisRef = useRef<Lenis | null>(null);
 
@@ -22,6 +26,7 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
     });
 
     lenisRef.current = lenis;
+    current = lenis;
 
     lenis.on('scroll', ScrollTrigger.update);
 
@@ -33,6 +38,7 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
 
     return () => {
       lenis.destroy();
+      current = null;
       gsap.ticker.remove((time) => {
         lenis.raf(time * 1000);
       });

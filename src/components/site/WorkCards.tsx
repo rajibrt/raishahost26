@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { getLenis } from '@/providers/LenisProvider'
 import { hostOf, work, workCategories, type WorkCategory, type WorkItem } from '@/data/work'
 import type { Lang } from '@/i18n'
 
@@ -87,22 +89,36 @@ export function WorkGallery({ lang }: { lang: Lang }) {
   const t = text[lang]
   const [cat, setCat] = useState<WorkCategory | 'all'>('all')
   const grid = useRef<HTMLDivElement>(null)
+  const box = useRef<HTMLDivElement>(null)
   // Industries in the order of workCategories, only those with at least one project.
   const cats = (Object.keys(workCategories) as WorkCategory[]).filter((c) => work.some((w) => w.category === c))
   const count = (c: WorkCategory | 'all') => (c === 'all' ? work.length : work.filter((w) => w.category === c).length)
   const shown = cat === 'all' ? work : work.filter((w) => w.category === cat)
 
-  // Cards rise in again whenever the filter changes.
+  // A shorter list can end above the screen: if the visitor has scrolled into the gallery, bring
+  // its top back under the navigation so the new cards are in view.
+  const pick = (c: WorkCategory | 'all') => {
+    setCat(c)
+    const el = box.current
+    if (!el || el.getBoundingClientRect().top > 0) return
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const lenis = getLenis()
+    if (lenis) lenis.scrollTo(el, { offset: -110, immediate: reduce, duration: 0.9 })
+    else window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 110, behavior: reduce ? 'auto' : 'smooth' })
+  }
+
+  // Cards rise in again whenever the filter changes; the page height changed, so re-measure triggers.
   useEffect(() => {
+    ScrollTrigger.refresh()
     if (!grid.current || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     gsap.fromTo(grid.current.children, { y: 18, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.45, stagger: 0.05, ease: 'power2.out' })
   }, [cat])
 
   return (
-    <div className='gallery'>
+    <div className='gallery' ref={box}>
       <div className='filters' role='group' aria-label={t.filter}>
         {(['all', ...cats] as const).map((c) => (
-          <button key={c} type='button' aria-pressed={cat === c} onClick={() => setCat(c)}>
+          <button key={c} type='button' aria-pressed={cat === c} onClick={() => pick(c)}>
             <span>{c === 'all' ? t.all : workCategories[c][lang]}</span>
             <small>{count(c).toLocaleString(lang === 'bn' ? 'bn-BD' : 'en-US')}</small>
           </button>
