@@ -27,13 +27,29 @@ export function BrowserShot({ item, scroll = false, eager = false }: { item: Wor
     return () => cancelAnimationFrame(raf)
   }, [])
   const canScroll = scroll && !missing
+  // The long screenshot is only needed on hover, so fetch it after the page has finished loading
+  // instead of competing with the page's own files on a slow connection.
+  const [bgReady, setBgReady] = useState(false)
+  useEffect(() => {
+    if (!scroll) return
+    let id = 0
+    const go = () => {
+      id = window.setTimeout(() => setBgReady(true), 1500)
+    }
+    if (document.readyState === 'complete') go()
+    else window.addEventListener('load', go, { once: true })
+    return () => {
+      window.removeEventListener('load', go)
+      clearTimeout(id)
+    }
+  }, [scroll])
   return (
     <div className={canScroll ? 'bshot scroll' : 'bshot'}>
       <div className='bar' aria-hidden='true'>
         <i /><i /><i />
         <span>{hostOf(item)}</span>
       </div>
-      <div className='view' style={canScroll ? { backgroundImage: `url(/work/${item.slug}-full.webp)` } : undefined}>
+      <div className='view' style={canScroll && bgReady ? { backgroundImage: `url(/work/${item.slug}-full.webp)` } : undefined}>
         {missing ? (
           <div className='ph'>
             <b>{item.name}</b>
