@@ -4,7 +4,6 @@ import '@/styles/site.css'
 import SiteNav from '@/components/site/SiteNav'
 import SiteFooter from '@/components/site/SiteFooter'
 import DomainSearch from '@/components/site/DomainSearch'
-import HomeSceneLoader from '@/components/home/HomeSceneLoader'
 import HomeMotion from '@/components/home/HomeMotion'
 import HomeBody from '@/components/home/HomeBody'
 import ScrollFrames, { type FrameCaption } from '@/components/home/ScrollFrames'
@@ -98,10 +97,43 @@ const serverCaptions: FrameCaption[] = [
   },
 ]
 
-const tunnelCaptions: FrameCaption[] = [
+// v7: light lines spread from Dhaka across the night side of the Earth (replaces the three.js globe).
+// The last caption ends before the tunnel starts fading in over this scene (0.75 of its 240vh scroll).
+const reachCaptions: FrameCaption[] = [
   {
     from: 0,
-    to: 0.45,
+    to: 0.42,
+    label: 'Reach',
+    content: (
+      <div>
+        <span className='k'>Reach</span>
+        <h2>
+          From Dhaka <em className='sky'>to the world.</em>
+        </h2>
+        <p>We host and build websites for clients in many countries. Your site loads fast for your customers, wherever they are.</p>
+      </div>
+    ),
+  },
+  {
+    from: 0.46,
+    to: 0.72,
+    label: 'Support',
+    content: (
+      <div>
+        <span className='k'>Any time zone</span>
+        <h2>Wherever you are, we&apos;re here.</h2>
+        <p>Support 24/7 through tickets, from a team that has run hosting since 2008.</p>
+      </div>
+    ),
+  },
+]
+
+// Captions sit between the 60vh crossfade in (first 0.23 of its 260vh scroll) and the services
+// panel sliding up over it (last 0.23), so they never overlap another scene.
+const tunnelCaptions: FrameCaption[] = [
+  {
+    from: 0.25,
+    to: 0.48,
     label: 'Speed',
     align: 'center',
     content: (
@@ -112,8 +144,8 @@ const tunnelCaptions: FrameCaption[] = [
     ),
   },
   {
-    from: 0.5,
-    to: 1,
+    from: 0.52,
+    to: 0.76,
     label: 'Security',
     align: 'center',
     content: (
@@ -147,7 +179,6 @@ export default function Home() {
   return (
     <div className='rh'>
       <script type='application/ld+json' dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <HomeSceneLoader />
       <HomeMotion />
       <SiteNav />
 
@@ -165,21 +196,10 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Three.js globe */}
-        <section className='act gut' data-act='globe'>
-          <div className='in'>
-            <div className='copy right glass rv'>
-              <span className='k'>Reach</span>
-              <h2>From Dhaka to the world.</h2>
-              <p>We host and build websites for clients in many countries. Your site loads fast for your customers, wherever they are.</p>
-              <div className='chips'>
-                {['Dhaka', 'Chattogram', 'New York', 'Dallas', 'London', 'Singapore'].map((c) => <span key={c}>{c}</span>)}
-              </div>
-            </div>
-          </div>
-        </section>
+        <ScrollFrames name='earth-reach' captions={reachCaptions} length={340} focusX={0.72} />
 
-        <ScrollFrames name='light-tunnel' captions={tunnelCaptions} length={240} />
+        {/* frameEnd stops before the video's last frames flash to white */}
+        <ScrollFrames name='light-tunnel' captions={tunnelCaptions} length={360} crossfade frameEnd={0.86} />
 
         <HomeBody />
       </main>

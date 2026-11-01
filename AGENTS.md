@@ -56,9 +56,9 @@ The public website of **RaishaHost** (https://raishahost.com): a web hosting com
 
 | Path | What |
 |---|---|
-| `src/app/page.tsx` | Homepage (current version **v6**) |
+| `src/app/page.tsx` | Homepage (current version **v7**) |
 | `src/components/home/ScrollFrames.tsx` | Pinned section that plays a video frame by frame with the scrollbar, with captions per scroll range |
-| `src/components/home/HomeScene.tsx` | Fixed three.js stage (3D logo, globe, server aisle, SSL lock) driven by `[data-act]` sections |
+| `src/components/home/HomeScene.tsx` | Fixed three.js stage (3D logo, globe, server aisle, SSL lock) driven by `[data-act]` sections. Only `/preview/v5` uses it now; the v7 homepage uses scroll videos instead |
 | `src/components/home/HomeBody.tsx` | Homepage sections after the story: services, plans, policies, steps, work, FAQ, CTA |
 | `src/components/home/HomeMotion.tsx` | GSAP reveals, counters, horizontal services, steps rail |
 | `src/components/home/HomeV5.tsx` | Frozen v5 homepage, served at `/preview/v5` |
@@ -90,7 +90,7 @@ Before every push: `npm run lint`, `npx tsc --noEmit -p .` and `npm run build` m
 3. Use `<ScrollFrames name="<name>" captions={[...]} length={300} />`. Captions are `{ from, to, content, align }` with scroll progress 0–1.
 4. Keep frame folders small (desktop ≈1600 px wide, WebP q≈74; mobile 900 px, half the fps). Commit the generated frames so Dokploy can serve them.
 
-Current videos: `server-explode` (hero) and `light-tunnel`.
+Current videos: `server-explode` (hero), `earth-reach` (light lines from Dhaka to the world) and `light-tunnel`.
 
 ## 8. Working rules for agents
 
@@ -105,4 +105,3 @@ Current videos: `server-explode` (hero) and `light-tunnel`.
 - Convert the remaining old pages (policies, about, contact, services, web design, logo design, knowledge) to the new design in English; add `/privacy`.
 - Confirm with the owner: "Renewal prices are shown before you pay" (homepage billing card), payment methods offered (bKash, Nagad, bank, card?), and whether the Messenger widget text should be English.
 - Real case studies (with permission) for `/work`.
-- More scroll videos (e.g. a light line drawn from Dhaka to the US).

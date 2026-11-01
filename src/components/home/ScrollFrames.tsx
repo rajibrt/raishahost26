@@ -17,6 +17,9 @@ export interface FrameCaption {
   align?: 'left' | 'right' | 'center'
 }
 
+/** Scroll distance (in viewport heights) over which a crossfading section fades in. */
+const CROSSFADE_VH = 60
+
 interface Manifest {
   desktop: { count: number; size: string }
   mobile: { count: number }
@@ -33,6 +36,8 @@ export default function ScrollFrames({
   captions,
   length = 300,
   focusX = 0.5,
+  crossfade = false,
+  frameEnd = 1,
   id,
 }: {
   name: string
@@ -41,9 +46,17 @@ export default function ScrollFrames({
   length?: number
   /** Horizontal focus (0-1) used when cropping the frame on narrow screens. */
   focusX?: number
+  /**
+   * Set when this section directly follows another ScrollFrames: it slides up under the
+   * previous one, pins while that one is still pinned, and fades in over its last frames.
+   */
+  crossfade?: boolean
+  /** Share of the video to play (0-1), to leave out a bad ending such as a flash to white. */
+  frameEnd?: number
   id?: string
 }) {
   const wrap = useRef<HTMLElement>(null)
+  const stick = useRef<HTMLDivElement>(null)
   const canvas = useRef<HTMLCanvasElement>(null)
   const [progress, setProgress] = useState(0)
 
@@ -128,23 +141,43 @@ export default function ScrollFrames({
       onUpdate: (self) => {
         setProgress(self.progress)
         if (count) {
-          current = Math.min(count - 1, Math.round(self.progress * (count - 1)))
+          current = Math.min(count - 1, Math.round(self.progress * frameEnd * (count - 1)))
           request()
         }
       },
     })
 
+    // Crossfade: both scenes are pinned during the overlap, so the new one fades in over the old.
+    // Until it is fully shown it lets clicks through to the section underneath.
+    const showStick = (p: number) => gsap.set(stick.current, { opacity: p, pointerEvents: p < 1 ? 'none' : 'auto' })
+    const fade =
+      crossfade && stick.current
+        ? ScrollTrigger.create({
+            trigger: section,
+            start: 'top top',
+            end: () => `+=${(window.innerHeight * CROSSFADE_VH) / 100}`,
+            onUpdate: (self) => showStick(self.progress),
+            onRefresh: (self) => showStick(self.progress),
+          })
+        : null
+
     return () => {
       alive = false
       st.kill()
+      fade?.kill()
       cancelAnimationFrame(raf)
       window.removeEventListener('resize', size)
     }
-  }, [name, focusX])
+  }, [name, focusX, crossfade, frameEnd])
 
   return (
-    <section ref={wrap} className='sf' id={id} style={{ height: `${length}vh` }}>
-      <div className='sf-stick'>
+    <section
+      ref={wrap}
+      className={crossfade ? 'sf xf' : 'sf'}
+      id={id}
+      style={{ height: `${length}vh`, marginTop: crossfade ? `-${100 + CROSSFADE_VH}vh` : undefined }}
+    >
+      <div ref={stick} className='sf-stick'>
         <canvas ref={canvas} className='sf-canvas' aria-hidden='true' />
         <div className='sf-shade' aria-hidden='true' />
         <div className='sf-captions gut'>

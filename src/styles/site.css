@@ -56,13 +56,16 @@
 .rh-nav .logo { display: block; width: 176px; height: auto; flex: none; }
 .rh-nav .menu { display: flex; gap: 2px; list-style: none; margin: 0; padding: 0; }
 .rh-nav .menu > li { position: relative; }
-.rh-nav .menu > li > a, .rh-nav .menu > li > button { display: block; padding: 8px 12px; border-radius: 8px; font: 600 14.5px var(--rh-font); color: #c4d1de; text-decoration: none; background: none; border: 0; cursor: pointer; }
-.rh-nav .menu > li > a:hover, .rh-nav .menu > li:hover > button, .rh-nav .menu > li:focus-within > button, .rh-nav .menu a[aria-current='page'] { color: #fff; background: rgba(255, 255, 255, 0.06); }
-.rh-nav .drop { position: absolute; top: 100%; left: 0; min-width: 240px; background: #0e1c2b; border: 1px solid #22384f; border-radius: 12px; padding: 8px; list-style: none; margin: 6px 0 0; opacity: 0; visibility: hidden; transform: translateY(6px); transition: 0.2s; }
-.rh-nav .menu > li:hover .drop, .rh-nav .menu > li:focus-within .drop { opacity: 1; visibility: visible; transform: none; }
-.rh-nav .drop a { display: block; padding: 9px 12px; border-radius: 8px; text-decoration: none; font-size: 14.5px; color: #fff; }
+.rh-nav .menu > li > a, .rh-nav .menu > li > button { display: flex; align-items: center; gap: 7px; padding: 8px 12px; border-radius: 8px; font: 600 14.5px var(--rh-font); color: #c4d1de; text-decoration: none; background: none; border: 0; cursor: pointer; }
+.rh-nav .menu > li > a:hover, .rh-nav .menu > li.open > button, .rh-nav .menu > li > button:hover, .rh-nav .menu a[aria-current='page'] { color: #fff; background: rgba(255, 255, 255, 0.06); }
+.rh-nav .drop { position: absolute; top: 100%; left: 0; min-width: 260px; background: var(--rh-panel, #0e1c2b); border: 1px solid var(--rh-line, #22384f); border-radius: 12px; padding: 8px; list-style: none; margin: 8px 0 0; visibility: hidden; opacity: 0; box-shadow: 0 24px 48px rgba(0, 0, 0, 0.45); }
+.rh-nav .caret { width: 7px; height: 7px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: translateY(-2px) rotate(45deg); transition: transform 0.3s ease; opacity: 0.7; }
+.rh-nav li.open .caret { transform: translateY(1px) rotate(225deg); }
+.rh-nav .drop a { position: relative; z-index: 1; display: block; padding: 9px 12px; border-radius: 8px; text-decoration: none; font-size: 14.5px; color: #fff; }
+.rh-nav .drop .hl { position: absolute; left: 8px; right: 8px; top: 0; height: 0; border-radius: 8px; background: var(--rh-panel-2, #13263a); box-shadow: inset 2px 0 0 var(--rh-sky, #4fa8ea); visibility: hidden; opacity: 0; pointer-events: none; }
 .rh-nav .drop a small { display: block; color: #93a6ba; font-size: 12.5px; }
-.rh-nav .drop a:hover { background: #13263a; }
+.rh-nav .drop a small { transition: color 0.25s ease; }
+.rh-nav .drop a:hover small, .rh-nav .drop a:focus-visible small { color: var(--rh-text, #b6c4d3); }
 .rh-nav .spacer { flex: 1; }
 .rh-nav .burger { display: none; align-items: center; gap: 10px; background: var(--rh-panel); border: 1px solid var(--rh-line); color: var(--rh-white); border-radius: 10px; padding: 10px 14px; font: 600 13px var(--rh-mono); letter-spacing: 0.06em; cursor: pointer; }
 .rh-nav .burger .bars { display: grid; gap: 5px; width: 18px; }
@@ -276,6 +279,13 @@ html.rh-lock { overflow: hidden; }
 .rh .spec-tag small { font: 600 12px var(--rh-mono); color: var(--rh-sky); letter-spacing: 0.08em; text-transform: uppercase; }
 .rh .spec-tag b { font-size: 26px; font-weight: 800; }
 .rh .spec-list { display: grid; gap: 10px; }
+/* soft top and bottom edges so a video section blends into the plain sections around it */
+.rh .sf-shade::before, .rh .sf-shade::after { content: ''; position: absolute; left: 0; right: 0; height: 22%; pointer-events: none; }
+.rh .sf-shade::before { top: 0; background: linear-gradient(0deg, rgba(8, 18, 29, 0) 0%, var(--rh-bg) 100%); }
+.rh .sf-shade::after { bottom: 0; background: linear-gradient(180deg, rgba(8, 18, 29, 0) 0%, var(--rh-bg) 100%); }
+.rh .sf.xf .sf-shade::before { display: none; }
+/* the first plain section after a video slides up over its last pinned screen, with a soft leading edge */
+.rh .sf + .hs { margin-top: -60vh; z-index: 2; background: linear-gradient(180deg, rgba(8, 18, 29, 0) 0, var(--rh-bg) 30vh); }
 /* chapter rail: vertical on the right edge (desktop), short segments at the bottom (phone) */
 .rh .sf-rail { position: absolute; right: max(20px, calc((100vw - 1180px) / 2)); top: 50%; transform: translateY(-50%); margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
 .rh .sf-rail li { display: flex; align-items: center; justify-content: flex-end; gap: 12px; color: rgba(243, 246, 250, 0.38); transition: color 0.4s ease; }
