@@ -1,5 +1,5 @@
 import SiteHeader from '@/components/site/SiteHeader'
-import Footer from '@/components/Footer'
+import SiteFooterShell from '@/components/site/SiteFooterShell'
 import ScrollReveal from '@/components/ScrollReveal'
 import type { Metadata } from 'next'
 
@@ -119,7 +119,7 @@ export default function TermsPage() {
         </p>
       </section>
 
-      <Footer />
+      <SiteFooterShell />
     </main>
   )
 }

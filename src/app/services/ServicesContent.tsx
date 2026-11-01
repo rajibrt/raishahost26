@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import SiteHeader from '@/components/site/SiteHeader';
-import Footer from '@/components/Footer';
+import SiteFooterShell from '@/components/site/SiteFooterShell';
 import CTASection from '@/components/sections/CTASection';
 import {
   Monitor, Smartphone, Code, Globe, Layers, ArrowRight,
@@ -329,7 +329,7 @@ export default function ServicesContent() {
       </section>
 
       <CTASection />
-      <Footer />
+      <SiteFooterShell />
     </main>
   );
 }

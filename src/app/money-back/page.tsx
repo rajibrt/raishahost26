@@ -1,5 +1,5 @@
 import SiteHeader from '@/components/site/SiteHeader'
-import Footer from '@/components/Footer'
+import SiteFooterShell from '@/components/site/SiteFooterShell'
 import ScrollReveal from '@/components/ScrollReveal'
 import type { Metadata } from 'next'
 import { RefreshCw, CheckCircle, XCircle } from 'lucide-react'
@@ -146,7 +146,7 @@ export default function MoneyBackPage() {
         </ScrollReveal>
       </section>
 
-      <Footer />
+      <SiteFooterShell />
     </main>
   )
 }

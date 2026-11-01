@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import SiteHeader from '@/components/site/SiteHeader';
-import Footer from '@/components/Footer';
+import SiteFooterShell from '@/components/site/SiteFooterShell';
 import CTASection from '@/components/sections/CTASection';
 import { Palette, Brush, Layers, Check, ArrowRight, ImageIcon, Printer, MonitorSmartphone, FileImage, PenTool, Sparkles } from 'lucide-react';
 import Link from 'next/link';
@@ -227,7 +227,7 @@ export default function LogoDesignContent() {
       </section>
 
       <CTASection />
-      <Footer />
+      <SiteFooterShell />
     </main>
   );
 }

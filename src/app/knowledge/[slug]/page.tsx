@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import SiteHeader from '@/components/site/SiteHeader'
-import Footer from '@/components/Footer'
+import SiteFooterShell from '@/components/site/SiteFooterShell'
 import ScrollReveal from '@/components/ScrollReveal'
 import { articles, getArticleBySlug, type ContentBlock } from '@/lib/articles'
 import { ArrowLeft, Calendar, Clock, Tag, BookOpen } from 'lucide-react'
@@ -197,7 +197,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
         </section>
       )}
 
-      <Footer />
+      <SiteFooterShell />
     </main>
   )
 }

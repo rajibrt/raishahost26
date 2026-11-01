@@ -5,7 +5,7 @@ import Script from 'next/script';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import SiteHeader from '@/components/site/SiteHeader';
-import Footer from '@/components/Footer';
+import SiteFooterShell from '@/components/site/SiteFooterShell';
 import { Mail, Phone, Clock, MapPin, Send, CheckCircle } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -333,7 +333,7 @@ export default function ContactContent() {
         </div>
       </section>
 
-      <Footer />
+      <SiteFooterShell />
     </main>
   );
 }

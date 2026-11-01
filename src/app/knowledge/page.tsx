@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import SiteHeader from '@/components/site/SiteHeader'
-import Footer from '@/components/Footer'
+import SiteFooterShell from '@/components/site/SiteFooterShell'
 import BlogSection from '@/components/sections/BlogSection'
 
 export const metadata: Metadata = {
@@ -23,7 +23,7 @@ export default function KnowledgePage() {
       <div className="pt-20">
         <BlogSection />
       </div>
-      <Footer />
+      <SiteFooterShell />
     </main>
   )
 }
