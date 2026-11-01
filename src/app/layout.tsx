@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Inter, Hind_Siliguri, Manrope, IBM_Plex_Mono } from 'next/font/google'
+import { Inter, Noto_Sans_Bengali, Manrope, IBM_Plex_Mono } from 'next/font/google'
 import './globals.css'
 import LenisProvider from '@/providers/LenisProvider'
 import MessengerWidget from '@/components/MessengerWidget'
@@ -9,10 +9,12 @@ const inter = Inter({
   variable: '--font-inter',
 })
 
-const hindSiliguri = Hind_Siliguri({
+// Bangla text (Bangla articles now, the /bn site later). Variable weights 100–900, so bold headings
+// render properly. Not preloaded: English pages never download it.
+const notoBengali = Noto_Sans_Bengali({
   subsets: ['bengali'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-hind-siliguri',
+  variable: '--font-bn',
+  preload: false,
 })
 
 const manrope = Manrope({
@@ -146,7 +148,7 @@ export default function RootLayout({
     <html
       lang='en'
       data-scroll-behavior='smooth'
-      className={`${inter.variable} ${hindSiliguri.variable} ${manrope.variable} ${plexMono.variable}`}
+      className={`${inter.variable} ${notoBengali.variable} ${manrope.variable} ${plexMono.variable}`}
     >
       <head>
         <script

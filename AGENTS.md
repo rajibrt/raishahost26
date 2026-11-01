@@ -32,7 +32,7 @@ The public website of **RaishaHost** (https://raishahost.com): a web hosting com
 
 - **Market:** focus on the **international market**. Say "worldwide" / "clients around the world", not "Bangladesh and the United States" or any short list of countries. It is fine (and builds trust) to say the team is based in Bangladesh.
 - **Easy for Bangladeshi customers too:** plain, simple English (short sentences, everyday words, explain any technical term in a few words), BDT prices next to USD where a USD price exists, and local details such as payment methods and the +880 phone number easy to find. Apply this to every page and every new piece of copy.
-- **Language:** English first, international standard. Bangla may be added later as `/bn`; keep copy in data/components so that is easy.
+- **Language:** the whole site is English first (no Bangla text on English pages). A full Bangla version comes next, at `/bn/...`, with a language switcher; see "Language plan" in section 9.
 - **Billing periods:** cPanel (shared) hosting is billed **yearly**. VPS is billed **monthly**. Every price shown must state its period.
 - **Prices live only in `src/data/plans.ts`.** Never hard-code a price elsewhere; read it from that file.
   - cPanel: Economy ৳3,800/yr, Standard ৳6,000/yr, Pro ৳12,000/yr (BDT only; no USD price set yet).
@@ -50,6 +50,20 @@ The public website of **RaishaHost** (https://raishahost.com): a web hosting com
 - Brand colors: **blue `#1B75BB`**, **charcoal `#3B3A3C`**. On dark backgrounds the charcoal parts become white: use `public/brand/*-on-dark.svg`.
 - The old `public/raisha-host-logo.svg` (cyan/indigo) is **not** the official logo; it is only still used by old pages.
 - Redesign tokens (dark theme) are in `src/styles/site.css` under `.rh`: background `#08121d`, panels `#0e1c2b`, sky accent `#4fa8ea`, fonts Manrope (text) and IBM Plex Mono (labels, numbers).
+- Bangla font: **Noto Sans Bengali** (`--font-bn`, loaded in `src/app/layout.tsx`, not preloaded). It is the font used across the owner's other projects and has weights 100–900, so bold Bangla headings render properly. Use it through `.bn` or `lang='bn'`.
+- Type scale (keep to it on every page):
+
+  | Role | Size | Weight |
+  |---|---|---|
+  | Homepage hero / video caption `h1` | `clamp(42px, 7.4vw, 96px)` | 800 |
+  | Page title (`.phead h1`) | `clamp(40px, 6vw, 72px)` | 800 |
+  | Article title (`.phead.ahead h1`) | `clamp(32px, 4.4vw, 54px)`, max 24ch | 800 |
+  | Section title (`.sec-head h2`) | `clamp(32px, 4.4vw, 54px)` | 800 |
+  | Article / policy `h2` | `clamp(22px, 2.6vw, 30px)` | 800 |
+  | Card title `h3` | 19–21 px | 800 |
+  | Lead text | 18–19 px | 400 |
+  | Body | 16 px (articles 17–18 px, line height 1.75) | 400 |
+  | Label (`.k`) | IBM Plex Mono 12.5 px, uppercase, 0.08em | 600 |
 - Style direction: a "living" site that tells a story as you scroll (owner's reference: YouTube `snErQUyqwCU`, scroll-scrubbed AI video sites). Avoid generic AI-template looks: no custom cursor, no glow on every card, no gradient text everywhere.
 
 ## 5. Where things are
@@ -143,13 +157,18 @@ The single place to see what is done and what is left. Update it in the same com
 ### To do
 
 1. Real case studies for `/work` (needs client permission).
-2. Optional: a `/bn` Bangla version (copy lives in each page file and `src/data/plans.ts`).
 3. Optional: a scroll video or 3D piece for `/vps` (server parts) if the owner wants one; ask before spending Higgsfield credits.
 4. Re-run the responsive audit after any layout change.
 
+### Language plan
+
+1. **English first (done, November 2026).** Every page, the Messenger prompts and the knowledge-base articles are in English. The Bangla originals of the two Bangla articles are kept in `src/lib/articles.bn.ts`.
+2. **Bangla next.** Every route gets a Bangla twin under `/bn` (`/bn`, `/bn/hosting`, `/bn/vps`, …), translated by hand in plain Bangla, using Noto Sans Bengali. Prices and plan data still come from `src/data/plans.ts`; only the words change. Each page sets `lang='bn'`, `alternates.languages` (`en` / `bn`) and its own canonical URL.
+3. **Language switcher.** A professional two-option toggle in the navigation (desktop: a compact segmented `EN | বাংলা` control beside Client Area; mobile drawer: the same control at the top), styled like `.seg`. It opens the same page in the other language and remembers the choice in a cookie. No flags, no auto-redirect by IP.
+
 ### Needs the owner
 
-- Confirm: "Renewal prices are shown before you pay" (homepage billing card), payment methods offered (bKash, Nagad, bank, card?), and whether the Messenger widget text should be English.
+- Confirm: "Renewal prices are shown before you pay" (homepage billing card) and payment methods offered (bKash, Nagad, bank, card?).
 - Are the old testimonials (Jim J., Wayne, M L Shannon) real and may we show them? They are off the site until confirmed.
 - Real case studies (with permission) for `/work`.
 - Review the new `/privacy` text before it goes live.

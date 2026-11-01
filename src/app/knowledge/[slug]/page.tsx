@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const article = getArticleBySlug(slug)
   if (!article) return {}
   return {
-    title: `${article.title} | RaishaHost Knowledge`,
+    title: `${article.title} | Knowledge`,
     description: article.excerpt,
     alternates: { canonical: `https://raishahost.com/knowledge/${slug}` },
   }
@@ -39,68 +39,73 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
   const { slug } = await params
   const article = getArticleBySlug(slug)
   if (!article) notFound()
-  const bn = article.lang !== 'English'
   const related = articles.filter((a) => a.slug !== slug).slice(0, 2)
 
   return (
     <InnerPage
       kicker={<Link href='/knowledge' style={{ textDecoration: 'none' }}>← Knowledge base · {article.category}</Link>}
-      title={<span lang={bn ? 'bn' : 'en'}>{article.title}</span>}
-      lede={<span lang={bn ? 'bn' : 'en'}>{article.excerpt}</span>}
-      headClass={bn ? 'bn' : undefined}
+      title={article.title}
+      lede={article.excerpt}
+      headClass='ahead'
       actions={
         <div className='post'>
           <div className='meta'>
             <span>{article.date}</span>
             <span>{article.readTime} read</span>
-            <span>{bn ? 'Bangla' : 'English'}</span>
           </div>
         </div>
       }
     >
       <DocMotion target='.article' />
       <section className='sec tight gut'>
-        <div className='in'>
-          <article className={bn ? 'article bn' : 'article'} lang={bn ? 'bn' : 'en'}>
+        <div className='in read'>
+          <article className='article'>
             {article.content.map((block, i) => renderBlock(block, i))}
           </article>
+          <aside className='rv'>
+            <div className='card'>
+              <span className='k'>About this article</span>
+              <ul className='specs'>
+                <li><span>Topic</span><b>{article.category}</b></li>
+                <li><span>Published</span><b>{article.date}</b></li>
+                <li><span>Reading time</span><b>{article.readTime}</b></li>
+              </ul>
+            </div>
+            <div className='card'>
+              <h3>Need help with your website?</h3>
+              <p>Hosting, domains or a new site: our team can set it up for you.</p>
+              <Link className='btn btn-pri' href='/contact'>Talk to us</Link>
+              <Link className='btn btn-ghost' href='/hosting'>See hosting plans</Link>
+            </div>
+          </aside>
         </div>
       </section>
 
-      <section className='sec gut'>
-        <div className='in'>
-          <div className='band rv'>
-            <div>
-              <h2>Need help with your website?</h2>
-              <p>Hosting, domains or a new site: our team can set it up for you.</p>
+      {related.length > 0 && (
+        <section className='sec gut'>
+          <div className='in'>
+            <div className='sec-head rv'>
+              <div>
+                <span className='k'>Keep reading</span>
+                <h2>More from the knowledge base.</h2>
+              </div>
             </div>
-            <div className='row'>
-              <Link className='btn btn-pri' href='/contact'>Contact us</Link>
-              <Link className='btn btn-ghost' href='/hosting'>See hosting plans</Link>
+            <div className='cards' data-stagger>
+              {related.map((a) => (
+                <Link key={a.slug} href={`/knowledge/${a.slug}`} className='card post'>
+                  <div className='meta'>
+                    <b>{a.category}</b>
+                    <span>{a.readTime} read</span>
+                  </div>
+                  <h3>{a.title}</h3>
+                  <p>{a.excerpt}</p>
+                  <span className='go'>Read article →</span>
+                </Link>
+              ))}
             </div>
           </div>
-          {related.length > 0 && (
-            <>
-              <span className='k' style={{ display: 'block', marginTop: 56 }}>More articles</span>
-              <div className='cards' style={{ marginTop: 16 }} data-stagger>
-                {related.map((a) => {
-                  const rbn = a.lang !== 'English'
-                  return (
-                    <Link key={a.slug} href={`/knowledge/${a.slug}`} className='card post'>
-                      <div className='meta'>
-                        <b>{a.category}</b>
-                        <span>{a.readTime} read</span>
-                      </div>
-                      <h3 className={rbn ? 'bn' : undefined} lang={rbn ? 'bn' : 'en'}>{a.title}</h3>
-                      <span className='go'>Read article →</span>
-                    </Link>
-                  )
-                })}
-              </div>
-            </>
-          )}
-        </div>
-      </section>
+        </section>
+      )}
     </InnerPage>
   )
 }

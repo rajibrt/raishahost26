@@ -4,9 +4,9 @@ import { useEffect, useRef, useState } from 'react'
 import { ChevronUp } from 'lucide-react'
 
 const MESSAGES = [
-  'যে কোন প্রশ্ন থাকলে আমাকে ক্লিক করুন ➜',
-  'ওয়েবসাইট বানাতে চান? জানান! ➜',
-  'ফ্রি পরামর্শ নিন এখনই ➜',
+  'Any questions? Chat with us ➜',
+  'Need a website? Tell us! ➜',
+  'Get free advice now ➜',
 ]
 
 const MOBILE_URL = 'https://m.me/RaishaHost'
@@ -106,7 +106,7 @@ export default function MessengerWidget() {
                 userSelect: 'none',
               }}
             >
-              <span style={{ fontFamily: "var(--font-hind-siliguri), 'Hind Siliguri', sans-serif" }}>{displayed}</span>
+              <span style={{ fontFamily: "var(--font-manrope), 'Manrope', system-ui, sans-serif" }}>{displayed}</span>
               <span style={{
                 display: 'inline-block',
                 marginLeft: 1,

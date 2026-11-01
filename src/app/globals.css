@@ -2,7 +2,7 @@
 
 /* Bengali font utility */
 .font-bn {
-  font-family: var(--font-hind-siliguri), 'Hind Siliguri', sans-serif;
+  font-family: var(--font-bn), 'Noto Sans Bengali', sans-serif;
 }
 
 :root {
