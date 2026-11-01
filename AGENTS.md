@@ -109,6 +109,7 @@ Before every push: `npm run lint`, `npx tsc --noEmit -p .` and `npm run build` m
 2. Add its URL to `scripts/fetch-media.sh` and run it. It writes `public/media/<name>/desktop/*.webp`, `mobile/*.webp` and `manifest.json`.
 3. Use `<ScrollFrames name="<name>" captions={[...]} length={300} />`. Captions are `{ from, to, content, align }` with scroll progress 0–1.
 4. Keep frame folders small (desktop ≈1600 px wide, WebP q≈74; mobile 900 px, half the fps). Commit the generated frames so Dokploy can serve them.
+5. Browsers cache `/media` for 30 days, `/work` screenshots and `/brand` for 7 days and `/og` for 1 day (`headers()` in `next.config.ts`). File names carry no version, so when you replace a video give it a **new folder name** (e.g. `server-explode-v2`) instead of overwriting frames; a re-shot `/work` screenshot can take up to a week to reach returning visitors.
 
 Current videos: `server-explode` (hero), `earth-reach` (light lines from Dhaka to the world) and `light-tunnel`.
 
