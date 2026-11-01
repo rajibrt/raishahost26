@@ -139,3 +139,60 @@ export const vpsPlans: Plan[] = [
     orderUrl: `${STORE}/vps`,
   },
 ]
+
+/** One-time website packages (web design). Prices in BDT, paid once per project. */
+export interface WebsitePackage {
+  id: string
+  name: string
+  /** Short label for the kind of site. */
+  kind: string
+  price: { bdt: number }
+  features: string[]
+  featured?: boolean
+}
+
+export const websitePackages: WebsitePackage[] = [
+  {
+    id: 'company-basic',
+    name: 'Company Website',
+    kind: 'Basic',
+    price: { bdt: 7500 },
+    features: ['Up to 5 pages', 'Works on phones and computers', 'Contact form', 'Basic SEO setup', 'Social media links', 'Google Analytics', '3 months of support'],
+  },
+  {
+    id: 'company-standard',
+    name: 'Company Website',
+    kind: 'Standard',
+    price: { bdt: 10000 },
+    featured: true,
+    features: ['Up to 10 pages', 'Edit your own content (CMS)', 'Works on phones and computers', 'Contact and quote forms', 'Blog section', 'SEO setup and analytics', 'Social media links', '6 months of support'],
+  },
+  {
+    id: 'news',
+    name: 'News Portal',
+    kind: 'Newspaper',
+    price: { bdt: 7500 },
+    features: ['Breaking news section', 'Category archive', 'Search', 'Comments', 'Social sharing', 'Ad placements', 'Works on phones and computers'],
+  },
+  {
+    id: 'blog',
+    name: 'Blog',
+    kind: 'Blogging',
+    price: { bdt: 7500 },
+    features: ['Post system', 'Categories and tags', 'Comments', 'Author profiles', 'Related posts', 'Search', 'Newsletter sign-up'],
+  },
+  {
+    id: 'education',
+    name: 'Education Website',
+    kind: 'Courses (LMS)',
+    price: { bdt: 10000 },
+    features: ['Course management', 'Student portal', 'Assignment upload', 'Progress tracking', 'Online payment', 'Certificates', 'Admin dashboard'],
+  },
+  {
+    id: 'portfolio',
+    name: 'Portfolio Website',
+    kind: 'Creative',
+    price: { bdt: 7500 },
+    features: ['Portfolio gallery', 'Project showcase', 'Client reviews section', 'Blog section', 'Contact form', 'Animated design', 'Social links'],
+  },
+]
