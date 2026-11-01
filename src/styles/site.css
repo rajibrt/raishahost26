@@ -284,6 +284,7 @@ html.rh-lock { overflow: hidden; }
   .rh .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .rh .steps .rail { display: none; }
   .rh-footer .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .rh-footer .grid > :first-child { grid-column: 1 / -1; }
   .rh .copy.right { margin-left: 0; }
   .rh .act { align-items: flex-end; min-height: 130vh; min-height: 130svh; }
 }
@@ -291,7 +292,8 @@ html.rh-lock { overflow: hidden; }
   .rh-nav .logo { width: 150px; }
   .rh-nav .btn-pri { display: none; }
   .rh .feat { grid-template-columns: 1fr; }
-  .rh-footer .grid { grid-template-columns: 1fr; }
+  .rh-footer .grid { gap: 26px 18px; }
+  .rh-footer { padding-bottom: 110px; } /* last line clear of the floating buttons */
   .rh .hs-track { padding-left: 20px; }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -303,7 +305,7 @@ html.rh-lock { overflow: hidden; }
 .rh .sf-stick { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; background: radial-gradient(ellipse at 65% 50%, #0d2440 0%, #050c14 70%); }
 .rh .sf-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 .rh .sf-shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(5, 12, 20, 0.85) 0%, rgba(5, 12, 20, 0.35) 45%, rgba(5, 12, 20, 0) 70%); pointer-events: none; }
-.rh .sf-captions { position: absolute; inset: 0; display: grid; align-items: center; }
+.rh .sf-captions { position: absolute; inset: 0; display: grid; grid-template-columns: minmax(0, 1fr); align-items: center; }
 .rh .sf-cap { grid-area: 1 / 1; max-width: 1180px; width: 100%; margin: 0 auto; opacity: 0; transform: translateY(24px); transition: opacity 0.5s ease, transform 0.5s ease; pointer-events: none; }
 .rh .sf-cap.on { opacity: 1; transform: none; pointer-events: auto; }
 .rh .sf-cap > div { max-width: 560px; display: flex; flex-direction: column; gap: 16px; }
@@ -338,7 +340,8 @@ html.rh-lock { overflow: hidden; }
 .rh .sf-rail li.on .t { height: 72px; }
 @media (max-width: 767px) {
   .rh .sf-shade { background: linear-gradient(180deg, rgba(5, 12, 20, 0.2) 0%, rgba(5, 12, 20, 0.85) 75%); }
-  .rh .sf-captions { align-items: end; padding-bottom: 72px; }
+  /* captions end above the Messenger and back-to-top buttons (bottom right, about 130px tall) */
+  .rh .sf-captions { align-items: end; padding-bottom: 190px; }
   .rh .sf-cap.right > div { margin-left: 0; }
   .rh .sf-rail { top: auto; bottom: 28px; right: auto; left: max(20px, env(safe-area-inset-left, 0px)); transform: none; flex-direction: row; gap: 6px; }
   .rh .sf-rail li { gap: 0; }
@@ -566,4 +569,11 @@ html.rh-lock { overflow: hidden; }
   .rh .sf-rail li.on .t { height: 36px; }
   .rh .phead { padding-block: 100px 24px; }
   .rh .hs-pin { padding-block: 72px 32px; gap: 20px; }
+}
+
+/* short phones: there is no room to lift captions above the floating buttons, so keep their text
+   out of the buttons' column instead */
+@media (max-width: 767px) and (max-height: 700px) {
+  .rh .sf-captions { padding-bottom: 96px; }
+  .rh .sf-cap p { padding-right: 60px; }
 }
