@@ -7,7 +7,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: base, lastModified: now, changeFrequency: 'weekly', priority: 1 },
+    { url: `${base}/hosting`, lastModified: now, changeFrequency: 'monthly', priority: 0.9 },
+    { url: `${base}/vps`, lastModified: now, changeFrequency: 'monthly', priority: 0.9 },
+    { url: `${base}/domains`, lastModified: now, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${base}/services`, lastModified: now, changeFrequency: 'monthly', priority: 0.9 },
+    { url: `${base}/work`, lastModified: now, changeFrequency: 'monthly', priority: 0.6 },
     { url: `${base}/logo-design`, lastModified: now, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${base}/contact`, lastModified: now, changeFrequency: 'yearly', priority: 0.8 },
     { url: `${base}/knowledge`, lastModified: now, changeFrequency: 'weekly', priority: 0.7 },
@@ -15,6 +19,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/guarantees`, lastModified: now, changeFrequency: 'yearly', priority: 0.5 },
     { url: `${base}/money-back`, lastModified: now, changeFrequency: 'yearly', priority: 0.5 },
     { url: `${base}/terms-conditions`, lastModified: now, changeFrequency: 'yearly', priority: 0.4 },
+    { url: `${base}/privacy`, lastModified: now, changeFrequency: 'yearly', priority: 0.4 },
   ]
 
   const articleRoutes: MetadataRoute.Sitemap = articles.map((a) => ({

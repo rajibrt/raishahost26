@@ -1,125 +1,169 @@
-import SiteHeader from '@/components/site/SiteHeader'
-import SiteFooterShell from '@/components/site/SiteFooterShell'
-import ScrollReveal from '@/components/ScrollReveal'
 import type { Metadata } from 'next'
+import Link from 'next/link'
+import InnerPage from '@/components/site/InnerPage'
+import PolicyDoc from '@/components/site/PolicyDoc'
 
 export const metadata: Metadata = {
   title: 'Terms & Conditions',
   description:
-    'RaishaHost Terms and Conditions — acceptable use policy, network security, spam policy, domain policy, satisfaction guarantee, and more. Please read before using our services.',
+    'RaishaHost terms and conditions: acceptable use, network security, server resources, spam, support, domains, backups, refunds and liability. Please read before using our services.',
   alternates: { canonical: 'https://raishahost.com/terms-conditions' },
   openGraph: {
     title: 'Terms & Conditions | RaishaHost',
-    description:
-      'RaishaHost usage policies including acceptable use, network security, spam policy, domain terms, and satisfaction guarantee.',
+    description: 'The rules for using RaishaHost services: acceptable use, security, spam, domains, backups, refunds and more.',
     url: 'https://raishahost.com/terms-conditions',
   },
 }
 
-const sections = [
-  {
-    title: 'User-Supplied Content',
-    content: `All services may be used for lawful purposes only. You must not submit, publish, or display on the Network any defamatory, inaccurate, abusive, obscene, infringing, or threatening content. You may not submit content that violates any law. You are solely responsible for the content you make accessible through RaishaHost's Network.\n\nRaishaHost is not obligated to monitor the network, but if made aware of unacceptable content, RaishaHost has the right to edit, remove or deny access to such content. RaishaHost may disclose content or records as required to satisfy any law, regulation, or court order.`,
-    list: [
-      'Pirated Software (Warez) — Any copyrighted software not freely available for distribution.',
-      'Copyright Violations — Violations can result in civil and criminal liability.',
-      'Hacking/Phreaking — Sites promoting hacking, viruses, anarchy, or willful harm to Internet sites.',
-    ],
-  },
-  {
-    title: 'Network Security',
-    content: `Customers may not attempt to circumvent user authentication or security of any host, network, or account. This includes accessing data not intended for the customer, logging into unauthorized servers, password cracking, or probing other networks for weakness.\n\nRaishaHost will cooperate fully with law enforcement in investigations of suspected criminal violations. Users who violate system or network security may incur criminal or civil liability.`,
-  },
-  {
-    title: 'Server Resources',
-    content: `Any account that uses an unfair amount of server resources (CPU time, memory usage, network resources) will be given the option to either upgrade their service level or reduce resource usage to an acceptable level.`,
-  },
-  {
-    title: 'Commercial Advertising / Spam',
-    content: `You must not use the RaishaHost Network in connection with the transmission of spam, flames, mail bombs, or substantially similar unsolicited email messages. If you are found to have spammed, RaishaHost reserves the right to disable your domain/terminate your account without warning. RaishaHost may impose a penalty for each spam policy violation.`,
-  },
-  {
-    title: 'Technical Support',
-    content: `RaishaHost provides technical support to all its clients. However, we do not provide support for programming, HTML code, custom programming, or 3rd Party Software not installed by RaishaHost.`,
-  },
-  {
-    title: 'Domain Name Policy',
-    content: `Discounts or free promotions for domain registrations/renewals are extended during your hosting period only. Once your hosting account is canceled or expires, if you choose to change domain registrars or hosting providers, the difference between the amount paid for your domain and the actual full cost is due before we will release the domain.`,
-  },
-  {
-    title: 'Refusal of Service',
-    content: `RaishaHost reserves the right at its sole discretion to refuse or cancel service. Violation of any RaishaHost Rules and Regulations could result in a warning, suspension, or account termination. Accounts terminated due to policy violations will not be refunded.`,
-  },
-  {
-    title: 'Backups',
-    content: `Backups are not included as part of any service. It is the customer's sole responsibility to make backups and save them off the server. The availability of server backups is not guaranteed and we are not responsible for the loss of customer data.`,
-  },
-  {
-    title: 'Satisfaction Guarantee',
-    content: `RaishaHost offers a money-back guarantee on web hosting services for the first 30 days of service. If you are not completely satisfied within the first 30 days, you will receive a full refund of the hosting amount, excluding setup fees, domain registration fees, and overages.`,
-  },
-  {
-    title: 'Customer Abuse Policy',
-    content: `We have zero-tolerance for abusive language or behavior towards our company, services, or employees. Any customer deemed abusive at our sole discretion will result in immediate irrevocable account termination without any refund.`,
-  },
-  {
-    title: 'Limitation of Liability',
-    content: `RaishaHost shall not be responsible for any loss-of-profit, indirect, incidental, special, or consequential damages arising out of the use of the service. The maximum liability of RaishaHost shall not exceed the actual price paid by the customer for thirty (30) days of service.`,
-  },
-  {
-    title: 'Confidentiality',
-    content: `All personal information submitted to us, including credit card information, will be kept strictly confidential and used solely by RaishaHost for the purposes for which it was intended. We agree not to share or release such information to any third party without the consent of the subscriber, except as required by law.`,
-  },
-]
-
 export default function TermsPage() {
   return (
-    <main>
-      <SiteHeader />
-
-      <section className="relative pt-36 pb-12 overflow-hidden">
-        <div className="absolute inset-0 grid-pattern opacity-20 pointer-events-none" />
-        <ScrollReveal className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center" y={60} start="top 90%">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#6366f1]/10 border border-[#6366f1]/20 text-sm text-[#6366f1] font-medium mb-6">
-            Legal
-          </div>
-          <h1 className="text-5xl font-black text-white mb-4">Terms & Conditions</h1>
-          <p className="text-gray-400">
-            At RaishaHost, we value our customers and wish to provide them with a positive experience.
-            Please read these policies carefully before using our services.
-          </p>
-        </ScrollReveal>
-      </section>
-
-      <section className="py-12 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="space-y-8">
-          {sections.map((sec, i) => (
-            <ScrollReveal key={sec.title} delay={0} y={40}>
-              <div className="glass-card rounded-2xl p-8 border border-white/6">
-                <h2 className="text-xl font-bold text-white mb-4 pb-3 border-b border-white/7">{sec.title}</h2>
-                <div className="text-gray-400 text-sm leading-relaxed whitespace-pre-line mb-3">{sec.content}</div>
-                {sec.list && (
-                  <ul className="space-y-2 mt-4">
-                    {sec.list.map((item) => (
-                      <li key={item} className="flex items-start gap-2.5 text-sm text-gray-400">
-                        <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#6366f1] shrink-0" />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-            </ScrollReveal>
-          ))}
-        </div>
-
-        <p className="text-gray-600 text-xs text-center mt-10">
-          RaishaHost reserves the right to amend or update these policies without notice.
-          Failure to follow any terms may result in account deactivation or termination.
-        </p>
-      </section>
-
-      <SiteFooterShell />
-    </main>
+    <InnerPage
+      kicker='Legal'
+      title={<>Terms &amp; <em className='sky'>conditions.</em></>}
+      lede='The rules for using RaishaHost services. By ordering or using a service you agree to these terms.'
+    >
+      <PolicyDoc
+        sections={[
+          {
+            id: 'content',
+            title: 'Your content',
+            content: (
+              <>
+                <p>
+                  Use our services for lawful purposes only. Do not publish content that is defamatory, abusive, obscene, threatening,
+                  infringes someone else&apos;s rights or breaks any law. You are responsible for everything you make available through our
+                  network.
+                </p>
+                <p>
+                  We do not have to monitor the network, but if we learn about content that breaks these rules we may edit, remove or block
+                  it. We may share content or records when the law, a regulator or a court requires it.
+                </p>
+                <p>These are never allowed:</p>
+                <ul>
+                  <li>Pirated software (warez): copyrighted software that is not free to distribute.</li>
+                  <li>Copyright violations, which can lead to civil and criminal liability.</li>
+                  <li>Sites that promote hacking, viruses or deliberate harm to other websites.</li>
+                </ul>
+              </>
+            ),
+          },
+          {
+            id: 'security',
+            title: 'Network security',
+            content: (
+              <>
+                <p>
+                  Do not try to get around the security of any host, network or account. This includes accessing data that is not yours,
+                  logging in to servers without permission, cracking passwords or probing other networks for weaknesses.
+                </p>
+                <p>We cooperate fully with law enforcement. Breaking system or network security can lead to criminal or civil liability.</p>
+              </>
+            ),
+          },
+          {
+            id: 'resources',
+            title: 'Server resources',
+            content: (
+              <p>
+                If an account uses an unfair share of server resources (CPU, memory or network), we will ask you to either upgrade your plan
+                or reduce the usage.
+              </p>
+            ),
+          },
+          {
+            id: 'spam',
+            title: 'Spam',
+            content: (
+              <p>
+                Do not use our network to send spam, mail bombs or similar unwanted email. If you spam, we may disable your domain or close
+                your account without warning, and we may charge a penalty for each violation.
+              </p>
+            ),
+          },
+          {
+            id: 'support',
+            title: 'Technical support',
+            content: (
+              <p>
+                We provide technical support for our services to every client. We do not support programming, HTML code, custom code or
+                third-party software that we did not install.
+              </p>
+            ),
+          },
+          {
+            id: 'domains',
+            title: 'Domain names',
+            content: (
+              <p>
+                Discounts or free domain registrations and renewals apply only while your hosting is active. If your hosting is cancelled or
+                expires and you move the domain to another registrar or host, you must first pay the difference between what you paid and
+                the full price of the domain.
+              </p>
+            ),
+          },
+          {
+            id: 'refusal',
+            title: 'Refusing service',
+            content: (
+              <p>
+                We may refuse or cancel service at our own discretion. Breaking these rules can lead to a warning, suspension or account
+                closure. Accounts closed for breaking the rules are not refunded.
+              </p>
+            ),
+          },
+          {
+            id: 'backups',
+            title: 'Backups',
+            content: (
+              <p>
+                Backups are not part of any service. Keeping your own backups, stored away from our servers, is your responsibility. We do
+                not guarantee that server backups exist and are not responsible for lost data.
+              </p>
+            ),
+          },
+          {
+            id: 'refunds',
+            title: 'Refunds',
+            content: (
+              <p>
+                Shared, VPS and reseller hosting come with a 30-day money-back guarantee on the hosting fee. Domains, setup fees, payment
+                fees, add-ons and design or development work are not refunded. See the full{' '}
+                <Link href='/money-back'>money-back policy</Link>.
+              </p>
+            ),
+          },
+          {
+            id: 'abuse',
+            title: 'Respectful behaviour',
+            content: (
+              <p>
+                We do not accept abusive language or behaviour towards our company or our staff. Accounts we judge to be abusive may be closed
+                immediately, without a refund.
+              </p>
+            ),
+          },
+          {
+            id: 'liability',
+            title: 'Limitation of liability',
+            content: (
+              <p>
+                RaishaHost is not responsible for lost profit or for indirect, incidental, special or consequential damages from using the
+                service. Our total liability is limited to the amount you paid for 30 days of the service.
+              </p>
+            ),
+          },
+          {
+            id: 'privacy',
+            title: 'Privacy',
+            content: (
+              <p>
+                We keep the personal information you give us confidential and use it only to provide our services. We do not share it with
+                third parties without your consent, unless the law requires it. Read our <Link href='/privacy'>privacy policy</Link>.
+              </p>
+            ),
+          },
+        ]}
+      />
+    </InnerPage>
   )
 }

@@ -66,6 +66,7 @@ export const footerColumns: { title: string; links: { label: string; href: strin
       { label: 'Money-Back Guarantee', href: '/money-back' },
       { label: 'Our Guarantees', href: '/guarantees' },
       { label: 'Terms & Conditions', href: '/terms-conditions' },
+      { label: 'Privacy Policy', href: '/privacy' },
     ],
   },
 ]

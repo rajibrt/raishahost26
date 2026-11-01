@@ -63,9 +63,9 @@ The public website of **RaishaHost** (https://raishahost.com): a web hosting com
 | `src/components/home/HomeMotion.tsx` | GSAP reveals, counters, horizontal services, steps rail |
 | `src/components/home/HomeV5.tsx` | Frozen v5 homepage, served at `/preview/v5` |
 | `src/components/site/` | New nav (`SiteNav`), footer, links (`links.ts`), plan cards (`PlanTabs`), domain search, inner page shell |
-| `src/app/hosting`, `vps`, `domains`, `work` | New redesign pages |
-| `src/app/about`, `contact`, `services`, `web-design`, `logo-design`, `knowledge`, `money-back`, `guarantees`, `terms-conditions` | Old-design pages, still to be converted |
-| `src/components/sections/`, `Navbar.tsx`, `Footer.tsx` | Old design, used by old pages. Keep until every page is converted |
+| `src/app/hosting`, `vps`, `domains`, `work`, `services`, `about`, `contact`, `logo-design`, `knowledge`, `money-back`, `guarantees`, `terms-conditions`, `privacy` | Redesign pages, all built on `InnerPage` |
+| `src/components/site/PageMotion.tsx`, `DocMotion.tsx`, `PolicyDoc.tsx` | Scroll motion for inner pages, reading progress and contents list, policy document layout |
+| `src/components/sections/`, `Navbar.tsx`, `Footer.tsx`, `*Content.tsx` in old routes | Old design, no longer used. Keep until the owner agrees to remove |
 | `src/data/plans.ts` | All plan prices and specs |
 | `design/prototypes/` | Every design version (v1–v6) with a README. **Never delete a version; add the next number** |
 | `scripts/fetch-media.sh`, `scripts/extract-frames.sh` | Download the Higgsfield videos and turn them into WebP frames in `public/media/<name>/` |
@@ -98,10 +98,59 @@ Current videos: `server-explode` (hero), `earth-reach` (light lines from Dhaka t
 - Don't delete old pages, components or prototypes unless the owner asks.
 - Scope new CSS under `.rh` so old pages are not affected.
 - Respect `prefers-reduced-motion`, keep pages usable on a 390 px phone with no horizontal scroll, and make content readable even if WebGL or the frames fail to load.
+- Every page must work on any screen: small phones (280–360 px wide, including foldable cover screens), tall modern phones (19.5:9–21:9), phones held sideways (short screens, about 390 px tall), tablets, laptops and ultrawide monitors (2560 px+). See "Responsive targets" below.
 - Commit with clear messages. Ask before anything outward-facing: merging, deploying, changing Dokploy/WHMCS, spending Higgsfield credits, posting comments.
 
-## 9. Open items
+### Building a page in the redesign
 
-- Convert the remaining old pages (policies, about, contact, services, web design, logo design, knowledge) to the new design in English; add `/privacy`.
-- Confirm with the owner: "Renewal prices are shown before you pay" (homepage billing card), payment methods offered (bKash, Nagad, bank, card?), and whether the Messenger widget text should be English.
+- Use `InnerPage` (navigation, page header, footer, page-entry motion) and the shared `.rh` classes in `src/styles/site.css`. Do not use Tailwind classes, `lucide` colour icons, gradient text or glow cards on redesigned pages.
+- Motion: `PageMotion` (loaded by `InnerPage`) reveals `.rv` elements and the children of `[data-stagger]` as they scroll in, runs `[data-count]` counters and draws `[data-draw]` lines. `src/app/template.tsx` plays the entrance when a page opens. Pick motion that explains the content (a timeline that draws, a list that builds up); do not animate everything.
+- Three.js is only worth it where a 3D object carries meaning; it costs load time on phones. The v7 homepage uses scroll videos instead. Inner pages use GSAP.
+
+### Responsive targets (audit these before you push)
+
+| Size | What it stands for |
+|---|---|
+| 280 × 653 | Foldable cover screen, smallest phone |
+| 320 × 568, 360 × 800 | Small Android / older iPhone |
+| 375 × 667, 390 × 844, 412 × 915, 430 × 932 | Common phones, tall 19.5:9–20:9 |
+| 844 × 390, 932 × 430 | Phones held sideways (short screens) |
+| 600 × 960, 768 × 1024, 820 × 1180 | Foldable open, tablets |
+| 1024 × 768, 1280 × 800, 1440 × 900 | Small laptops |
+| 1920 × 1080, 2560 × 1080 | Desktop and ultrawide |
+
+Check: no horizontal scroll, nothing hidden under the fixed navigation, text readable (no text under 12 px), buttons at least 44 px tall on touch screens.
+
+## 9. Status and plan
+
+The single place to see what is done and what is left. Update it in the same commit as the work.
+
+### Done
+
+- Homepage v7: three scroll videos (server, Earth reach, light tunnel) with a chapter rail, crossfades between videos and a soft handoff to the services section; no three.js on the homepage.
+- Every route is in the new design (v8): `/`, `/hosting`, `/vps`, `/domains`, `/work`, `/services`, `/about`, `/contact`, `/logo-design`, `/knowledge`, `/knowledge/[slug]`, `/money-back`, `/guarantees`, `/terms-conditions` and the new `/privacy`. `/web-design` and `/web-design/packages` redirect to `/services`.
+- Shared blocks in `src/styles/site.css` (cards, split, checks/crosses, timeline, policy document with sticky contents, forms, contact cards, band, article) and motion components: `PageMotion` (scroll reveals, staggers, counters, drawn lines), `DocMotion` (reading-progress bar and active contents link), `PolicyDoc`.
+- Per-page motion: services (staggered cards, steps rail that draws), about (counters, a timeline that draws), contact (staggered contact cards, form thank-you), logo design (checklist, steps rail), knowledge (staggered articles, reading progress on articles), policies (contents list that follows the section you read, reading progress).
+- Copy is plain English and follows section 3: no testimonials or client counts, "99.9% uptime target", money-back conditions written out, website package prices moved to `websitePackages` in `src/data/plans.ts`.
+- Same header (`SiteNav`) and footer (`SiteFooter`) on every page; mobile GSAP drawer; desktop GSAP dropdowns; page-entry motion (`src/app/template.tsx`).
+- Responsive audit (November 2026): all 15 routes at all 18 sizes in "Responsive targets" have no sideways scroll, nothing cut off and no text under 12 px. Short screens (phones held sideways) get smaller homepage captions and a compact chapter rail.
+- Sitemap lists every route, including `/hosting`, `/vps`, `/domains`, `/work` and `/privacy`; the footer links to `/privacy`.
+
+### Kept but no longer used
+
+- `src/app/services/ServicesContent.tsx`, `src/app/logo-design/LogoDesignContent.tsx`, `src/app/contact/ContactContent.tsx`, `src/components/Navbar.tsx`, `src/components/Footer.tsx`, `src/components/sections/*`, `src/components/ScrollReveal.tsx`, `src/components/ui/BorderGlow.tsx`: old design, kept until the owner agrees to remove them.
+
+### To do
+
+1. Real case studies for `/work` (needs client permission).
+2. Optional: a `/bn` Bangla version (copy lives in each page file and `src/data/plans.ts`).
+3. Optional: a scroll video or 3D piece for `/vps` (server parts) if the owner wants one; ask before spending Higgsfield credits.
+4. Re-run the responsive audit after any layout change.
+
+### Needs the owner
+
+- Confirm: "Renewal prices are shown before you pay" (homepage billing card), payment methods offered (bKash, Nagad, bank, card?), and whether the Messenger widget text should be English.
+- Are the old testimonials (Jim J., Wayne, M L Shannon) real and may we show them? They are off the site until confirmed.
 - Real case studies (with permission) for `/work`.
+- Review the new `/privacy` text before it goes live.
+- Business hours and the second phone number (+880 1711-380679) shown on the old contact page: still correct?
