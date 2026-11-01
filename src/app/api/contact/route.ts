@@ -1,3 +1,4 @@
+import { contactNoticeEmail, contactReceiptEmail } from '@/lib/contactEmails';
 import { NextRequest, NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 
@@ -487,121 +488,33 @@ export async function POST(req: NextRequest) {
       to: process.env.CONTACT_RECEIVER_EMAIL || process.env.GMAIL_USER,
       replyTo: email,
       subject: `[Contact Form] ${subject}`,
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0f; color: #e2e8f0; padding: 32px; border-radius: 12px; border: 1px solid #1e293b;">
-          <div style="text-align: center; margin-bottom: 32px;">
-            <h1 style="color: #05CCF7; font-size: 24px; margin: 0;">New Contact Message</h1>
-            <p style="color: #64748b; margin: 8px 0 0;">via raishahost.com contact form</p>
-          </div>
-          <table style="width: 100%; border-collapse: collapse;">
-            <tr>
-              <td style="padding: 12px 0; border-bottom: 1px solid #1e293b; color: #64748b; width: 100px;">Name</td>
-              <td style="padding: 12px 0; border-bottom: 1px solid #1e293b; color: #f1f5f9; font-weight: bold;">${safeName}</td>
-            </tr>
-            <tr>
-              <td style="padding: 12px 0; border-bottom: 1px solid #1e293b; color: #64748b;">Email</td>
-              <td style="padding: 12px 0; border-bottom: 1px solid #1e293b;">
-                <a href="mailto:${safeEmail}" style="color: #05CCF7; text-decoration: none;">${safeEmail}</a>
-              </td>
-            </tr>
-            <tr>
-              <td style="padding: 12px 0; border-bottom: 1px solid #1e293b; color: #64748b;">Subject</td>
-              <td style="padding: 12px 0; border-bottom: 1px solid #1e293b; color: #f1f5f9;">${safeSubject}</td>
-            </tr>
-          </table>
-          <div style="margin-top: 24px;">
-            <p style="color: #64748b; margin-bottom: 12px;">Message:</p>
-            <div style="background: #0f172a; border: 1px solid #1e293b; border-radius: 8px; padding: 16px; color: #f1f5f9; line-height: 1.7; white-space: pre-wrap;">${safeMessage}</div>
-          </div>
-          <div style="margin-top: 24px;">
-            <p style="color: #64748b; margin-bottom: 12px;">Sender metadata:</p>
-            <table style="width: 100%; border-collapse: collapse;">
-              <tr>
-                <td style="padding: 10px 0; border-bottom: 1px solid #1e293b; color: #64748b; width: 170px;">IP Address</td>
-                <td style="padding: 10px 0; border-bottom: 1px solid #1e293b; color: #f1f5f9;">${safeIpAddress}</td>
-              </tr>
-              <tr>
-                <td style="padding: 10px 0; border-bottom: 1px solid #1e293b; color: #64748b;">IP Location</td>
-                <td style="padding: 10px 0; border-bottom: 1px solid #1e293b; color: #f1f5f9;">${safeIpLocation}</td>
-              </tr>
-              <tr>
-                <td style="padding: 10px 0; border-bottom: 1px solid #1e293b; color: #64748b;">ISP / Network</td>
-                <td style="padding: 10px 0; border-bottom: 1px solid #1e293b; color: #f1f5f9;">${safeIsp}</td>
-              </tr>
-              <tr>
-                <td style="padding: 10px 0; border-bottom: 1px solid #1e293b; color: #64748b;">Device</td>
-                <td style="padding: 10px 0; border-bottom: 1px solid #1e293b; color: #f1f5f9;">${safeDeviceType} / ${safeBrowser} / ${safeOperatingSystem}</td>
-              </tr>
-              <tr>
-                <td style="padding: 10px 0; border-bottom: 1px solid #1e293b; color: #64748b;">Language</td>
-                <td style="padding: 10px 0; border-bottom: 1px solid #1e293b; color: #f1f5f9;">${safeLanguage}</td>
-              </tr>
-              <tr>
-                <td style="padding: 10px 0; border-bottom: 1px solid #1e293b; color: #64748b;">Origin</td>
-                <td style="padding: 10px 0; border-bottom: 1px solid #1e293b; color: #f1f5f9;">${safeOrigin}</td>
-              </tr>
-              <tr>
-                <td style="padding: 10px 0; border-bottom: 1px solid #1e293b; color: #64748b;">Referer</td>
-                <td style="padding: 10px 0; border-bottom: 1px solid #1e293b; color: #f1f5f9;">${safeReferer}</td>
-              </tr>
-              <tr>
-                <td style="padding: 10px 0; border-bottom: 1px solid #1e293b; color: #64748b;">Forwarded For</td>
-                <td style="padding: 10px 0; border-bottom: 1px solid #1e293b; color: #f1f5f9;">${safeForwardedFor}</td>
-              </tr>
-              <tr>
-                <td style="padding: 10px 0; border-bottom: 1px solid #1e293b; color: #64748b;">Same IP submissions</td>
-                <td style="padding: 10px 0; border-bottom: 1px solid #1e293b; color: #f1f5f9;">${clientMetadata.ipSubmissionCount} (${safeSubmissionWindowLabel})</td>
-              </tr>
-              <tr>
-                <td style="padding: 10px 0; border-bottom: 1px solid #1e293b; color: #64748b;">Same email submissions</td>
-                <td style="padding: 10px 0; border-bottom: 1px solid #1e293b; color: #f1f5f9;">${clientMetadata.emailSubmissionCount} (${safeSubmissionWindowLabel})</td>
-              </tr>
-              <tr>
-                <td style="padding: 10px 0; border-bottom: 1px solid #1e293b; color: #64748b;">Submitted at</td>
-                <td style="padding: 10px 0; border-bottom: 1px solid #1e293b; color: #f1f5f9;">${safeSubmissionTime}</td>
-              </tr>
-              <tr>
-                <td style="padding: 10px 0; color: #64748b;">User Agent</td>
-                <td style="padding: 10px 0; color: #f1f5f9; word-break: break-word;">${safeUserAgent}</td>
-              </tr>
-            </table>
-          </div>
-          <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #1e293b; text-align: center;">
-            <a href="mailto:${safeEmail}" style="display: inline-block; background: linear-gradient(to right, #05CCF7, #0284c7); color: white; padding: 12px 28px; border-radius: 8px; text-decoration: none; font-weight: bold;">Reply to ${safeName}</a>
-          </div>
-        </div>
-      `,
+      html: contactNoticeEmail({
+        name: safeName,
+        email: safeEmail,
+        subject: safeSubject,
+        message: safeMessage,
+        metadata: [
+          ['IP address', safeIpAddress],
+          ['Location', safeIpLocation],
+          ['ISP / network', safeIsp],
+          ['Device', `${safeDeviceType} / ${safeBrowser} / ${safeOperatingSystem}`],
+          ['Language', safeLanguage],
+          ['Origin', safeOrigin],
+          ['Referer', safeReferer],
+          ['Forwarded for', safeForwardedFor],
+          ['Same IP', `${clientMetadata.ipSubmissionCount} (${safeSubmissionWindowLabel})`],
+          ['Same email', `${clientMetadata.emailSubmissionCount} (${safeSubmissionWindowLabel})`],
+          ['Submitted at', safeSubmissionTime],
+          ['User agent', safeUserAgent],
+        ],
+      }),
     });
 
     await transporter.sendMail({
       from: `"RaishaHost" <${process.env.GMAIL_USER}>`,
       to: email,
       subject: 'We received your message — RaishaHost',
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0f; color: #e2e8f0; padding: 32px; border-radius: 12px; border: 1px solid #1e293b;">
-          <div style="text-align: center; margin-bottom: 32px;">
-            <h1 style="color: #05CCF7; font-size: 26px; margin: 0;">RaishaHost</h1>
-            <p style="color: #64748b; margin: 4px 0 0; font-size: 13px;">Your trusted hosting partner</p>
-          </div>
-          <h2 style="color: #f1f5f9; font-size: 20px; margin-bottom: 12px;">Hi ${safeName}, we got your message!</h2>
-          <p style="color: #94a3b8; line-height: 1.7; margin-bottom: 20px;">
-            Thank you for reaching out to us. We have received your inquiry and our team will get back to you within <strong style="color: #05CCF7;">2–4 hours</strong> during business hours (10am – 8pm).
-          </p>
-          <div style="background: #0f172a; border: 1px solid #1e293b; border-radius: 8px; padding: 16px; margin-bottom: 24px;">
-            <p style="color: #64748b; font-size: 12px; margin: 0 0 8px;">Your message:</p>
-            <p style="color: #f1f5f9; margin: 0; font-style: italic; line-height: 1.6;">"${safeMessage}"</p>
-          </div>
-          <p style="color: #94a3b8; line-height: 1.7;">
-            If you need urgent support, please call us at <a href="tel:+8801711380679" style="color: #05CCF7; text-decoration: none;">+880 1711 380 679</a>.
-          </p>
-          <div style="margin-top: 32px; padding-top: 20px; border-top: 1px solid #1e293b; text-align: center;">
-            <p style="color: #475569; font-size: 12px; margin: 0;">
-              © 2025 RaishaHost · Bangladesh<br>
-              <a href="https://www.raishahost.com" style="color: #05CCF7; text-decoration: none;">www.raishahost.com</a>
-            </p>
-          </div>
-        </div>
-      `,
+      html: contactReceiptEmail({ name: safeName, message: safeMessage }),
     });
 
     return NextResponse.json({ success: true });
