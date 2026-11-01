@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import InnerPage from '@/components/site/InnerPage'
-import { websitePackages } from '@/data/plans'
+import { carePlans, webTiers, websiteAddOns, websitePackages, type WebTier } from '@/data/plans'
 import { bdt, localPath, pageMeta, type Lang } from '@/i18n'
 
 const t = {
@@ -25,12 +25,26 @@ const t = {
     ],
     goLogo: 'See logo & design →',
     goQuote: 'Ask for a quote →',
-    pkgK: 'Website packages · one-time price',
-    pkgH: 'Ready-made packages.',
-    pkgP: 'Pick a starting point. Hosting and domain are separate, and we can add anything a package does not cover.',
-    recommended: 'Recommended',
+    pkgK: 'Website prices · one-time',
+    pkgH: 'Clear price ranges.',
+    pkgP: 'Every project is different, so each kind of site has a range. We confirm the exact price in a written quote before work starts.',
+    recommended: 'Popular choice',
     oneTime: 'one-time',
-    start: 'Start this package',
+    from: 'from',
+    quoteBtn: 'Get a quote',
+    careK: 'Care plans · monthly',
+    careH: 'We look after your site.',
+    careP: 'A team that keeps your website updated, backed up and secure, and makes small changes for you every month.',
+    perMonth: '/month',
+    careYearly: 'Pay yearly and get 2 months free.',
+    addK: 'Add-ons · one-time',
+    addH: 'Extras, at fixed prices.',
+    termsK: 'How payment works',
+    terms: [
+      'Payment: 50% in advance, 30% after you approve the design, 20% before launch. Custom-code projects are paid by milestone.',
+      'Up to 2 rounds of design changes are included.',
+      'Domain, hosting, paid plugins and third-party fees are not included.',
+    ],
     pkgFine: 'Prices are in Bangladeshi taka (BDT). Ask us for a quote in US dollars.',
     stepsK: 'How it works',
     stepsH: 'From idea to launch in four steps.',
@@ -65,12 +79,26 @@ const t = {
     ],
     goLogo: 'লোগো ও ডিজাইন দেখুন →',
     goQuote: 'কোটেশন চান →',
-    pkgK: 'ওয়েবসাইট প্যাকেজ · এককালীন দাম',
-    pkgH: 'তৈরি প্যাকেজ।',
-    pkgP: 'একটি দিয়ে শুরু করুন। হোস্টিং ও ডোমেইন আলাদা, আর প্যাকেজে না থাকা যেকোনো কিছু আমরা যোগ করে দিতে পারি।',
-    recommended: 'প্রস্তাবিত',
+    pkgK: 'ওয়েবসাইটের দাম · এককালীন',
+    pkgH: 'পরিষ্কার দামের সীমা।',
+    pkgP: 'প্রতিটি প্রজেক্ট আলাদা, তাই প্রতি ধরনের সাইটের একটি দামের সীমা আছে। কাজ শুরুর আগেই লিখিত কোটেশনে সঠিক দাম জানিয়ে দিই।',
+    recommended: 'জনপ্রিয়',
     oneTime: 'এককালীন',
-    start: 'এই প্যাকেজ শুরু করুন',
+    from: 'থেকে শুরু',
+    quoteBtn: 'কোটেশন নিন',
+    careK: 'কেয়ার প্ল্যান · মাসিক',
+    careH: 'আপনার সাইটের দেখাশোনা আমরা করি।',
+    careP: 'একটি টিম আপনার ওয়েবসাইট আপডেট, ব্যাকআপ ও নিরাপদ রাখে, আর প্রতি মাসে ছোট পরিবর্তনগুলো করে দেয়।',
+    perMonth: '/মাস',
+    careYearly: 'বছরে একবার দিলে ২ মাস ফ্রি।',
+    addK: 'অ্যাড-অন · এককালীন',
+    addH: 'বাড়তি কাজ, নির্দিষ্ট দামে।',
+    termsK: 'পেমেন্ট যেভাবে',
+    terms: [
+      'পেমেন্ট: ৫০% অগ্রিম, ডিজাইন অনুমোদনের পর ৩০%, লঞ্চের আগে ২০%। কাস্টম কোডের প্রজেক্টে ধাপে ধাপে পেমেন্ট।',
+      'ডিজাইনে ২ বার পর্যন্ত পরিবর্তন অন্তর্ভুক্ত।',
+      'ডোমেইন, হোস্টিং, পেইড প্লাগইন ও তৃতীয় পক্ষের ফি আলাদা।',
+    ],
     pkgFine: 'দাম বাংলাদেশি টাকায় (BDT)। ডলারে কোটেশনের জন্য আমাদের জানান।',
     stepsK: 'যেভাবে কাজ করে',
     stepsH: 'আইডিয়া থেকে লঞ্চ, চার ধাপে।',
@@ -135,26 +163,92 @@ export default function ServicesView({ lang }: { lang: Lang }) {
               <p>{c.pkgP}</p>
             </div>
           </div>
-          <div className='cards' data-stagger>
-            {websitePackages.map((p) => {
-              const w = lang === 'bn' ? p.bn : p
-              return (
-                <article key={p.id} className={p.featured ? 'plan pop' : 'plan'}>
-                  <div className='top'>
-                    <h3>{w.name}</h3>
-                    <span className='pill'>{p.featured ? c.recommended : w.kind}</span>
-                  </div>
-                  <div className='price'>
-                    <b>{bdt(p.price.bdt)}</b>
-                    <span>{c.oneTime}</span>
-                  </div>
-                  <ul className='checks'>{w.features.map((f) => <li key={f}>{f}</li>)}</ul>
-                  <Link className={p.featured ? 'btn btn-pri' : 'btn btn-ghost'} href={L('/contact')}>{c.start}</Link>
-                </article>
-              )
-            })}
-          </div>
+          {(Object.keys(webTiers) as WebTier[]).map((tier) => (
+            <div className='tier' key={tier}>
+              <div className='tier-head rv'>
+                <h3>{webTiers[tier][lang].name}</h3>
+                <p>{webTiers[tier][lang].line}</p>
+              </div>
+              <div className='cards' data-stagger>
+                {websitePackages
+                  .filter((p) => p.tier === tier)
+                  .map((p) => {
+                    const w = lang === 'bn' ? p.bn : p
+                    return (
+                      <article key={p.id} className={p.featured ? 'plan pop' : 'plan'}>
+                        <div className='top'>
+                          <h3>{w.name}</h3>
+                          {p.featured && <span className='pill'>{c.recommended}</span>}
+                        </div>
+                        <div className='price range'>
+                          {p.price.bdtMax ? (
+                            <b>{bdt(p.price.bdtMin)} – {bdt(p.price.bdtMax)}</b>
+                          ) : (
+                            <b>{bdt(p.price.bdtMin)}<small> {c.from}</small></b>
+                          )}
+                          <span>{c.oneTime}</span>
+                        </div>
+                        <p className='tag'>{w.priceNote}</p>
+                        <Link className={p.featured ? 'btn btn-pri' : 'btn btn-ghost'} href={L('/contact')}>{c.quoteBtn}</Link>
+                      </article>
+                    )
+                  })}
+              </div>
+            </div>
+          ))}
+          <ul className='note rv terms'>
+            <li><b>{c.termsK}</b></li>
+            {c.terms.map((x) => <li key={x}>{x}</li>)}
+          </ul>
           <p className='fine'>{c.pkgFine}</p>
+        </div>
+      </section>
+
+      <section className='sec gut' id='care'>
+        <div className='in'>
+          <div className='sec-head rv'>
+            <div>
+              <span className='k'>{c.careK}</span>
+              <h2>{c.careH}</h2>
+              <p>{c.careP}</p>
+            </div>
+          </div>
+          <div className='plans' data-stagger>
+            {carePlans.map((p) => (
+              <article key={p.id} className={p.featured ? 'plan pop' : 'plan'}>
+                <div className='top'>
+                  <h3>{lang === 'bn' ? p.bn.name : p.name}</h3>
+                  {p.featured && <span className='pill'>{c.recommended}</span>}
+                </div>
+                <div className='price'>
+                  <b>{bdt(p.bdt)}</b>
+                  <span>{c.perMonth}</span>
+                </div>
+                <ul className='checks'>{(lang === 'bn' ? p.bn.items : p.en).map((x) => <li key={x}>{x}</li>)}</ul>
+                <Link className={p.featured ? 'btn btn-pri' : 'btn btn-ghost'} href={L('/contact')}>{c.quoteBtn}</Link>
+              </article>
+            ))}
+          </div>
+          <p className='fine'>{c.careYearly}</p>
+
+          <div className='sec-head rv' style={{ marginTop: 72 }}>
+            <div>
+              <span className='k'>{c.addK}</span>
+              <h2>{c.addH}</h2>
+            </div>
+          </div>
+          <ul className='addons' data-stagger>
+            {websiteAddOns.map((a) => (
+              <li key={a.id}>
+                <span>{lang === 'bn' ? a.bn : a.en}</span>
+                <b>
+                  {bdt(a.bdt)}
+                  {a.from && ` ${c.from}`}
+                  {a.per && <small> {lang === 'bn' ? a.per.bn : a.per.en}</small>}
+                </b>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 

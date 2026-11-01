@@ -34,8 +34,8 @@ export function alternates(path: string, lang: Lang) {
   }
 }
 
-/** Taka with Western digits, as on invoices: ৳3,800. */
-export const bdt = (n: number) => '৳' + n.toLocaleString('en-US')
+/** Taka with Western digits and lakh grouping, as on Bangladeshi invoices: ৳3,800, ৳1,50,000. */
+export const bdt = (n: number) => '৳' + n.toLocaleString('en-IN')
 export const usd = (n: number) => '$' + n.toFixed(2)
 
 /** Words shared by every page: navigation, buttons, footer, plan cards, forms. */

@@ -148,67 +148,67 @@ export const vpsPlans: Plan[] = [
   },
 ]
 
-/** One-time website packages (web design). Prices in BDT, paid once per project. */
+// ---------------------------------------------------------------------------
+// Website projects (owner-approved structure, November 2026; the Messenger bot quotes the same numbers,
+// so tell the bot's session when you change any of them). Prices are RANGES in BDT, paid once per
+// project; no USD prices and no delivery times are set yet. Care plans and add-ons are fixed.
+
+export type WebTier = 'wordpress' | 'woocommerce' | 'custom'
+
+export const webTiers: Record<WebTier, { en: { name: string; line: string }; bn: { name: string; line: string } }> = {
+  wordpress: {
+    en: { name: 'WordPress websites', line: 'Built on WordPress, so you can edit pages and posts yourself.' },
+    bn: { name: 'WordPress ওয়েবসাইট', line: 'WordPress-এ তৈরি, তাই পেজ ও পোস্ট নিজেই বদলাতে পারবেন।' },
+  },
+  woocommerce: {
+    en: { name: 'Online shops (WooCommerce)', line: 'A WordPress shop with products, cart, online payment and orders.' },
+    bn: { name: 'অনলাইন শপ (WooCommerce)', line: 'পণ্য, কার্ট, অনলাইন পেমেন্ট ও অর্ডারসহ WordPress শপ।' },
+  },
+  custom: {
+    en: { name: 'Custom code (Next.js / React)', line: 'Custom code is built from scratch, with no ready-made theme: faster, more secure, and any feature can be added.' },
+    bn: { name: 'কাস্টম কোড (Next.js / React)', line: 'কোনো তৈরি থিম ছাড়া একদম শুরু থেকে বানানো: আরও দ্রুত, আরও নিরাপদ, আর যেকোনো ফিচার যোগ করা যায়।' },
+  },
+}
+
 export interface WebsitePackage {
   id: string
+  tier: WebTier
   name: string
-  /** Short label for the kind of site. */
-  kind: string
-  price: { bdt: number }
-  features: string[]
+  /** One-time price range. No `bdtMax` means "from". */
+  price: { bdtMin: number; bdtMax?: number }
+  /** What moves the price within the range. */
+  priceNote: string
   featured?: boolean
-  /** Bangla words for the /bn site. */
-  bn: { name: string; kind: string; features: string[] }
+  bn: { name: string; priceNote: string }
 }
 
 export const websitePackages: WebsitePackage[] = [
-  {
-    id: 'company-basic',
-    name: 'Company Website',
-    kind: 'Basic',
-    price: { bdt: 7500 },
-    features: ['Up to 5 pages', 'Works on phones and computers', 'Contact form', 'Basic SEO setup', 'Social media links', 'Google Analytics', '3 months of support'],
-    bn: { name: 'কোম্পানি ওয়েবসাইট', kind: 'বেসিক', features: ['৫টি পর্যন্ত পেজ', 'ফোন ও কম্পিউটারে সুন্দর দেখায়', 'যোগাযোগ ফর্ম', 'প্রাথমিক SEO সেটআপ', 'সোশ্যাল মিডিয়া লিংক', 'Google Analytics', '৩ মাস সাপোর্ট'] },
-  },
-  {
-    id: 'company-standard',
-    name: 'Company Website',
-    kind: 'Standard',
-    price: { bdt: 10000 },
-    featured: true,
-    features: ['Up to 10 pages', 'Edit your own content (CMS)', 'Works on phones and computers', 'Contact and quote forms', 'Blog section', 'SEO setup and analytics', 'Social media links', '6 months of support'],
-    bn: { name: 'কোম্পানি ওয়েবসাইট', kind: 'স্ট্যান্ডার্ড', features: ['১০টি পর্যন্ত পেজ', 'নিজেই লেখা বদলাতে পারবেন (CMS)', 'ফোন ও কম্পিউটারে সুন্দর দেখায়', 'যোগাযোগ ও কোটেশন ফর্ম', 'ব্লগ সেকশন', 'SEO সেটআপ ও অ্যানালিটিক্স', 'সোশ্যাল মিডিয়া লিংক', '৬ মাস সাপোর্ট'] },
-  },
-  {
-    id: 'news',
-    name: 'News Portal',
-    kind: 'Newspaper',
-    price: { bdt: 7500 },
-    features: ['Breaking news section', 'Category archive', 'Search', 'Comments', 'Social sharing', 'Ad placements', 'Works on phones and computers'],
-    bn: { name: 'নিউজ পোর্টাল', kind: 'সংবাদপত্র', features: ['ব্রেকিং নিউজ সেকশন', 'ক্যাটাগরি আর্কাইভ', 'সার্চ', 'মন্তব্য', 'সোশ্যাল শেয়ার', 'বিজ্ঞাপনের জায়গা', 'ফোন ও কম্পিউটারে সুন্দর দেখায়'] },
-  },
-  {
-    id: 'blog',
-    name: 'Blog',
-    kind: 'Blogging',
-    price: { bdt: 7500 },
-    features: ['Post system', 'Categories and tags', 'Comments', 'Author profiles', 'Related posts', 'Search', 'Newsletter sign-up'],
-    bn: { name: 'ব্লগ', kind: 'ব্লগিং', features: ['পোস্ট সিস্টেম', 'ক্যাটাগরি ও ট্যাগ', 'মন্তব্য', 'লেখকের প্রোফাইল', 'সম্পর্কিত পোস্ট', 'সার্চ', 'নিউজলেটার সাইন-আপ'] },
-  },
-  {
-    id: 'education',
-    name: 'Education Website',
-    kind: 'Courses (LMS)',
-    price: { bdt: 10000 },
-    features: ['Course management', 'Student portal', 'Assignment upload', 'Progress tracking', 'Online payment', 'Certificates', 'Admin dashboard'],
-    bn: { name: 'শিক্ষা ওয়েবসাইট', kind: 'কোর্স (LMS)', features: ['কোর্স ম্যানেজমেন্ট', 'শিক্ষার্থী পোর্টাল', 'অ্যাসাইনমেন্ট আপলোড', 'অগ্রগতি দেখা', 'অনলাইন পেমেন্ট', 'সার্টিফিকেট', 'অ্যাডমিন ড্যাশবোর্ড'] },
-  },
-  {
-    id: 'portfolio',
-    name: 'Portfolio Website',
-    kind: 'Creative',
-    price: { bdt: 7500 },
-    features: ['Portfolio gallery', 'Project showcase', 'Client reviews section', 'Blog section', 'Contact form', 'Animated design', 'Social links'],
-    bn: { name: 'পোর্টফোলিও ওয়েবসাইট', kind: 'ক্রিয়েটিভ', features: ['পোর্টফোলিও গ্যালারি', 'প্রজেক্ট শোকেস', 'ক্লায়েন্ট রিভিউ সেকশন', 'ব্লগ সেকশন', 'যোগাযোগ ফর্ম', 'অ্যানিমেটেড ডিজাইন', 'সোশ্যাল লিংক'] },
-  },
+  { id: 'wp-landing', tier: 'wordpress', name: 'Landing Page', price: { bdtMin: 18000, bdtMax: 30000 }, priceNote: 'Depends on the number of sections, animation and copywriting.', bn: { name: 'ল্যান্ডিং পেজ', priceNote: 'সেকশনের সংখ্যা, অ্যানিমেশন ও লেখার কাজের ওপর নির্ভর করে।' } },
+  { id: 'wp-business', tier: 'wordpress', name: 'Business Website', price: { bdtMin: 35000, bdtMax: 55000 }, priceNote: 'Depends on the pages (up to 10) and how custom the design is.', featured: true, bn: { name: 'বিজনেস ওয়েবসাইট', priceNote: 'পেজের সংখ্যা (১০টি পর্যন্ত) আর ডিজাইন কতটা কাস্টম তার ওপর নির্ভর করে।' } },
+  { id: 'wp-business-pro', tier: 'wordpress', name: 'Business Pro', price: { bdtMin: 60000, bdtMax: 100000 }, priceNote: 'Bangla + English, booking or quote forms, and integrations.', bn: { name: 'বিজনেস প্রো', priceNote: 'বাংলা + ইংরেজি, বুকিং বা কোটেশন ফর্ম, আর অন্য সিস্টেমের সাথে সংযোগ।' } },
+  { id: 'wp-news', tier: 'wordpress', name: 'News Portal', price: { bdtMin: 45000, bdtMax: 80000 }, priceNote: 'Depends on categories, the ad system and expected traffic.', bn: { name: 'নিউজ পোর্টাল', priceNote: 'ক্যাটাগরি, বিজ্ঞাপন ব্যবস্থা ও ভিজিটরের সংখ্যার ওপর নির্ভর করে।' } },
+  { id: 'wp-lms', tier: 'wordpress', name: 'Education / LMS', price: { bdtMin: 70000, bdtMax: 150000 }, priceNote: 'Depends on the course system, payments and certificates.', bn: { name: 'শিক্ষা / LMS', priceNote: 'কোর্স সিস্টেম, পেমেন্ট ও সার্টিফিকেটের ওপর নির্ভর করে।' } },
+  { id: 'woo-starter', tier: 'woocommerce', name: 'Shop Starter', price: { bdtMin: 60000, bdtMax: 100000 }, priceNote: 'Up to 100 products; payment gateways such as bKash or SSLCommerz.', featured: true, bn: { name: 'শপ স্টার্টার', priceNote: '১০০টি পর্যন্ত পণ্য; bKash বা SSLCommerz-এর মতো পেমেন্ট গেটওয়ে।' } },
+  { id: 'woo-pro', tier: 'woocommerce', name: 'Shop Pro', price: { bdtMin: 120000, bdtMax: 250000 }, priceNote: 'Courier API, product variations, Facebook catalogue and Pixel, stock.', bn: { name: 'শপ প্রো', priceNote: 'কুরিয়ার API, পণ্যের ভ্যারিয়েশন, ফেসবুক ক্যাটালগ ও Pixel, স্টক।' } },
+  { id: 'custom-site', tier: 'custom', name: 'Custom Website', price: { bdtMin: 150000, bdtMax: 350000 }, priceNote: 'Fully custom design, animation and a content editor (CMS), like this website.', featured: true, bn: { name: 'কাস্টম ওয়েবসাইট', priceNote: 'পুরো কাস্টম ডিজাইন, অ্যানিমেশন ও কনটেন্ট এডিটর (CMS), এই ওয়েবসাইটের মতো।' } },
+  { id: 'custom-shop', tier: 'custom', name: 'Custom E-commerce', price: { bdtMin: 400000 }, priceNote: 'Usually ৳4–8 lakh: own admin panel, payments, courier, stock and search.', bn: { name: 'কাস্টম ই-কমার্স', priceNote: 'সাধারণত ৪–৮ লাখ টাকা: নিজস্ব অ্যাডমিন প্যানেল, পেমেন্ট, কুরিয়ার, স্টক ও সার্চ।' } },
+  { id: 'web-app', tier: 'custom', name: 'Web App / Portal', price: { bdtMin: 300000 }, priceNote: 'Quoted per project: user roles, dashboards and APIs.', bn: { name: 'ওয়েব অ্যাপ / পোর্টাল', priceNote: 'প্রজেক্ট দেখে কোটেশন: ইউজার রোল, ড্যাশবোর্ড ও API।' } },
+]
+
+/** Fixed, one-time add-ons. */
+export const websiteAddOns: { id: string; bdt: number; from?: boolean; en: string; bn: string; per?: { en: string; bn: string } }[] = [
+  { id: 'page-wp', bdt: 2500, en: 'Extra page (WordPress)', bn: 'অতিরিক্ত পেজ (WordPress)', per: { en: 'per page', bn: 'প্রতি পেজ' } },
+  { id: 'page-custom', bdt: 6000, en: 'Extra page (custom code)', bn: 'অতিরিক্ত পেজ (কাস্টম কোড)', per: { en: 'per page', bn: 'প্রতি পেজ' } },
+  { id: 'bilingual', bdt: 10000, from: true, en: 'Bangla + English', bn: 'বাংলা + ইংরেজি' },
+  { id: 'gateway', bdt: 10000, en: 'Extra payment gateway', bn: 'অতিরিক্ত পেমেন্ট গেটওয়ে', per: { en: 'each', bn: 'প্রতিটি' } },
+  { id: 'courier', bdt: 12000, en: 'Courier API (Pathao, Steadfast…)', bn: 'কুরিয়ার API (Pathao, Steadfast…)' },
+  { id: 'products', bdt: 3000, en: 'Product upload', bn: 'পণ্য আপলোড', per: { en: 'per 100 products', bn: 'প্রতি ১০০ পণ্য' } },
+  { id: 'content', bdt: 1500, en: 'Content writing', bn: 'লেখার কাজ', per: { en: 'per page', bn: 'প্রতি পেজ' } },
+]
+
+/** Fixed monthly care (maintenance) plans. Paying yearly gives 2 months free. */
+export const carePlans: { id: string; name: string; bdt: number; featured?: boolean; en: string[]; bn: { name: string; items: string[] } }[] = [
+  { id: 'care-basic', name: 'Basic', bdt: 3000, en: ['Updates and backups', 'Security monitoring', '1 hour of small changes a month'], bn: { name: 'বেসিক', items: ['আপডেট ও ব্যাকআপ', 'নিরাপত্তা নজরদারি', 'মাসে ১ ঘণ্টা ছোট পরিবর্তন'] } },
+  { id: 'care-business', name: 'Business', bdt: 7500, featured: true, en: ['Everything in Basic', '3 hours of work a month', 'Faster support'], bn: { name: 'বিজনেস', items: ['বেসিকের সবকিছু', 'মাসে ৩ ঘণ্টা কাজ', 'দ্রুত সাপোর্ট'] } },
+  { id: 'care-commerce', name: 'Commerce', bdt: 15000, en: ['Everything in Business', '6 hours of work a month', 'Product uploads', 'Priority support'], bn: { name: 'কমার্স', items: ['বিজনেসের সবকিছু', 'মাসে ৬ ঘণ্টা কাজ', 'পণ্য আপলোড', 'অগ্রাধিকার সাপোর্ট'] } },
 ]
