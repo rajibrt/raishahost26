@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import PlanTabs from '@/components/site/PlanTabs'
 import { CLIENT_AREA_URL } from '@/components/site/links'
+import { FeaturedWork } from '@/components/site/WorkCards'
 import { sharedHostingPlans, vpsPlans } from '@/data/plans'
 import { bdt, localPath, usd, type Lang } from '@/i18n'
 
@@ -44,13 +45,9 @@ const text = {
       ['Go live', 'Publish your site and reach us 24/7 whenever you need help.'],
     ],
     workK: 'Our work',
-    workH: 'Websites we built and host.',
-    workP: 'Case studies from clients around the world, added with their permission.',
-    workAll: 'All case studies',
-    workMeta: ['Web design + hosting', 'E-commerce + VPS', 'Logo + website'],
-    shot: 'Client screenshot',
-    soon: 'Case study coming soon',
-    soonP: 'Added after client approval.',
+    workH: 'Websites we designed and built.',
+    workP: 'A few examples from many sites we have built: online stores, developers, internet providers and more. Hover to scroll through a page; click to open the live site.',
+    workAll: 'See all our work',
     faqK: 'Questions',
     faqH: 'Before you order.',
     faqs: [
@@ -101,13 +98,9 @@ const text = {
       ['লাইভ হোন', 'সাইট প্রকাশ করুন, আর দরকার হলে ২৪/৭ আমাদের পাবেন।'],
     ],
     workK: 'আমাদের কাজ',
-    workH: 'যে ওয়েবসাইট আমরা বানাই ও হোস্ট করি।',
-    workP: 'বিশ্বের বিভিন্ন ক্লায়েন্টের কেস স্টাডি, তাদের অনুমতি নিয়ে যোগ করা হবে।',
-    workAll: 'সব কেস স্টাডি',
-    workMeta: ['ওয়েব ডিজাইন + হোস্টিং', 'ই-কমার্স + VPS', 'লোগো + ওয়েবসাইট'],
-    shot: 'ক্লায়েন্টের স্ক্রিনশট',
-    soon: 'কেস স্টাডি শিগগির আসছে',
-    soonP: 'ক্লায়েন্টের অনুমতির পর যোগ করা হবে।',
+    workH: 'যে ওয়েবসাইট আমরা ডিজাইন ও তৈরি করেছি।',
+    workP: 'আমাদের তৈরি অনেক সাইটের মধ্যে কয়েকটি নমুনা: অনলাইন শপ, ডেভেলপার, ইন্টারনেট প্রোভাইডারসহ আরও অনেক। মাউস রাখলে পেজ স্ক্রল হবে; চাপলে আসল সাইট খুলবে।',
+    workAll: 'আমাদের সব কাজ দেখুন',
     faqK: 'প্রশ্ন',
     faqH: 'অর্ডার করার আগে।',
     faqs: [
@@ -241,18 +234,7 @@ export default function HomeBody({ lang = 'en' }: { lang?: Lang }) {
               </div>
               <Link className='btn btn-ghost' href={L('/work')}>{t.workAll}</Link>
             </div>
-            <div className='work'>
-              {t.workMeta.map((meta) => (
-                <article className='case rv' key={meta}>
-                  <div className='shot'>{t.shot}</div>
-                  <div className='body'>
-                    <span className='meta'>{meta}</span>
-                    <h3>{t.soon}</h3>
-                    <p>{t.soonP}</p>
-                  </div>
-                </article>
-              ))}
-            </div>
+            <FeaturedWork lang={lang} limit={3} compact />
           </div>
         </section>
 

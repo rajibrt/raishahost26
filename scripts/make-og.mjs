@@ -43,8 +43,8 @@ const CARDS = [
     bn: ['ডোমেইন', ['আপনার', 'নাম খুঁজুন।'], '.com, .com.bd, .net, .org সহ আরও।'],
   }],
   ['work', 'earthLines', {
-    en: ['Our work', ['Websites we built', 'and host.'], 'Case studies, published with client permission.'],
-    bn: ['আমাদের কাজ', ['যে ওয়েবসাইট আমরা', 'বানাই ও হোস্ট করি।'], 'ক্লায়েন্টের অনুমতি নিয়ে প্রকাশিত কেস স্টাডি।'],
+    en: ['Our work', ['Websites we', 'designed and built.'], 'E-commerce, developers, ISPs, finance, travel and more.'],
+    bn: ['আমাদের কাজ', ['যে ওয়েবসাইট আমরা', 'ডিজাইন ও তৈরি করেছি।'], 'ই-কমার্স, ডেভেলপার, ইন্টারনেট প্রোভাইডারসহ আরও অনেক।'],
   }],
   ['services', 'tunnel', {
     en: ['Services', ['One team for your', 'whole web presence.'], 'Websites, apps, online stores and design.'],
