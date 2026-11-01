@@ -38,10 +38,13 @@ The public website of **RaishaHost** (https://raishahost.com): a web hosting com
   - cPanel: Economy ৳3,800/yr, Standard ৳6,000/yr, Pro ৳12,000/yr (BDT only; no USD price set yet).
   - VPS: Starter ৳3,599 / $29.99, Business ৳5,599 / $46.99, Pro ৳6,599 / $54.99 per month.
   - VPS specs: Starter 2 vCPU / 4 GB / 40 GB NVMe; Business 4 vCPU / 8 GB / 40 GB; Pro 4 vCPU / 8 GB / 80 GB. All: 20 TB bandwidth, 1 IPv4 + IPv6, root access, Ubuntu/Debian/AlmaLinux, DDoS protection, 99.9% uptime.
+  - Website projects (owner-approved, November 2026): one-time price **ranges** in three tiers (WordPress, WooCommerce shops, custom code with Next.js/React), each card with "what moves the price" and a "Get a quote" button; care plans (৳3,000 / ৳7,500 / ৳15,000 a month, 2 months free yearly) and add-ons have fixed prices. All in `websitePackages`, `carePlans`, `websiteAddOns` in `src/data/plans.ts`. The RaishaHost Messenger bot quotes the same numbers: when you change any of them, tell the bot's Claude session (or the owner) so the bot is updated too.
+  - Not set yet, so do not show: delivery times for website projects, USD prices for website projects, a small template "mini website" package.
+  - Taka amounts use lakh grouping (৳1,50,000) through `bdt()` in `src/i18n/index.ts`.
 - **Never reveal** the upstream server provider, data-center country/city or our cost price anywhere on the site (this was removed from WHMCS on purpose).
 - **Money-back policy (30 days):** refunds the hosting fee for shared, VPS and reseller plans; request within 30 days of sign-up; once per client, first service only; account must be verified; domains, setup fees, payment-gateway fees, add-ons and design/development/SEO work are not refundable; free domain/SSL bundled with a plan is suspended on refund. Full text: `src/app/money-back/page.tsx`.
 - Other promises shown on the site: free SSL on every hosting plan, 99.9% uptime target, 24/7 support via tickets.
-- **No invented proof.** No fake testimonials, made-up client counts or ratings. Client names, logos and case studies only with the client's written permission. Case-study slots stay marked as placeholders until real ones arrive. Do not name existing clients (for example London Park, RCN) without permission.
+- **No invented proof.** No fake testimonials, made-up client counts or ratings. Client names, logos and case studies only with the client's permission. The client websites on `/work` (`src/data/work.ts`) were supplied by the owner in November 2026 for the portfolio; do not add other clients without the owner's say-so. Describe each site plainly; do not invent results or figures for them.
 - Contact: phone +880 1878-037803, Facebook `facebook.com/RaishaHost` (see `src/app/layout.tsx` JSON-LD for the full list).
 
 ## 4. Brand
@@ -83,6 +86,7 @@ The public website of **RaishaHost** (https://raishahost.com): a web hosting com
 | `src/components/site/PageMotion.tsx`, `DocMotion.tsx`, `PolicyDoc.tsx` | Scroll motion for inner pages, reading progress and contents list, policy document layout |
 | `src/components/sections/`, `Navbar.tsx`, `Footer.tsx`, `*Content.tsx` in old routes | Old design, no longer used. Keep until the owner agrees to remove |
 | `src/data/plans.ts` | All plan prices and specs |
+| `src/data/work.ts`, `public/work/`, `scripts/shoot-work.mjs` | Portfolio: client sites by industry, their screenshots, and the script that takes them (headless Chrome) |
 | `design/prototypes/` | Every design version (v1–v6) with a README. **Never delete a version; add the next number** |
 | `scripts/fetch-media.sh`, `scripts/extract-frames.sh` | Download the Higgsfield videos and turn them into WebP frames in `public/media/<name>/` |
 
@@ -158,6 +162,8 @@ The single place to see what is done and what is left. Update it in the same com
 - Copy is plain English and follows section 3: no testimonials or client counts, "99.9% uptime target", money-back conditions written out, website package prices moved to `websitePackages` in `src/data/plans.ts`.
 - Same header (`SiteNav`) and footer (`SiteFooter`) on every page; mobile GSAP drawer; desktop GSAP dropdowns; page-entry motion (`src/app/template.tsx`).
 - Responsive audit (November 2026): all 15 routes at all 18 sizes in "Responsive targets" have no sideways scroll, nothing cut off and no text under 12 px. Short screens (phones held sideways) get smaller homepage captions and a compact chapter rail.
+- `/work`: 18 client websites from the owner, 6 featured large (hover scrolls the full page: slow start, faster middle, soft stop over 4.5 s; leaving snaps back in 0.6 s) and the rest filterable by industry; homepage shows 3 featured side by side. Screenshots by `node scripts/shoot-work.mjs` (real-time Chrome capture; London Park and Prime Finance are stitched from scrolled screens because their sections only appear on scroll; PHP warnings printed at the top of a client page are removed from the screenshot and reported in the script's output); a missing screenshot shows a branded name card instead.
+- `/services` shows the website price ranges by tier, payment terms, care plans and add-ons (English and Bangla).
 - Sitemap lists every route, including `/hosting`, `/vps`, `/domains`, `/work` and `/privacy`; the footer links to `/privacy`.
 
 ### Kept but no longer used
@@ -166,7 +172,7 @@ The single place to see what is done and what is left. Update it in the same com
 
 ### To do
 
-1. Real case studies for `/work` (needs client permission).
+1. Optional: longer case studies (goal, what we built, result) for the featured projects on `/work`, written with each client.
 3. Optional: a scroll video or 3D piece for `/vps` (server parts) if the owner wants one; ask before spending Higgsfield credits.
 4. Re-run the responsive audit after any layout change.
 
@@ -188,6 +194,8 @@ How it is built:
 
 - Confirm: "Renewal prices are shown before you pay" (homepage billing card) and payment methods offered (bKash, Nagad, bank, card?).
 - Are the old testimonials (Jim J., Wayne, M L Shannon) real and may we show them? They are off the site until confirmed.
-- Real case studies (with permission) for `/work`.
+- Confirm every client in `src/data/work.ts` is happy to be shown (London Park and RCN were earlier listed as "ask first").
+- RCN: when the new site moves from preview.rcnbd.net to rcnbd.net, remove `launching: true` in `src/data/work.ts`, change RCN's address in `scripts/shoot-work.mjs` to `https://rcnbd.net/` and run `node scripts/shoot-work.mjs rcn`.
 - Review the new `/privacy` text before it goes live.
+- Client sites with a server problem (seen while taking screenshots, November 2026): **primefinancr.com.au** and **greenpeakbd.com** sometimes print `Warning: opendir(.../wp-content/mu-plugins): Failed to open directory: Permission denied` above the page. Fix on their hosting: give the `wp-content/mu-plugins` folder normal permissions (755, owned by the account user) or create it if missing, and turn off `display_errors` in PHP settings so warnings never show to visitors.
 - Business hours and the second phone number (+880 1711-380679) shown on the old contact page: still correct?
