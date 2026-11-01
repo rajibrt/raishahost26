@@ -67,8 +67,8 @@ export default function Footer() {
             </Link>
 
             <p className='text-gray-500 text-sm leading-relaxed mb-6 max-w-xs'>
-              Affordable Linux SSD web hosting in Bangladesh. Providing reliable
-              hosting, domain registration, and web design services since 2008.
+              Affordable Linux SSD web hosting for clients worldwide, based in
+              Bangladesh. Hosting, domains and web design since 2008.
             </p>
 
             {/* Contact */}

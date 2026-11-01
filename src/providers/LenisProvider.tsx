@@ -1,14 +1,20 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { usePathname } from 'next/navigation';
 import Lenis from 'lenis';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
+// The page's smooth-scroll instance, for components that need to scroll the page themselves.
+let current: Lenis | null = null;
+export const getLenis = () => current;
+
 export default function LenisProvider({ children }: { children: React.ReactNode }) {
   const lenisRef = useRef<Lenis | null>(null);
+  const pathname = usePathname();
 
   useEffect(() => {
     const lenis = new Lenis({
@@ -22,6 +28,7 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
     });
 
     lenisRef.current = lenis;
+    current = lenis;
 
     lenis.on('scroll', ScrollTrigger.update);
 
@@ -33,11 +40,24 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
 
     return () => {
       lenis.destroy();
+      current = null;
       gsap.ticker.remove((time) => {
         lenis.raf(time * 1000);
       });
     };
   }, []);
+
+  // A new page opens at the top. Next.js resets the window, but Lenis keeps its own scroll
+  // position and would carry the old page's offset over, so reset it too (links to #anchors
+  // are left to scroll to their target).
+  useEffect(() => {
+    if (window.location.hash) return;
+    const lenis = lenisRef.current;
+    if (lenis) lenis.scrollTo(0, { immediate: true, force: true });
+    else window.scrollTo(0, 0);
+    // No ScrollTrigger.refresh() here: the new page's entrance tweens are already running, and a
+    // refresh in the middle of them records half-way positions as their end (cards left uneven).
+  }, [pathname]);
 
   return <>{children}</>;
 }

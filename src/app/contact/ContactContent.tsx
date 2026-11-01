@@ -4,8 +4,8 @@ import { useEffect, useRef, useState } from 'react';
 import Script from 'next/script';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
+import SiteHeader from '@/components/site/SiteHeader';
+import SiteFooterShell from '@/components/site/SiteFooterShell';
 import { Mail, Phone, Clock, MapPin, Send, CheckCircle } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -156,7 +156,7 @@ export default function ContactContent() {
         />
       ) : null}
 
-      <Navbar />
+      <SiteHeader />
 
       {/* Hero */}
       <section className="relative pt-32 pb-20 overflow-hidden">
@@ -333,7 +333,7 @@ export default function ContactContent() {
         </div>
       </section>
 
-      <Footer />
+      <SiteFooterShell />
     </main>
   );
 }

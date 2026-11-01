@@ -2,17 +2,20 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { ChevronUp } from 'lucide-react'
+import { usePathname } from 'next/navigation'
+import { langOf } from '@/i18n'
 
-const MESSAGES = [
-  'যে কোন প্রশ্ন থাকলে আমাকে ক্লিক করুন ➜',
-  'ওয়েবসাইট বানাতে চান? জানান! ➜',
-  'ফ্রি পরামর্শ নিন এখনই ➜',
-]
+const MESSAGES = {
+  en: ['Any questions? Chat with us ➜', 'Need a website? Tell us! ➜', 'Get free advice now ➜'],
+  bn: ['কোনো প্রশ্ন? আমাদের সাথে চ্যাট করুন ➜', 'ওয়েবসাইট দরকার? আমাদের জানান ➜', 'এখনই ফ্রি পরামর্শ নিন ➜'],
+}
 
 const MOBILE_URL = 'https://m.me/RaishaHost'
 const DESKTOP_URL = 'https://www.facebook.com/messages/t/raishahost'
 
 export default function MessengerWidget() {
+  const lang = langOf(usePathname())
+  const messages = MESSAGES[lang]
   const [displayed, setDisplayed] = useState('')
   const [msgIndex, setMsgIndex] = useState(0)
   const [visible, setVisible] = useState(true)
@@ -43,7 +46,7 @@ export default function MessengerWidget() {
 
   // Typing animation loop
   useEffect(() => {
-    const text = MESSAGES[msgIndex]
+    const text = messages[msgIndex % messages.length]
     let i = 0
     let erasing = false
     let current = ''
@@ -68,7 +71,7 @@ export default function MessengerWidget() {
         } else {
           raf = setTimeout(() => {
             erasing = false
-            setMsgIndex((prev) => (prev + 1) % MESSAGES.length)
+            setMsgIndex((prev) => (prev + 1) % messages.length)
           }, 600)
         }
       }
@@ -76,7 +79,7 @@ export default function MessengerWidget() {
 
     raf = setTimeout(tick, 300)
     return () => clearTimeout(raf)
-  }, [msgIndex])
+  }, [msgIndex, messages])
 
   return (
     <div
@@ -106,7 +109,7 @@ export default function MessengerWidget() {
                 userSelect: 'none',
               }}
             >
-              <span style={{ fontFamily: "var(--font-hind-siliguri), 'Hind Siliguri', sans-serif" }}>{displayed}</span>
+              <span lang={lang} style={{ fontFamily: "var(--font-manrope), var(--font-bn), 'Manrope', system-ui, sans-serif" }}>{displayed}</span>
               <span style={{
                 display: 'inline-block',
                 marginLeft: 1,

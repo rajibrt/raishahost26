@@ -1,33 +1,48 @@
 import type { Metadata } from 'next'
-import { Inter, Hind_Siliguri } from 'next/font/google'
+import { Inter, Noto_Sans_Bengali, Manrope, IBM_Plex_Mono } from 'next/font/google'
 import './globals.css'
 import LenisProvider from '@/providers/LenisProvider'
 import MessengerWidget from '@/components/MessengerWidget'
-import CustomCursor from '@/components/CustomCursor'
 
 const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
 })
 
-const hindSiliguri = Hind_Siliguri({
+// Bangla text (Bangla articles now, the /bn site later). Variable weights 100–900, so bold headings
+// render properly. Not preloaded: English pages never download it.
+const notoBengali = Noto_Sans_Bengali({
   subsets: ['bengali'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-hind-siliguri',
+  variable: '--font-bn',
+  preload: false,
+})
+
+const manrope = Manrope({
+  subsets: ['latin'],
+  variable: '--font-manrope',
+})
+
+const plexMono = IBM_Plex_Mono({
+  subsets: ['latin'],
+  weight: ['500', '600'],
+  variable: '--font-plex-mono',
 })
 
 const siteUrl = 'https://raishahost.com'
-const ogImage = `${siteUrl}/opengraph-image`
+// Default share image (pages set their own from public/og/, made by scripts/make-og.mjs).
+const ogImage = `${siteUrl}/og/en/home.jpg`
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'RaishaHost — Affordable Web Hosting in Bangladesh | Since 2008',
+    default: 'RaishaHost — Web Hosting, VPS & Web Design Worldwide | Since 2008',
     template: '%s | RaishaHost',
   },
   description:
-    'RaishaHost offers affordable Linux SSD web hosting, domain registration, web design, logo & graphic design, and digital marketing services in Bangladesh. 99.9% uptime, free SSL, cPanel, 24/7 support. In business since 2008.',
+    'RaishaHost offers affordable Linux SSD web hosting, domain registration, web design, logo & graphic design, and digital marketing for clients worldwide, from a team based in Bangladesh. 99.9% uptime, free SSL, cPanel, 24/7 support. In business since 2008.',
   keywords: [
+    'web hosting',
+    'VPS hosting',
     'web hosting Bangladesh',
     'domain registration Bangladesh',
     'SSD hosting',
@@ -64,15 +79,15 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: siteUrl,
     siteName: 'RaishaHost',
-    title: 'RaishaHost — Affordable Web Hosting in Bangladesh | Since 2008',
+    title: 'RaishaHost — Web Hosting, VPS & Web Design Worldwide | Since 2008',
     description:
-      'Affordable Linux SSD web hosting, domain registration, web design & digital marketing in Bangladesh. 99.9% uptime, free SSL, cPanel, 24/7 support.',
+      'Affordable Linux SSD web hosting, VPS, domains, web design & digital marketing for clients worldwide. 99.9% uptime, free SSL, cPanel, 24/7 support.',
     images: [
       {
         url: ogImage,
         width: 1200,
         height: 630,
-        alt: 'RaishaHost — Freedom of Host Since 2008',
+        alt: 'RaishaHost — Web Hosting, VPS & Web Design since 2008',
       },
     ],
   },
@@ -80,9 +95,9 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     site: '@raishahost',
     creator: '@raishahost',
-    title: 'RaishaHost — Affordable Web Hosting in Bangladesh',
+    title: 'RaishaHost — Web Hosting, VPS & Web Design Worldwide',
     description:
-      'Affordable Linux SSD web hosting, domain registration, web design & digital marketing in Bangladesh.',
+      'Affordable Linux SSD web hosting, VPS, domains, web design & digital marketing for clients worldwide.',
     images: [ogImage],
   },
   verification: {
@@ -101,10 +116,10 @@ export default function RootLayout({
     '@type': 'Organization',
     name: 'RaishaHost',
     url: siteUrl,
-    logo: `${siteUrl}/raisha-host-logo.svg`,
+    logo: `${siteUrl}/brand/raishahost-mark.svg`,
     foundingDate: '2008',
     description:
-      'Affordable Linux SSD web hosting and digital services company in Bangladesh',
+      'Web hosting and digital services company based in Bangladesh, serving clients worldwide',
     address: {
       '@type': 'PostalAddress',
       addressCountry: 'BD',
@@ -126,7 +141,6 @@ export default function RootLayout({
     sameAs: [
       'https://facebook.com/RaishaHost',
       'https://twitter.com/raishahost',
-      'https://youtube.com/c/RaishaHost',
     ],
   }
 
@@ -134,7 +148,7 @@ export default function RootLayout({
     <html
       lang='en'
       data-scroll-behavior='smooth'
-      className={`${inter.variable} ${hindSiliguri.variable}`}
+      className={`${inter.variable} ${notoBengali.variable} ${manrope.variable} ${plexMono.variable}`}
     >
       <head>
         <script
@@ -145,7 +159,6 @@ export default function RootLayout({
       <body className='bg-[#030712] text-gray-100 overflow-x-hidden antialiased'>
         <LenisProvider>{children}</LenisProvider>
         <MessengerWidget />
-        <CustomCursor />
       </body>
     </html>
   )

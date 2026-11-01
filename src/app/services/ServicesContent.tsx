@@ -3,8 +3,8 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
+import SiteHeader from '@/components/site/SiteHeader';
+import SiteFooterShell from '@/components/site/SiteFooterShell';
 import CTASection from '@/components/sections/CTASection';
 import {
   Monitor, Smartphone, Code, Globe, Layers, ArrowRight,
@@ -190,7 +190,7 @@ export default function ServicesContent() {
 
   return (
     <main>
-      <Navbar />
+      <SiteHeader />
 
       {/* Hero */}
       <section className="relative pt-36 pb-16 overflow-hidden">
@@ -329,7 +329,7 @@ export default function ServicesContent() {
       </section>
 
       <CTASection />
-      <Footer />
+      <SiteFooterShell />
     </main>
   );
 }

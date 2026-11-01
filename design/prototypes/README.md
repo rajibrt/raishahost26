@@ -1,0 +1,22 @@
+# RaishaHost redesign prototypes
+
+Every design iteration is kept here. Nothing is deleted; new work gets a new version number.
+
+| Version | File | What it is | Published artifact |
+|---|---|---|---|
+| v1 | `v1-brand-directions.html` | Three brand directions (A/B/C) with mini homepage mockups and a draft brand guide. Uses the old cyan/indigo logo colors. | https://claude.ai/artifact/Er9HZz2UpWewSAN5PiEkfz |
+| v2 | `v2-scroll-story-canvas.src.html` | First English homepage prototype: 2D canvas scroll story (domain → request → server → SSL → live), plans with BDT/USD toggle. Old colors. Source file; logo symbol placeholder `__LOGO__` not inlined. | https://claude.ai/artifact/EiKaN1jMkX3GpFJM92PP56 (version 1–2) |
+| v3 | `v3-scroll-story-brand-colors.html` | Same as v2, switched to the official brand colors (#1B75BB blue, #3B3A3C charcoal) and the official logo. | https://claude.ai/artifact/EiKaN1jMkX3GpFJM92PP56 (unpublished locally) |
+| v4 | `v4-threejs-live.html` | Three.js + GSAP homepage: 3D extruded logo, globe with arcs, server aisle fly-through, SSL lock, horizontal services, plans, policies, steps, work, FAQ. | https://claude.ai/artifact/2rKMxGnMrLzgx9uLPJotRg |
+
+Official logo files: `public/brand/raishahost-logo.svg` (wordmark) and `public/brand/raishahost-mark.svg` (mark).
+
+## In the Next.js app
+
+| Version | Where | What it is |
+|---|---|---|
+| v5 | `src/app/page.tsx`, `src/components/home/`, `src/components/site/`, `src/styles/site.css` | v4 rebuilt as real Next.js pages: homepage with the Three.js scene and GSAP effects, new navigation and footer, plus `/hosting`, `/vps`, `/domains` and `/work`. Prices come from `src/data/plans.ts`. Old section components in `src/components/sections/` are kept, unused by the new homepage. |
+| v6 | `src/app/page.tsx`, `src/components/home/ScrollFrames.tsx`, `src/components/home/HomeBody.tsx` | Video-driven homepage in the style of the YouTube reference: AI-generated videos (Higgsfield, Seedance 2.5) play frame by frame as you scroll. Hero: a server opens into layers with VPS specs; later a fiber-optic light tunnel for speed and SSL. The Three.js globe stays between them. Frames are created with `scripts/fetch-media.sh` (needs ffmpeg). v5 stays viewable at `/preview/v5`. |
+| v7 | `src/app/page.tsx`, `scripts/fetch-media.sh` | The three.js globe between the hero and the tunnel is replaced by a third scroll video, `earth-reach`: Earth at night from orbit with light lines spreading from Dhaka to the world (still: GPT Image 2.5, video: Seedance 2.5 1080p, 8 s). The homepage no longer loads the three.js stage; `HomeScene.tsx` is kept and still used by `/preview/v5`. |
+| v8 | `src/app/*`, `src/components/site/`, `src/styles/site.css` | Every inner page rebuilt in the redesign (services, about, contact, logo design, knowledge and articles, money-back, guarantees, terms, new privacy) with shared blocks and GSAP motion (`PageMotion`, `DocMotion`, `PolicyDoc`). Plain-English copy that follows the business rules. Responsive audit across 18 screen sizes. Old page components are kept but unused. |
+| v9 | `src/views/`, `src/i18n/`, `src/app/bn/` | Full Bangla site under `/bn` with a London Park-style language button (translate icon + other language) in the navigation and drawer; Bangla text, menus and buttons one step larger. Pages became shared views with both languages side by side; Noto Sans Bengali; hreflang and a bilingual sitemap. |

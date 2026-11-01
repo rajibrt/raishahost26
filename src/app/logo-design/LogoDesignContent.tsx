@@ -3,8 +3,8 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
+import SiteHeader from '@/components/site/SiteHeader';
+import SiteFooterShell from '@/components/site/SiteFooterShell';
 import CTASection from '@/components/sections/CTASection';
 import { Palette, Brush, Layers, Check, ArrowRight, ImageIcon, Printer, MonitorSmartphone, FileImage, PenTool, Sparkles } from 'lucide-react';
 import Link from 'next/link';
@@ -112,7 +112,7 @@ export default function LogoDesignContent() {
 
   return (
     <main>
-      <Navbar />
+      <SiteHeader />
 
       {/* Hero */}
       <section className="relative pt-32 pb-20 overflow-hidden">
@@ -227,7 +227,7 @@ export default function LogoDesignContent() {
       </section>
 
       <CTASection />
-      <Footer />
+      <SiteFooterShell />
     </main>
   );
 }
