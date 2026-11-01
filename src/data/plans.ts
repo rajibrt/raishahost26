@@ -5,6 +5,10 @@
 //   - Shared Hosting (cPanel): yearly
 //   - VPS: monthly
 //
+// cPanel prices end in 99 (owner's decision, November 2026): ৳3,799 / $34.99, ৳5,999 / $49.99,
+// ৳11,999 / $108.99 a year. VPS: $29.99, $46.99, $54.99 a month. The WHMCS store
+// (hosting.raishahost.com) must show the same prices; change both together.
+//
 // Policy: never mention the upstream provider, data-center country or our
 // cost price anywhere on the public site.
 
@@ -39,7 +43,7 @@ export const sharedHostingPlans: Plan[] = [
     id: 'shared-economy',
     name: 'Economy',
     period: 'yearly',
-    price: { bdt: 3800, bdtOriginal: 4600 },
+    price: { bdt: 3799, usd: 34.99, bdtOriginal: 4600 },
     tagline: 'Blogs, portfolios and small websites',
     taglineBn: 'ব্লগ, পোর্টফোলিও ও ছোট ওয়েবসাইট',
     specs: [
@@ -58,7 +62,7 @@ export const sharedHostingPlans: Plan[] = [
     id: 'shared-standard',
     name: 'Standard',
     period: 'yearly',
-    price: { bdt: 6000, bdtOriginal: 8000 },
+    price: { bdt: 5999, usd: 49.99, bdtOriginal: 8000 },
     tagline: 'Growing businesses with several sites',
     taglineBn: 'কয়েকটি সাইট নিয়ে বাড়তে থাকা ব্যবসা',
     specs: [
@@ -78,7 +82,7 @@ export const sharedHostingPlans: Plan[] = [
     id: 'shared-pro',
     name: 'Pro',
     period: 'yearly',
-    price: { bdt: 12000, bdtOriginal: 17000 },
+    price: { bdt: 11999, usd: 108.99, bdtOriginal: 17000 },
     tagline: 'High-traffic and demanding projects',
     taglineBn: 'বেশি ভিজিটর ও ভারী প্রজেক্ট',
     specs: [

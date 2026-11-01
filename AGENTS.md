@@ -35,7 +35,8 @@ The public website of **RaishaHost** (https://raishahost.com): a web hosting com
 - **Language:** the whole site is English first (no Bangla text on English pages). A full Bangla version comes next, at `/bn/...`, with a language switcher; see "Language plan" in section 9.
 - **Billing periods:** cPanel (shared) hosting is billed **yearly**. VPS is billed **monthly**. Every price shown must state its period.
 - **Prices live only in `src/data/plans.ts`.** Never hard-code a price elsewhere; read it from that file.
-  - cPanel: Economy ৳3,800/yr, Standard ৳6,000/yr, Pro ৳12,000/yr (BDT only; no USD price set yet).
+  - cPanel: Economy ৳3,799 / $34.99, Standard ৳5,999 / $49.99, Pro ৳11,999 / $108.99 per year (struck-through ৳4,600 / ৳8,000 / ৳17,000). Prices end in 99 by the owner's choice (November 2026). The WHMCS store must show the same BDT and USD prices; change both together.
+  - Currency switch on plan cards: shown only when every plan in the group has a USD price; prices count to the new value with GSAP (`CountPrice` in `src/components/site/PlanTabs.tsx`).
   - VPS: Starter ৳3,599 / $29.99, Business ৳5,599 / $46.99, Pro ৳6,599 / $54.99 per month.
   - VPS specs: Starter 2 vCPU / 4 GB / 40 GB NVMe; Business 4 vCPU / 8 GB / 40 GB; Pro 4 vCPU / 8 GB / 80 GB. All: 20 TB bandwidth, 1 IPv4 + IPv6, root access, Ubuntu/Debian/AlmaLinux, DDoS protection, 99.9% uptime.
   - Website projects (owner-approved, November 2026): one-time price **ranges** in three tiers (WordPress, WooCommerce shops, custom code with Next.js/React), each card with "what moves the price" and a "Get a quote" button; care plans (৳3,000 / ৳7,500 / ৳15,000 a month, 2 months free yearly) and add-ons have fixed prices. All in `websitePackages`, `carePlans`, `websiteAddOns` in `src/data/plans.ts`. The RaishaHost Messenger bot quotes the same numbers: when you change any of them, tell the bot's Claude session (or the owner) so the bot is updated too.
