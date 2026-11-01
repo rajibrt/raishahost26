@@ -55,7 +55,8 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
     const lenis = lenisRef.current;
     if (lenis) lenis.scrollTo(0, { immediate: true, force: true });
     else window.scrollTo(0, 0);
-    ScrollTrigger.refresh();
+    // No ScrollTrigger.refresh() here: the new page's entrance tweens are already running, and a
+    // refresh in the middle of them records half-way positions as their end (cards left uneven).
   }, [pathname]);
 
   return <>{children}</>;

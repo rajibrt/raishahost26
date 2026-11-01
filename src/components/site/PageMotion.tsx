@@ -20,13 +20,20 @@ export default function PageMotion() {
 
     const ctx = gsap.context(() => {
       gsap.utils.toArray<HTMLElement>('.rv').forEach((el) => {
-        gsap.from(el, { y: 40, autoAlpha: 0, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 88%' } })
+        gsap.fromTo(
+          el,
+          { y: 40, autoAlpha: 0 },
+          { y: 0, autoAlpha: 1, duration: 0.8, ease: 'power3.out', clearProps: 'transform,opacity,visibility', scrollTrigger: { trigger: el, start: 'top 88%' } },
+        )
       })
 
       gsap.utils.toArray<HTMLElement>('[data-stagger]').forEach((group) => {
-        gsap.from(group.children, {
-          y: 36,
-          autoAlpha: 0,
+        // fromTo with explicit end values: a plain from() takes the end from the element's current
+        // style, so an interrupted run (fast page changes) left cards stuck at uneven heights.
+        gsap.fromTo(group.children, { y: 36, autoAlpha: 0 }, {
+          y: 0,
+          autoAlpha: 1,
+          clearProps: 'transform,opacity,visibility',
           duration: 0.7,
           stagger: 0.08,
           ease: 'power3.out',
