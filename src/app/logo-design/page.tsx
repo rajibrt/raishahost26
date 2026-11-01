@@ -4,7 +4,7 @@ import LogoDesignContent from './LogoDesignContent'
 export const metadata: Metadata = {
   title: 'Logo & Graphic Design Services',
   description:
-    'Professional logo design and graphic design services in Bangladesh — social media graphics, print & branding, UI/UX design, flyers, illustrations, and brand style guides.',
+    'Professional logo design and graphic design services for clients worldwide — social media graphics, print & branding, UI/UX design, flyers, illustrations, and brand style guides.',
   alternates: { canonical: 'https://raishahost.com/logo-design' },
   openGraph: {
     title: 'Logo & Graphic Design Services | RaishaHost',

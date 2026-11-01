@@ -4,7 +4,7 @@ import InnerPage from '@/components/site/InnerPage'
 
 export const metadata: Metadata = {
   title: 'Our Work',
-  description: 'Websites RaishaHost designed, built and hosts for clients in Bangladesh and the United States.',
+  description: 'Websites RaishaHost designed, built and hosts for clients around the world.',
   alternates: { canonical: 'https://raishahost.com/work' },
 }
 
@@ -13,7 +13,7 @@ export default function WorkPage() {
     <InnerPage
       kicker='Our work'
       title={<>Websites we built <em className='sky'>and host.</em></>}
-      lede='Case studies from clients in Bangladesh and the United States. Each one is published with the client’s permission.'
+      lede='Case studies from clients around the world. Each one is published with the client’s permission.'
     >
       <section className='sec tight gut'>
         <div className='in'>

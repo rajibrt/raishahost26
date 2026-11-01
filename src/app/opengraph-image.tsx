@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og'
 
 export const runtime = 'edge'
-export const alt = 'RaishaHost — Affordable Web Hosting in Bangladesh'
+export const alt = 'RaishaHost — Web Hosting, VPS & Web Design Worldwide'
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
@@ -92,7 +92,7 @@ export default function Image() {
 
           {/* Tagline */}
           <div style={{ fontSize: 30, color: '#9ca3af', textAlign: 'center', maxWidth: 750, lineHeight: 1.4 }}>
-            Affordable Linux SSD Web Hosting in Bangladesh
+            Web Hosting, VPS & Web Design Worldwide
           </div>
 
           {/* Feature pills */}

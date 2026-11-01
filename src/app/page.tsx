@@ -12,7 +12,7 @@ import ScrollFrames, { type FrameCaption } from '@/components/home/ScrollFrames'
 export const metadata: Metadata = {
   title: 'RaishaHost: Web Hosting, VPS & Web Design Since 2008',
   description:
-    'cPanel hosting, VPS servers, domains and custom websites for businesses in Bangladesh and the United States. Free SSL, 99.9% uptime target, 30-day money-back guarantee.',
+    'cPanel hosting, VPS servers, domains and custom websites for businesses worldwide, from a team in Bangladesh. Free SSL, 99.9% uptime target, 30-day money-back guarantee.',
   alternates: { canonical: 'https://raishahost.com' },
   openGraph: {
     title: 'RaishaHost: Web Hosting, VPS & Web Design Since 2008',
@@ -34,7 +34,7 @@ const serverCaptions: FrameCaption[] = [
         <h1>
           Your website, <em className='sky'>always on.</em>
         </h1>
-        <p>cPanel hosting, VPS servers, domains and custom websites for businesses in Bangladesh and the United States.</p>
+        <p>cPanel hosting, VPS servers, domains and custom websites for businesses anywhere in the world.</p>
         <DomainSearch />
         <div className='tlds'>
           <span><b>.com</b></span>
@@ -170,8 +170,8 @@ export default function Home() {
           <div className='in'>
             <div className='copy right glass rv'>
               <span className='k'>Reach</span>
-              <h2>From Dhaka to Dallas.</h2>
-              <p>We host and build for clients on both sides of the world. Your site loads fast for your customers, wherever they are.</p>
+              <h2>From Dhaka to the world.</h2>
+              <p>We host and build websites for clients in many countries. Your site loads fast for your customers, wherever they are.</p>
               <div className='chips'>
                 {['Dhaka', 'Chattogram', 'New York', 'Dallas', 'London', 'Singapore'].map((c) => <span key={c}>{c}</span>)}
               </div>

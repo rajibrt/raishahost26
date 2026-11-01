@@ -32,12 +32,14 @@ const ogImage = `${siteUrl}/opengraph-image`
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'RaishaHost — Affordable Web Hosting in Bangladesh | Since 2008',
+    default: 'RaishaHost — Web Hosting, VPS & Web Design Worldwide | Since 2008',
     template: '%s | RaishaHost',
   },
   description:
-    'RaishaHost offers affordable Linux SSD web hosting, domain registration, web design, logo & graphic design, and digital marketing services in Bangladesh. 99.9% uptime, free SSL, cPanel, 24/7 support. In business since 2008.',
+    'RaishaHost offers affordable Linux SSD web hosting, domain registration, web design, logo & graphic design, and digital marketing for clients worldwide, from a team based in Bangladesh. 99.9% uptime, free SSL, cPanel, 24/7 support. In business since 2008.',
   keywords: [
+    'web hosting',
+    'VPS hosting',
     'web hosting Bangladesh',
     'domain registration Bangladesh',
     'SSD hosting',
@@ -74,9 +76,9 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: siteUrl,
     siteName: 'RaishaHost',
-    title: 'RaishaHost — Affordable Web Hosting in Bangladesh | Since 2008',
+    title: 'RaishaHost — Web Hosting, VPS & Web Design Worldwide | Since 2008',
     description:
-      'Affordable Linux SSD web hosting, domain registration, web design & digital marketing in Bangladesh. 99.9% uptime, free SSL, cPanel, 24/7 support.',
+      'Affordable Linux SSD web hosting, VPS, domains, web design & digital marketing for clients worldwide. 99.9% uptime, free SSL, cPanel, 24/7 support.',
     images: [
       {
         url: ogImage,
@@ -90,9 +92,9 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     site: '@raishahost',
     creator: '@raishahost',
-    title: 'RaishaHost — Affordable Web Hosting in Bangladesh',
+    title: 'RaishaHost — Web Hosting, VPS & Web Design Worldwide',
     description:
-      'Affordable Linux SSD web hosting, domain registration, web design & digital marketing in Bangladesh.',
+      'Affordable Linux SSD web hosting, VPS, domains, web design & digital marketing for clients worldwide.',
     images: [ogImage],
   },
   verification: {
@@ -114,7 +116,7 @@ export default function RootLayout({
     logo: `${siteUrl}/brand/raishahost-mark.svg`,
     foundingDate: '2008',
     description:
-      'Affordable Linux SSD web hosting and digital services company in Bangladesh',
+      'Web hosting and digital services company based in Bangladesh, serving clients worldwide',
     address: {
       '@type': 'PostalAddress',
       addressCountry: 'BD',

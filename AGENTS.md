@@ -12,7 +12,7 @@ The owner usually writes in Bengali. Answer in the language they write in. Keep 
 
 ## 1. What this project is
 
-The public website of **RaishaHost** (https://raishahost.com): a web hosting company in Bangladesh, in business **since 2008**, selling cPanel hosting, VPS servers, domains, web design and logo/graphic design to clients in **Bangladesh and the United States**.
+The public website of **RaishaHost** (https://raishahost.com): a web hosting company in Bangladesh, in business **since 2008**, selling cPanel hosting, VPS servers, domains, web design and logo/graphic design to clients **worldwide**. The team is based in Bangladesh.
 
 - Billing and the customer area run on WHMCS at `https://hosting.raishahost.com` (not in this repo).
   - Client Area / login: `https://hosting.raishahost.com/login`
@@ -30,6 +30,8 @@ The public website of **RaishaHost** (https://raishahost.com): a web hosting com
 
 ## 3. Business rules (must hold on every page)
 
+- **Market:** focus on the **international market**. Say "worldwide" / "clients around the world", not "Bangladesh and the United States" or any short list of countries. It is fine (and builds trust) to say the team is based in Bangladesh.
+- **Easy for Bangladeshi customers too:** plain, simple English (short sentences, everyday words, explain any technical term in a few words), BDT prices next to USD where a USD price exists, and local details such as payment methods and the +880 phone number easy to find. Apply this to every page and every new piece of copy.
 - **Language:** English first, international standard. Bangla may be added later as `/bn`; keep copy in data/components so that is easy.
 - **Billing periods:** cPanel (shared) hosting is billed **yearly**. VPS is billed **monthly**. Every price shown must state its period.
 - **Prices live only in `src/data/plans.ts`.** Never hard-code a price elsewhere; read it from that file.

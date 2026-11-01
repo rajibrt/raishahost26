@@ -1,4 +1,4 @@
-import Navbar from '@/components/Navbar'
+import SiteHeader from '@/components/site/SiteHeader'
 import Footer from '@/components/Footer'
 import ScrollReveal from '@/components/ScrollReveal'
 import type { Metadata } from 'next'
@@ -8,7 +8,7 @@ import Link from 'next/link'
 export const metadata: Metadata = {
   title: 'About Us — RaishaHost Since 2008',
   description:
-    'RaishaHost is a Bangladesh-based web hosting and digital services company established in 2008. Learn about our mission, 99.9% uptime guarantee, 24/7 support, and thousands of happy clients.',
+    'RaishaHost is a Bangladesh-based web hosting and digital services company serving clients worldwide since 2008. Learn about our mission, 99.9% uptime guarantee, 24/7 support, and thousands of happy clients.',
   alternates: { canonical: 'https://raishahost.com/about' },
   openGraph: {
     title: 'About RaishaHost — Trusted Web Hosting Since 2008',
@@ -36,7 +36,7 @@ const testimonials = [
 export default function AboutPage() {
   return (
     <main>
-      <Navbar />
+      <SiteHeader />
 
       {/* Hero */}
       <section className="relative pt-36 pb-20 overflow-hidden">

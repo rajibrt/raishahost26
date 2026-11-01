@@ -6,7 +6,7 @@ export const services = [
   { n: '/hosting', title: 'cPanel Hosting', body: 'Email, SSL and one-click WordPress on SSD storage. Billed yearly, from ৳3,800.', go: 'See hosting plans', href: '/hosting' },
   { n: '/vps', title: 'VPS Servers', body: 'Your own server with root access and NVMe storage. Billed monthly, from ৳3,599 or $29.99.', go: 'See VPS plans', href: '/vps' },
   { n: '/domains', title: 'Domains', body: '.com, .com.bd, .net and more, connected to your hosting in one step.', go: 'Search a domain', href: '/domains' },
-  { n: '/web-design', title: 'Web Design', body: 'Fast, custom websites for companies in Bangladesh and the US, hosted by the team that built them.', go: 'See web design', href: '/web-design' },
+  { n: '/web-design', title: 'Web Design', body: 'Fast, custom websites for companies anywhere, hosted by the team that built them.', go: 'See web design', href: '/web-design' },
   { n: '/logo-design', title: 'Logo & Graphics', body: 'Logos, brand colors and social graphics that match your new website.', go: 'See logo design', href: '/logo-design' },
 ]
 
@@ -134,7 +134,7 @@ export default function HomeBody() {
               <div>
                 <span className='k'>Our work</span>
                 <h2>Websites we built and host.</h2>
-                <p>Case studies from clients in Bangladesh and the United States, added with their permission.</p>
+                <p>Case studies from clients around the world, added with their permission.</p>
               </div>
               <Link className='btn btn-ghost' href='/work'>All case studies</Link>
             </div>
