@@ -2,6 +2,7 @@ import '@/styles/site.css'
 import SiteNav from './SiteNav'
 import SiteFooter from './SiteFooter'
 import PageMotion from './PageMotion'
+import type { Lang } from '@/i18n'
 
 /** Shell for redesigned inner pages: navigation, a page header, the footer and scroll motion. */
 export default function InnerPage({
@@ -10,6 +11,7 @@ export default function InnerPage({
   lede,
   actions,
   headClass,
+  lang = 'en',
   children,
 }: {
   kicker: React.ReactNode
@@ -19,10 +21,11 @@ export default function InnerPage({
   actions?: React.ReactNode
   /** Extra class on the header, e.g. `bn` for Bangla text. */
   headClass?: string
+  lang?: Lang
   children: React.ReactNode
 }) {
   return (
-    <div className='rh'>
+    <div className='rh' lang={lang}>
       <SiteNav />
       <main className='page'>
         <header className={headClass ? `phead gut ${headClass}` : 'phead gut'}>
@@ -35,7 +38,7 @@ export default function InnerPage({
         </header>
         {children}
       </main>
-      <SiteFooter />
+      <SiteFooter lang={lang} />
       <PageMotion />
     </div>
   )

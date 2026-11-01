@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import Script from 'next/script'
 import { gsap } from 'gsap'
+import type { Lang } from '@/i18n'
 
 declare global {
   interface Window {
@@ -25,8 +26,52 @@ declare global {
 
 const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
 
+const text = {
+  en: {
+    checkFailed: 'The security check could not be completed. Please try again.',
+    notSetUp: 'The form is not set up yet. Please call or email us instead.',
+    doCheck: 'Please complete the security check first.',
+    wrong: 'Something went wrong.',
+    sentK: 'Message sent',
+    sentH: 'Thank you. We will reply soon.',
+    sentP: 'We usually answer within 2–4 hours during business hours. Check your email, including the spam folder.',
+    title: 'Send us a message',
+    name: 'Your name',
+    namePh: 'Your full name',
+    email: 'Email',
+    subject: 'Subject',
+    subjectPh: 'How can we help?',
+    message: 'Message',
+    messagePh: 'Tell us about your project or question',
+    off: 'The online form is not switched on here. Please call or email us.',
+    sending: 'Sending…',
+    send: 'Send message',
+  },
+  bn: {
+    checkFailed: 'নিরাপত্তা যাচাই শেষ করা যায়নি। আবার চেষ্টা করুন।',
+    notSetUp: 'ফর্মটি এখনো চালু হয়নি। অনুগ্রহ করে কল বা ইমেইল করুন।',
+    doCheck: 'আগে নিরাপত্তা যাচাইটি সম্পন্ন করুন।',
+    wrong: 'কিছু একটা সমস্যা হয়েছে।',
+    sentK: 'মেসেজ পাঠানো হয়েছে',
+    sentH: 'ধন্যবাদ। আমরা শিগগির উত্তর দেব।',
+    sentP: 'অফিস সময়ে আমরা সাধারণত ২–৪ ঘণ্টার মধ্যে উত্তর দিই। আপনার ইমেইল দেখুন, স্প্যাম ফোল্ডারসহ।',
+    title: 'আমাদের মেসেজ পাঠান',
+    name: 'আপনার নাম',
+    namePh: 'আপনার পুরো নাম',
+    email: 'ইমেইল',
+    subject: 'বিষয়',
+    subjectPh: 'কীভাবে সাহায্য করতে পারি?',
+    message: 'মেসেজ',
+    messagePh: 'আপনার প্রজেক্ট বা প্রশ্নের কথা লিখুন',
+    off: 'এখানে অনলাইন ফর্মটি চালু নেই। অনুগ্রহ করে কল বা ইমেইল করুন।',
+    sending: 'পাঠানো হচ্ছে…',
+    send: 'মেসেজ পাঠান',
+  },
+}
+
 /** Contact form: Cloudflare Turnstile, a hidden honeypot field and a fill-time check, posted to /api/contact. */
-export default function ContactForm() {
+export default function ContactForm({ lang = 'en' }: { lang?: Lang }) {
+  const t = text[lang]
   const formStartedAt = useRef(Date.now())
   const turnstileBox = useRef<HTMLDivElement>(null)
   const widgetId = useRef<string | null>(null)
@@ -54,7 +99,7 @@ export default function ContactForm() {
       'expired-callback': () => setCaptchaToken(''),
       'error-callback': () => {
         setCaptchaToken('')
-        setError('The security check could not be completed. Please try again.')
+        setError(t.checkFailed)
       },
     })
     return () => {
@@ -63,7 +108,7 @@ export default function ContactForm() {
         widgetId.current = null
       }
     }
-  }, [captchaReady])
+  }, [captchaReady, t.checkFailed])
 
   // Thank-you message rises in after a successful send.
   useEffect(() => {
@@ -75,11 +120,11 @@ export default function ContactForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!turnstileSiteKey) {
-      setError('The form is not set up yet. Please call or email us instead.')
+      setError(t.notSetUp)
       return
     }
     if (!captchaToken) {
-      setError('Please complete the security check first.')
+      setError(t.doCheck)
       return
     }
     setLoading(true)
@@ -91,10 +136,10 @@ export default function ContactForm() {
         body: JSON.stringify({ ...form, formStartedAt: formStartedAt.current, turnstileToken: captchaToken }),
       })
       const data = await res.json()
-      if (!res.ok) throw new Error(data.error || 'Something went wrong.')
+      if (!res.ok) throw new Error(data.error || t.wrong)
       setSubmitted(true)
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Something went wrong.')
+      setError(err instanceof Error ? err.message : t.wrong)
     } finally {
       setLoading(false)
     }
@@ -106,9 +151,9 @@ export default function ContactForm() {
   if (submitted) {
     return (
       <div ref={done} className='card' role='status'>
-        <span className='k'>Message sent</span>
-        <h3>Thank you. We will reply soon.</h3>
-        <p>We usually answer within 2–4 hours during business hours. Check your email, including the spam folder.</p>
+        <span className='k'>{t.sentK}</span>
+        <h3>{t.sentH}</h3>
+        <p>{t.sentP}</p>
       </div>
     )
   }
@@ -122,34 +167,34 @@ export default function ContactForm() {
           onLoad={() => setCaptchaReady(true)}
         />
       )}
-      <h3>Send us a message</h3>
+      <h3>{t.title}</h3>
       <div className='hp' aria-hidden='true'>
         <label htmlFor='company-website'>Website</label>
         <input id='company-website' type='text' tabIndex={-1} autoComplete='off' value={form.website} onChange={set('website')} />
       </div>
       <div className='two'>
         <div className='field'>
-          <label htmlFor='cf-name'>Your name</label>
-          <input id='cf-name' type='text' required autoComplete='name' value={form.name} onChange={set('name')} placeholder='Your full name' />
+          <label htmlFor='cf-name'>{t.name}</label>
+          <input id='cf-name' type='text' required autoComplete='name' value={form.name} onChange={set('name')} placeholder={t.namePh} />
         </div>
         <div className='field'>
-          <label htmlFor='cf-email'>Email</label>
+          <label htmlFor='cf-email'>{t.email}</label>
           <input id='cf-email' type='email' required autoComplete='email' value={form.email} onChange={set('email')} placeholder='you@example.com' />
         </div>
       </div>
       <div className='field'>
-        <label htmlFor='cf-subject'>Subject</label>
-        <input id='cf-subject' type='text' required value={form.subject} onChange={set('subject')} placeholder='How can we help?' />
+        <label htmlFor='cf-subject'>{t.subject}</label>
+        <input id='cf-subject' type='text' required value={form.subject} onChange={set('subject')} placeholder={t.subjectPh} />
       </div>
       <div className='field'>
-        <label htmlFor='cf-message'>Message</label>
-        <textarea id='cf-message' required minLength={10} rows={6} value={form.message} onChange={set('message')} placeholder='Tell us about your project or question' />
+        <label htmlFor='cf-message'>{t.message}</label>
+        <textarea id='cf-message' required minLength={10} rows={6} value={form.message} onChange={set('message')} placeholder={t.messagePh} />
       </div>
       <div ref={turnstileBox} style={{ minHeight: turnstileSiteKey ? 65 : 0 }} />
-      {!turnstileSiteKey && <p className='fine'>The online form is not switched on here. Please call or email us.</p>}
+      {!turnstileSiteKey && <p className='fine'>{t.off}</p>}
       {error && <p className='err' role='alert'>{error}</p>}
       <button className='btn btn-pri' type='submit' disabled={loading || !captchaToken || !turnstileSiteKey}>
-        {loading ? 'Sending…' : 'Send message'}
+        {loading ? t.sending : t.send}
       </button>
     </form>
   )

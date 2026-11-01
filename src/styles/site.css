@@ -30,6 +30,29 @@
   overflow-x: clip;
 }
 .rh h1, .rh h2, .rh h3, .rh h4 { margin: 0; text-wrap: balance; letter-spacing: -0.025em; line-height: 1.05; }
+/* Bangla pages: Manrope for Latin text, Noto Sans Bengali for Bangla; Bangla needs more line height and no tight tracking */
+.rh[lang='bn'] { --rh-font: var(--font-manrope), var(--font-bn), 'Noto Sans Bengali', system-ui, sans-serif; --rh-mono: var(--font-plex-mono), var(--font-bn), ui-monospace, monospace; line-height: 1.7; }
+.rh[lang='bn'] h1, .rh[lang='bn'] h2, .rh[lang='bn'] h3, .rh[lang='bn'] h4 { letter-spacing: 0; line-height: 1.3; }
+.rh[lang='bn'] .k, .rh[lang='bn'] .way small, .rh[lang='bn'] .field label, .rh[lang='bn'] .toc span { letter-spacing: 0; text-transform: none; }
+.rh[lang='bn'] .sf-cap h1 { line-height: 1.2; font-size: clamp(34px, 5.4vw, 70px); }
+/* At the same px size Bangla letters look smaller than Latin ones, so Bangla text, menus, labels
+   and buttons are set one step larger; headings keep the English scale (only the hero is trimmed). */
+.rh[lang='bn'] .sf-cap h2 { font-size: clamp(30px, 4.4vw, 58px); }
+.rh[lang='bn'] main p, .rh[lang='bn'] main li { font-size: max(1em, 17px); }
+.rh[lang='bn'] main .fine, .rh[lang='bn'] main .meta span { font-size: 14.5px; }
+.rh[lang='bn'] .lead, .rh[lang='bn'] .phead p, .rh[lang='bn'] .sf-cap p { font-size: 19px; }
+.rh[lang='bn'] .k, .rh[lang='bn'] .card .n, .rh[lang='bn'] .svc .n { font-size: 14px; }
+.rh[lang='bn'] .btn { font-size: 16px; }
+.rh[lang='bn'] .rh-nav .menu > li > a, .rh[lang='bn'] .rh-nav .menu > li > button { padding: 8px 11px; font-size: 16px; }
+.rh[lang='bn'] .rh-nav .drop a { font-size: 16px; }
+.rh[lang='bn'] .rh-nav .drop a small, .rh[lang='bn'] .rh-drawer .dr-sub small { font-size: 13.5px; }
+.rh[lang='bn'] .rh-drawer .dr-link { font-size: 22px; }
+.rh[lang='bn'] .rh-drawer .dr-sub { font-size: 17.5px; }
+.rh[lang='bn'] .rh-drawer .dr-k { font-size: 14px; }
+.rh[lang='bn'] .spec-tag small, .rh[lang='bn'] .way small, .rh[lang='bn'] .field label, .rh[lang='bn'] .toc span { font-size: 13.5px; }
+.rh[lang='bn'] .stats span, .rh[lang='bn'] .tags span, .rh[lang='bn'] .pill { font-size: 14px; }
+.rh[lang='bn'] .rh-footer, .rh[lang='bn'] .toc a { font-size: 15px; }
+.rh[lang='bn'] .specs li { font-size: 15.5px; }
 .rh p { margin: 0; }
 .rh a { color: inherit; }
 .rh :focus-visible { outline: 2px solid var(--rh-sky); outline-offset: 3px; }
@@ -56,7 +79,7 @@
 .rh-nav .logo { display: block; width: 176px; height: auto; flex: none; }
 .rh-nav .menu { display: flex; gap: 2px; list-style: none; margin: 0; padding: 0; }
 .rh-nav .menu > li { position: relative; }
-.rh-nav .menu > li > a, .rh-nav .menu > li > button { display: flex; align-items: center; gap: 7px; padding: 8px 12px; border-radius: 8px; font: 600 14.5px var(--rh-font); color: #c4d1de; text-decoration: none; background: none; border: 0; cursor: pointer; }
+.rh-nav .menu > li > a, .rh-nav .menu > li > button { display: flex; align-items: center; gap: 7px; white-space: nowrap; padding: 8px 12px; border-radius: 8px; font: 600 14.5px var(--rh-font); color: #c4d1de; text-decoration: none; background: none; border: 0; cursor: pointer; }
 .rh-nav .menu > li > a:hover, .rh-nav .menu > li.open > button, .rh-nav .menu > li > button:hover, .rh-nav .menu a[aria-current='page'] { color: #fff; background: rgba(255, 255, 255, 0.06); }
 .rh-nav .drop { position: absolute; top: 100%; left: 0; min-width: 260px; background: var(--rh-panel, #0e1c2b); border: 1px solid var(--rh-line, #22384f); border-radius: 12px; padding: 8px; list-style: none; margin: 8px 0 0; visibility: hidden; opacity: 0; box-shadow: 0 24px 48px rgba(0, 0, 0, 0.45); }
 .rh-nav .caret { width: 7px; height: 7px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: translateY(-2px) rotate(45deg); transition: transform 0.3s ease; opacity: 0.7; }
@@ -67,6 +90,12 @@
 .rh-nav .drop a small { transition: color 0.25s ease; }
 .rh-nav .drop a:hover small, .rh-nav .drop a:focus-visible small { color: var(--rh-text, #b6c4d3); }
 .rh-nav .spacer { flex: 1; }
+.lang-btn { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 40px; padding: 0 12px; border-radius: 10px; color: #c4d1de; text-decoration: none; font: 600 14.5px var(--rh-font); transition: background 0.2s, color 0.2s; }
+.lang-btn svg { width: 17px; height: 17px; flex: none; }
+.lang-btn[lang='bn'] { font-family: var(--font-bn), var(--rh-font); font-size: 15.5px; }
+.lang-btn:hover { color: #fff; background: rgba(255, 255, 255, 0.06); }
+.rh-drawer .dr-lang { padding: 14px 20px 0; }
+.rh-drawer .dr-lang .lang-btn { width: 100%; min-height: 46px; border: 1px solid var(--rh-line); background: var(--rh-panel-2); }
 .rh-nav .burger { display: none; align-items: center; gap: 10px; background: var(--rh-panel); border: 1px solid var(--rh-line); color: var(--rh-white); border-radius: 10px; padding: 10px 14px; font: 600 13px var(--rh-mono); letter-spacing: 0.06em; cursor: pointer; }
 .rh-nav .burger .bars { display: grid; gap: 5px; width: 18px; }
 .rh-nav .burger .bars i { display: block; height: 2px; border-radius: 2px; background: currentColor; }
@@ -237,9 +266,17 @@ html.rh-lock { overflow: hidden; }
 .rh-footer a:hover { color: #fff; }
 .rh-footer .legal { margin-top: 36px; padding-top: 20px; border-top: 1px solid #22384f; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-size: 13px; }
 
-@media (max-width: 980px) {
+/* Bangla menu words are longer, so the Bangla menu folds into the drawer earlier */
+@media (max-width: 1300px) {
+  .rh[lang='bn'] .rh-nav .menu, .rh[lang='bn'] .rh-nav .hide-sm { display: none; }
+  .rh[lang='bn'] .rh-nav .burger { display: inline-flex; }
+}
+/* the full menu needs about 1120 px (more with the language switch); below that it folds into the drawer */
+@media (max-width: 1120px) {
   .rh-nav .menu, .rh-nav .hide-sm { display: none; }
   .rh-nav .burger { display: inline-flex; }
+}
+@media (max-width: 980px) {
   .rh .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .rh .plans, .rh .prom, .rh .work, .rh .faq { grid-template-columns: minmax(0, 1fr); }
   .rh .pr.wide { grid-column: auto; }

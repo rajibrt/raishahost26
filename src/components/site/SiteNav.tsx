@@ -4,8 +4,10 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
+import { Languages } from 'lucide-react'
 import { useGSAP } from '@gsap/react'
-import { CLIENT_AREA_URL, navItems } from './links'
+import { CLIENT_AREA_URL, navItems, type NavItem } from './links'
+import { basePath, langOf, localPath, ui, type Lang } from '@/i18n'
 
 gsap.registerPlugin(useGSAP)
 
@@ -25,6 +27,12 @@ export default function SiteNav() {
   const drops = useRef<Record<string, HTMLUListElement | null>>({})
   const shown = useRef<string | null>(null)
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const lang = langOf(pathname)
+  const t = ui[lang]
+  const L = (href: string) => localPath(href, lang)
+  const lbl = (i: NavItem) => (lang === 'bn' ? i.bn : i.label)
+  const note = (i: NavItem) => (lang === 'bn' ? i.noteBn : i.note)
 
   const close = useCallback(() => setOpen(false), [])
   const openMenu = (label: string) => {
@@ -144,7 +152,7 @@ export default function SiteNav() {
   useEffect(() => {
     if (!open) return
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(false)
-    const wide = window.matchMedia('(min-width: 981px)')
+    const wide = window.matchMedia(lang === 'bn' ? '(min-width: 1301px)' : '(min-width: 1121px)')
     const onWide = () => wide.matches && setOpen(false)
     window.addEventListener('keydown', onKey)
     wide.addEventListener('change', onWide)
@@ -152,18 +160,38 @@ export default function SiteNav() {
       window.removeEventListener('keydown', onKey)
       wide.removeEventListener('change', onWide)
     }
-  }, [open])
+  }, [open, lang])
 
   useEffect(() => () => document.documentElement.classList.remove('rh-lock'), [])
 
-  const current = (href: string) =>
-    (href === '/' ? pathname === '/' : pathname.startsWith(href)) ? 'page' : undefined
+  const here = basePath(pathname)
+  const current = (href: string) => ((href === '/' ? here === '/' : here.startsWith(href)) ? 'page' : undefined)
+
+  // Language button, as in the London Park app: a translate icon and the name of the other
+  // language. It opens this page in that language and remembers the choice for a year.
+  const other: Lang = lang === 'bn' ? 'en' : 'bn'
+  const langSwitch = (
+    <Link
+      className='lang-btn'
+      href={localPath(here, other)}
+      hrefLang={other}
+      lang={other}
+      aria-label={other === 'en' ? 'Switch to English' : 'বাংলায় দেখুন'}
+      onClick={() => {
+        document.cookie = `rh-lang=${other}; path=/; max-age=31536000; samesite=lax`
+        close()
+      }}
+    >
+      <Languages aria-hidden='true' />
+      {other === 'en' ? 'English' : 'বাংলা'}
+    </Link>
+  )
 
   return (
     <>
-      <nav className={`rh-nav gut${solid ? ' solid' : ''}`} aria-label='Main'>
+      <nav className={`rh-nav gut${solid ? ' solid' : ''}`} aria-label={t.mainNav}>
         <div className='in bar'>
-          <Link href='/' aria-label='RaishaHost home'>
+          <Link href={L('/')} aria-label={t.home}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img className='logo' src='/brand/raishahost-logo-on-dark.svg' alt='RaishaHost' width={176} height={22} />
           </Link>
@@ -183,7 +211,7 @@ export default function SiteNav() {
                     aria-expanded={menu === item.label}
                     onClick={() => setMenu((m) => (m === item.label ? null : item.label))}
                   >
-                    {item.label}
+                    {lbl(item)}
                     <i className='caret' aria-hidden='true' />
                   </button>
                   <ul className='drop' ref={(el) => { drops.current[item.label] = el }} onMouseLeave={() => restHighlight(item.label)}>
@@ -191,14 +219,14 @@ export default function SiteNav() {
                     {item.children.map((c) => (
                       <li key={c.href}>
                         <Link
-                          href={c.href}
+                          href={L(c.href)}
                           aria-current={current(c.href)}
                           onClick={() => setMenu(null)}
                           onMouseEnter={(e) => moveHighlight(item.label, e.currentTarget)}
                           onFocus={(e) => moveHighlight(item.label, e.currentTarget)}
                         >
-                          {c.label}
-                          {c.note && <small>{c.note}</small>}
+                          {lbl(c)}
+                          {note(c) && <small>{note(c)}</small>}
                         </Link>
                       </li>
                     ))}
@@ -206,19 +234,20 @@ export default function SiteNav() {
                 </li>
               ) : (
                 <li key={item.label}>
-                  <Link href={item.href} aria-current={current(item.href)}>
-                    {item.label}
+                  <Link href={L(item.href)} aria-current={current(item.href)}>
+                    {lbl(item)}
                   </Link>
                 </li>
               ),
             )}
           </ul>
           <span className='spacer' />
+          <div className='hide-sm'>{langSwitch}</div>
           <a className='btn btn-ghost hide-sm' href={CLIENT_AREA_URL} target='_blank' rel='noopener noreferrer'>
-            Client Area
+            {t.clientArea}
           </a>
-          <Link className='btn btn-pri' href='/hosting'>
-            Get Started
+          <Link className='btn btn-pri' href={L('/hosting')}>
+            {t.getStarted}
           </Link>
           <button
             ref={burger}
@@ -229,7 +258,7 @@ export default function SiteNav() {
             onClick={() => setOpen(true)}
           >
             <span className='bars' aria-hidden='true'><i /><i /></span>
-            MENU
+            {t.menu}
           </button>
         </div>
       </nav>
@@ -240,53 +269,54 @@ export default function SiteNav() {
         id='rh-drawer'
         role='dialog'
         aria-modal='true'
-        aria-label='Site menu'
+        aria-label={t.siteMenu}
         aria-hidden={!open}
         data-lenis-prevent
       >
         <div className='dr-veil' onClick={close} />
         <div className='dr-panel'>
           <div className='dr-head'>
-            <Link href='/' aria-label='RaishaHost home' onClick={close}>
+            <Link href={L('/')} aria-label={t.home} onClick={close}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src='/brand/raishahost-logo-on-dark.svg' alt='RaishaHost' width={150} height={19} />
             </Link>
-            <button ref={closeBtn} className='dr-close' type='button' aria-label='Close menu' onClick={close}>
+            <button ref={closeBtn} className='dr-close' type='button' aria-label={t.closeMenu} onClick={close}>
               <span /><span />
             </button>
           </div>
+          <div className='dr-lang dr-item'>{langSwitch}</div>
 
-          <nav className='dr-body' aria-label='Mobile'>
+          <nav className='dr-body' aria-label={t.mobileNav}>
             {navItems.map((item, i) => {
               const n = String(i + 1).padStart(2, '0')
               return item.children ? (
                 <div key={item.label} className='dr-group dr-item'>
-                  <span className='dr-k'><b>{n}</b>{item.label}</span>
+                  <span className='dr-k'><b>{n}</b>{lbl(item)}</span>
                   {item.children.map((c) => (
-                    <Link key={c.href} className='dr-sub' href={c.href} aria-current={current(c.href)} onClick={close}>
-                      {c.label}
-                      {c.note && <small>{c.note}</small>}
+                    <Link key={c.href} className='dr-sub' href={L(c.href)} aria-current={current(c.href)} onClick={close}>
+                      {lbl(c)}
+                      {note(c) && <small>{note(c)}</small>}
                     </Link>
                   ))}
                 </div>
               ) : (
-                <Link key={item.label} className='dr-link dr-item' href={item.href} aria-current={current(item.href)} onClick={close}>
+                <Link key={item.label} className='dr-link dr-item' href={L(item.href)} aria-current={current(item.href)} onClick={close}>
                   <b>{n}</b>
-                  {item.label}
+                  {lbl(item)}
                 </Link>
               )
             })}
           </nav>
 
           <div className='dr-foot'>
-            <Link className='btn btn-pri' href='/hosting' onClick={close}>
-              Get Started
+            <Link className='btn btn-pri' href={L('/hosting')} onClick={close}>
+              {t.getStarted}
             </Link>
             <a className='btn btn-ghost' href={CLIENT_AREA_URL} target='_blank' rel='noopener noreferrer'>
-              Client Area
+              {t.clientArea}
             </a>
             <a className='dr-tel' href={PHONE.href}>
-              Questions? Call <b>{PHONE.label}</b>
+              {t.callLine} <b>{PHONE.label}</b>
             </a>
           </div>
         </div>

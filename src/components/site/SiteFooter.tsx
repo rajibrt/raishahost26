@@ -1,7 +1,9 @@
 import Link from 'next/link'
 import { footerColumns } from './links'
+import { localPath, ui, type Lang } from '@/i18n'
 
-export default function SiteFooter() {
+export default function SiteFooter({ lang = 'en' }: { lang?: Lang }) {
+  const t = ui[lang]
   return (
     <footer className='rh-footer gut'>
       <div className='in' style={{ maxWidth: 1180, margin: '0 auto' }}>
@@ -9,7 +11,7 @@ export default function SiteFooter() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img className='logo' src='/brand/raishahost-logo-on-dark.svg' alt='RaishaHost' width={170} height={22} />
-            <p>Web hosting, VPS servers, domains and web design since 2008.</p>
+            <p>{t.footerTagline}</p>
             <p>
               <a href='tel:+8801878037803'>+880 1878-037803</a>
               <br />
@@ -20,16 +22,16 @@ export default function SiteFooter() {
           </div>
           {footerColumns.map((col) => (
             <div key={col.title}>
-              <h4>{col.title}</h4>
+              <h4>{lang === 'bn' ? col.bn : col.title}</h4>
               <ul>
                 {col.links.map((l) => (
                   <li key={l.label}>
                     {l.external ? (
                       <a href={l.href} target='_blank' rel='noopener noreferrer'>
-                        {l.label}
+                        {lang === 'bn' ? l.bn : l.label}
                       </a>
                     ) : (
-                      <Link href={l.href}>{l.label}</Link>
+                      <Link href={localPath(l.href, lang)}>{lang === 'bn' ? l.bn : l.label}</Link>
                     )}
                   </li>
                 ))}
@@ -38,8 +40,8 @@ export default function SiteFooter() {
           ))}
         </div>
         <div className='legal'>
-          <span>© {new Date().getFullYear()} RaishaHost. All rights reserved.</span>
-          <span>Prices in BDT and USD. cPanel hosting billed yearly, VPS billed monthly.</span>
+          <span>© {new Date().getFullYear()} RaishaHost. {t.rights}</span>
+          <span>{t.footerBilling}</span>
         </div>
       </div>
     </footer>

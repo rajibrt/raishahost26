@@ -8,12 +8,11 @@ import {
   vpsCommonFeatures,
   type Plan,
 } from '@/data/plans'
+import { bdt, usd, planWord, ui, type Lang } from '@/i18n'
 
 type Kind = 'shared' | 'vps'
 type Currency = 'bdt' | 'usd'
 
-const bdt = (n: number) => '৳' + n.toLocaleString('en-US')
-const usd = (n: number) => '$' + n.toFixed(2)
 
 function tilt(e: React.MouseEvent<HTMLElement>) {
   const el = e.currentTarget
@@ -23,9 +22,11 @@ function tilt(e: React.MouseEvent<HTMLElement>) {
   el.style.transform = `rotateY(${x * 8}deg) rotateX(${-y * 8}deg)`
 }
 
-function PlanCard({ plan, currency }: { plan: Plan; currency: Currency }) {
+function PlanCard({ plan, currency, lang }: { plan: Plan; currency: Currency; lang: Lang }) {
+  const t = ui[lang]
   const showUsd = currency === 'usd' && plan.price.usd != null
-  const per = plan.period === 'yearly' ? '/year' : '/month'
+  const per = plan.period === 'yearly' ? t.perYear : t.perMonth
+  const tagline = lang === 'bn' ? plan.taglineBn ?? plan.tagline : plan.tagline
   const rows = plan.specs.slice(0, plan.period === 'yearly' ? 6 : 3)
   return (
     <article
@@ -35,24 +36,24 @@ function PlanCard({ plan, currency }: { plan: Plan; currency: Currency }) {
     >
       <div className='top'>
         <h3>{plan.name}</h3>
-        {plan.featured && <span className='pill'>Most popular</span>}
+        {plan.featured && <span className='pill'>{t.recommended}</span>}
       </div>
       <div className='price'>
         <b>{showUsd ? usd(plan.price.usd!) : bdt(plan.price.bdt)}</b>
         <span>{per}</span>
         {!showUsd && plan.price.bdtOriginal && <s>{bdt(plan.price.bdtOriginal)}</s>}
       </div>
-      {plan.tagline && <p className='tag'>{plan.tagline}</p>}
+      {tagline && <p className='tag'>{tagline}</p>}
       <ul className='specs'>
         {rows.map((s) => (
           <li key={s.label}>
-            <span>{s.label}</span>
-            <b>{s.value}</b>
+            <span>{planWord(s.label, lang)}</span>
+            <b>{planWord(s.value, lang)}</b>
           </li>
         ))}
         {plan.period === 'monthly' && (
           <li>
-            <span>Bandwidth</span>
+            <span>{t.bandwidth}</span>
             <b>20 TB</b>
           </li>
         )}
@@ -63,7 +64,7 @@ function PlanCard({ plan, currency }: { plan: Plan; currency: Currency }) {
         target='_blank'
         rel='noopener noreferrer'
       >
-        Order {plan.name}
+        {t.order} · {plan.name}
       </a>
     </article>
   )
@@ -72,36 +73,34 @@ function PlanCard({ plan, currency }: { plan: Plan; currency: Currency }) {
 export default function PlanTabs({
   initial = 'shared',
   lockKind = false,
+  lang = 'en',
 }: {
   initial?: Kind
   lockKind?: boolean
+  lang?: Lang
 }) {
+  const t = ui[lang]
   const [kind, setKind] = useState<Kind>(initial)
   const [currency, setCurrency] = useState<Currency>('bdt')
   const plans = kind === 'shared' ? sharedHostingPlans : vpsPlans
   const features = kind === 'shared' ? sharedCommonFeatures : vpsCommonFeatures
 
-  const note =
-    kind === 'shared'
-      ? currency === 'usd'
-        ? 'cPanel hosting is priced in taka. USD prices for these plans are not set yet.'
-        : 'Prices per year.'
-      : 'Prices per month.'
+  const note = kind === 'shared' ? (currency === 'usd' ? t.usdNotSet : t.pricesYear) : t.pricesMonth
 
   return (
     <div>
       <div className='controls' style={{ marginBottom: 24 }}>
         {!lockKind && (
-          <div className='seg' role='group' aria-label='Plan type'>
+          <div className='seg' role='group' aria-label={t.planType}>
             <button type='button' aria-pressed={kind === 'shared'} onClick={() => setKind('shared')}>
-              cPanel Hosting
+              {t.cpanel}
             </button>
             <button type='button' aria-pressed={kind === 'vps'} onClick={() => setKind('vps')}>
-              VPS
+              {t.vps}
             </button>
           </div>
         )}
-        <div className='seg' role='group' aria-label='Currency'>
+        <div className='seg' role='group' aria-label={t.currency}>
           <button type='button' aria-pressed={currency === 'bdt'} onClick={() => setCurrency('bdt')}>
             ৳ BDT
           </button>
@@ -112,12 +111,12 @@ export default function PlanTabs({
       </div>
       <div className='plans'>
         {plans.map((p) => (
-          <PlanCard key={p.id} plan={p} currency={currency} />
+          <PlanCard key={p.id} plan={p} currency={currency} lang={lang} />
         ))}
       </div>
       <div className='incl'>
         {features.map((f) => (
-          <span key={f}>{f}</span>
+          <span key={f}>{planWord(f, lang)}</span>
         ))}
       </div>
       <p className='fine'>{note}</p>

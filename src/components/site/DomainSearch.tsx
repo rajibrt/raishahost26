@@ -2,9 +2,11 @@
 
 import { useState } from 'react'
 import { DOMAIN_SEARCH_URL } from './links'
+import { ui, type Lang } from '@/i18n'
 
 /** Sends the visitor to the WHMCS domain search with their query filled in. */
-export default function DomainSearch({ className = '' }: { className?: string }) {
+export default function DomainSearch({ className = '', lang = 'en' }: { className?: string; lang?: Lang }) {
+  const t = ui[lang]
   const [q, setQ] = useState('')
   return (
     <form
@@ -16,19 +18,19 @@ export default function DomainSearch({ className = '' }: { className?: string })
       }}
     >
       <label htmlFor='rh-domain' className='sr'>
-        Search for a domain
+        {t.searchDomain}
       </label>
       <input
         id='rh-domain'
         name='domain'
         value={q}
         onChange={(e) => setQ(e.target.value)}
-        placeholder='find your domain'
+        placeholder={t.findDomain}
         autoComplete='off'
         spellCheck={false}
       />
       <button className='btn btn-pri' type='submit'>
-        Search
+        {t.search}
       </button>
     </form>
   )

@@ -50,7 +50,7 @@ The public website of **RaishaHost** (https://raishahost.com): a web hosting com
 - Brand colors: **blue `#1B75BB`**, **charcoal `#3B3A3C`**. On dark backgrounds the charcoal parts become white: use `public/brand/*-on-dark.svg`.
 - The old `public/raisha-host-logo.svg` (cyan/indigo) is **not** the official logo; it is only still used by old pages.
 - Redesign tokens (dark theme) are in `src/styles/site.css` under `.rh`: background `#08121d`, panels `#0e1c2b`, sky accent `#4fa8ea`, fonts Manrope (text) and IBM Plex Mono (labels, numbers).
-- Bangla font: **Noto Sans Bengali** (`--font-bn`, loaded in `src/app/layout.tsx`, not preloaded). It is the font used across the owner's other projects and has weights 100–900, so bold Bangla headings render properly. Use it through `.bn` or `lang='bn'`.
+- Bangla font (sizes one step larger than English, see section 9): **Noto Sans Bengali** (`--font-bn`, loaded in `src/app/layout.tsx`, not preloaded). It is the font used across the owner's other projects and has weights 100–900, so bold Bangla headings render properly. Use it through `.bn` or `lang='bn'`.
 - Type scale (keep to it on every page):
 
   | Role | Size | Weight |
@@ -77,7 +77,9 @@ The public website of **RaishaHost** (https://raishahost.com): a web hosting com
 | `src/components/home/HomeMotion.tsx` | GSAP reveals, counters, horizontal services, steps rail |
 | `src/components/home/HomeV5.tsx` | Frozen v5 homepage, served at `/preview/v5` |
 | `src/components/site/` | New nav (`SiteNav`), footer, links (`links.ts`), plan cards (`PlanTabs`), domain search, inner page shell |
-| `src/app/hosting`, `vps`, `domains`, `work`, `services`, `about`, `contact`, `logo-design`, `knowledge`, `money-back`, `guarantees`, `terms-conditions`, `privacy` | Redesign pages, all built on `InnerPage` |
+| `src/views/*View.tsx` | Every page's layout and copy in English and Bangla (see "Language plan") |
+| `src/app/<route>/page.tsx`, `src/app/bn/<route>/page.tsx` | Thin English and Bangla route wrappers around the views |
+| `src/i18n/index.ts` | Language helpers, shared UI words, hreflang/metadata helpers |
 | `src/components/site/PageMotion.tsx`, `DocMotion.tsx`, `PolicyDoc.tsx` | Scroll motion for inner pages, reading progress and contents list, policy document layout |
 | `src/components/sections/`, `Navbar.tsx`, `Footer.tsx`, `*Content.tsx` in old routes | Old design, no longer used. Keep until the owner agrees to remove |
 | `src/data/plans.ts` | All plan prices and specs |
@@ -142,7 +144,7 @@ The single place to see what is done and what is left. Update it in the same com
 ### Done
 
 - Homepage v7: three scroll videos (server, Earth reach, light tunnel) with a chapter rail, crossfades between videos and a soft handoff to the services section; no three.js on the homepage.
-- Every route is in the new design (v8): `/`, `/hosting`, `/vps`, `/domains`, `/work`, `/services`, `/about`, `/contact`, `/logo-design`, `/knowledge`, `/knowledge/[slug]`, `/money-back`, `/guarantees`, `/terms-conditions` and the new `/privacy`. `/web-design` and `/web-design/packages` redirect to `/services`.
+- Every route is in the new design (v8) and in English and Bangla (v9): `/`, `/hosting`, `/vps`, `/domains`, `/work`, `/services`, `/about`, `/contact`, `/logo-design`, `/knowledge`, `/knowledge/[slug]`, `/money-back`, `/guarantees`, `/terms-conditions` and the new `/privacy`. `/web-design` and `/web-design/packages` redirect to `/services`.
 - Shared blocks in `src/styles/site.css` (cards, split, checks/crosses, timeline, policy document with sticky contents, forms, contact cards, band, article) and motion components: `PageMotion` (scroll reveals, staggers, counters, drawn lines), `DocMotion` (reading-progress bar and active contents link), `PolicyDoc`.
 - Per-page motion: services (staggered cards, steps rail that draws), about (counters, a timeline that draws), contact (staggered contact cards, form thank-you), logo design (checklist, steps rail), knowledge (staggered articles, reading progress on articles), policies (contents list that follows the section you read, reading progress).
 - Copy is plain English and follows section 3: no testimonials or client counts, "99.9% uptime target", money-back conditions written out, website package prices moved to `websitePackages` in `src/data/plans.ts`.
@@ -163,8 +165,16 @@ The single place to see what is done and what is left. Update it in the same com
 ### Language plan
 
 1. **English first (done, November 2026).** Every page, the Messenger prompts and the knowledge-base articles are in English. The Bangla originals of the two Bangla articles are kept in `src/lib/articles.bn.ts`.
-2. **Bangla next.** Every route gets a Bangla twin under `/bn` (`/bn`, `/bn/hosting`, `/bn/vps`, …), translated by hand in plain Bangla, using Noto Sans Bengali. Prices and plan data still come from `src/data/plans.ts`; only the words change. Each page sets `lang='bn'`, `alternates.languages` (`en` / `bn`) and its own canonical URL.
-3. **Language switcher.** A professional two-option toggle in the navigation (desktop: a compact segmented `EN | বাংলা` control beside Client Area; mobile drawer: the same control at the top), styled like `.seg`. It opens the same page in the other language and remembers the choice in a cookie. No flags, no auto-redirect by IP.
+2. **Bangla (done, November 2026).** Every route has a Bangla twin under `/bn` (`/bn`, `/bn/hosting`, …, `/bn/knowledge/[slug]`), in plain Bangla with Noto Sans Bengali. Prices and plan data still come from `src/data/plans.ts`; only the words change. Each page sets `lang='bn'` on its `.rh` wrapper, hreflang `alternates` (`en`, `bn`, `x-default`) and its own canonical URL; the sitemap lists both languages. The two Bangla articles use the originals in `src/lib/articles.bn.ts`; the WooCommerce article has no Bangla version yet and is shown in English, marked "ইংরেজিতে".
+3. **Language switcher (done).** One button, as in the owner's London Park app: a translate icon (`Languages` from lucide) and the name of the other language ("বাংলা" on English pages, "English" on Bangla pages). It sits beside Client Area on wide screens and at the top of the mobile drawer, opens the same page in the other language and stores the choice in the `rh-lang` cookie. No flags, no auto-redirect.
+
+How it is built:
+
+- `src/i18n/index.ts`: `Lang`, `langOf(path)`, `localPath(path, lang)`, `alternates()`, `pageMeta()`, shared UI words (`ui.en` / `ui.bn`) and Bangla names for plan words.
+- `src/views/*View.tsx`: one view per page with its English and Bangla copy side by side, plus a `…Metadata(lang)` function. `src/app/<route>/page.tsx` and `src/app/bn/<route>/page.tsx` are three-line wrappers that render the view with `lang='en'` or `lang='bn'`. **Change copy in the view, never in the route files, and always update both languages together.**
+- `SiteNav` and the Messenger widget read the language from the URL; other shared components take a `lang` prop.
+- Bangla letters look smaller than Latin ones at the same px size, so Bangla pages set body text, menus, labels and buttons one step larger, keep the English heading scale (only the homepage hero is trimmed) and drop tight letter-spacing (`.rh[lang='bn']` rules in `site.css`). Menu labels never wrap; the full menu folds into the drawer below 1120 px (English) or 1300 px (Bangla).
+- Known limit: the root `<html lang>` stays `en`; the Bangla wrapper and hreflang tags mark the language. Moving `/bn` into its own root layout would fix this if needed.
 
 ### Needs the owner
 
