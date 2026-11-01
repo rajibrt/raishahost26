@@ -27,6 +27,7 @@ const serverCaptions: FrameCaption[] = [
   {
     from: 0,
     to: 0.2,
+    label: 'Hosting',
     content: (
       <div>
         <span className='k'>Web hosting since 2008</span>
@@ -47,6 +48,7 @@ const serverCaptions: FrameCaption[] = [
   },
   {
     from: 0.24,
+    label: 'Hardware',
     to: 0.5,
     content: (
       <div>
@@ -62,6 +64,7 @@ const serverCaptions: FrameCaption[] = [
   },
   {
     from: 0.53,
+    label: 'Included',
     to: 0.77,
     content: (
       <div>
@@ -77,6 +80,7 @@ const serverCaptions: FrameCaption[] = [
   },
   {
     from: 0.8,
+    label: 'VPS',
     to: 1,
     content: (
       <div>
@@ -98,6 +102,7 @@ const tunnelCaptions: FrameCaption[] = [
   {
     from: 0,
     to: 0.45,
+    label: 'Speed',
     align: 'center',
     content: (
       <div>
@@ -109,6 +114,7 @@ const tunnelCaptions: FrameCaption[] = [
   {
     from: 0.5,
     to: 1,
+    label: 'Security',
     align: 'center',
     content: (
       <div>

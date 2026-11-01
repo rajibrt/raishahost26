@@ -11,6 +11,8 @@ export interface FrameCaption {
   from: number
   to: number
   content: React.ReactNode
+  /** Short name shown in the chapter rail. */
+  label?: string
   /** Where the caption sits on desktop. */
   align?: 'left' | 'right' | 'center'
 }
@@ -156,9 +158,20 @@ export default function ScrollFrames({
             </div>
           ))}
         </div>
-        <div className='sf-bar' aria-hidden='true'>
-          <i style={{ transform: `scaleX(${progress})` }} />
-        </div>
+        {/* Chapter rail: one step per caption; the current one fills as you scroll. */}
+        <ol className='sf-rail' aria-hidden='true'>
+          {captions.map((c, i) => {
+            const fill = Math.min(1, Math.max(0, (progress - c.from) / (c.to - c.from)))
+            const state = progress >= c.from && progress <= c.to ? 'on' : fill >= 1 ? 'done' : ''
+            return (
+              <li key={i} className={state} style={{ '--f': fill } as React.CSSProperties}>
+                {c.label && <span className='l'>{c.label}</span>}
+                <span className='n'>{String(i + 1).padStart(2, '0')}</span>
+                <span className='t'><i /></span>
+              </li>
+            )
+          })}
+        </ol>
       </div>
     </section>
   )
