@@ -19,8 +19,22 @@ export default function SiteNav() {
   const burger = useRef<HTMLButtonElement>(null)
   const closeBtn = useRef<HTMLButtonElement>(null)
   const tl = useRef<gsap.core.Timeline | null>(null)
+  // Desktop dropdowns: which one is open, their panels, and a short close delay so moving
+  // the pointer from the button to the panel does not flicker it shut.
+  const [menu, setMenu] = useState<string | null>(null)
+  const drops = useRef<Record<string, HTMLUListElement | null>>({})
+  const shown = useRef<string | null>(null)
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const close = useCallback(() => setOpen(false), [])
+  const openMenu = (label: string) => {
+    if (closeTimer.current) clearTimeout(closeTimer.current)
+    setMenu(label)
+  }
+  const closeMenuSoon = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current)
+    closeTimer.current = setTimeout(() => setMenu(null), 140)
+  }
 
   useEffect(() => {
     const onScroll = () => setSolid(window.scrollY > 40)
@@ -59,6 +73,73 @@ export default function SiteNav() {
     }
   }, [open])
 
+  // Sliding highlight inside a dropdown: one pill that glides to the hovered or focused link,
+  // instead of each link switching its own background.
+  const moveHighlight = (label: string, link: HTMLElement | null, instant = false) => {
+    const hl = drops.current[label]?.querySelector<HTMLElement>('.hl')
+    if (!hl) return
+    if (!link) {
+      gsap.to(hl, { autoAlpha: 0, duration: 0.2, ease: 'power1.out', overwrite: 'auto' })
+      return
+    }
+    const li = link.parentElement as HTMLElement
+    const to = { y: li.offsetTop, height: li.offsetHeight }
+    const hidden = Number(gsap.getProperty(hl, 'opacity')) < 0.05
+    if (instant || hidden) gsap.set(hl, to)
+    gsap.to(hl, { ...(instant || hidden ? {} : to), autoAlpha: 1, duration: 0.35, ease: 'power3.out', overwrite: 'auto' })
+  }
+  const restHighlight = (label: string) =>
+    moveHighlight(label, drops.current[label]?.querySelector<HTMLElement>("a[aria-current='page']") ?? null)
+
+  // Dropdown motion: the panel eases down into place, then its links rise in one by one.
+  useEffect(() => {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const prev = shown.current ? drops.current[shown.current] : null
+    const next = menu ? drops.current[menu] : null
+    if (prev && prev !== next) {
+      gsap.to(prev, { autoAlpha: 0, y: -4, scale: 0.98, duration: reduce ? 0 : 0.2, ease: 'power2.in', overwrite: 'auto' })
+    }
+    if (next && next !== prev && menu) {
+      gsap.fromTo(
+        next,
+        { autoAlpha: 0, y: -8, scale: 0.98, transformOrigin: '50% 0%' },
+        { autoAlpha: 1, y: 0, scale: 1, duration: reduce ? 0 : 0.38, ease: 'power2.out', overwrite: 'auto' },
+      )
+      gsap.fromTo(
+        next.querySelectorAll('li:not(.hl)'),
+        { y: 6, autoAlpha: 0 },
+        { y: 0, autoAlpha: 1, duration: reduce ? 0 : 0.32, stagger: reduce ? 0 : 0.035, delay: reduce ? 0 : 0.05, ease: 'power2.out', overwrite: 'auto' },
+      )
+      const here = next.querySelector<HTMLElement>("a[aria-current='page']")
+      moveHighlight(menu, here, true)
+      if (!here) gsap.set(next.querySelector('.hl'), { autoAlpha: 0 })
+    }
+    shown.current = menu
+  }, [menu])
+
+  // Close the open dropdown on Escape or a click elsewhere (links close it on click).
+  useEffect(() => {
+    if (!menu) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return
+      document.querySelector<HTMLButtonElement>('.rh-nav .menu > li.open > button')?.focus()
+      setMenu(null)
+    }
+    const onDown = (e: PointerEvent) => {
+      if (!(e.target as Element).closest?.('.rh-nav .menu')) setMenu(null)
+    }
+    window.addEventListener('keydown', onKey)
+    window.addEventListener('pointerdown', onDown)
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      window.removeEventListener('pointerdown', onDown)
+    }
+  }, [menu])
+
+  useEffect(() => () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current)
+  }, [])
+
   // Close on Escape, and when the screen grows past the phone/tablet layout.
   useEffect(() => {
     if (!open) return
@@ -89,14 +170,33 @@ export default function SiteNav() {
           <ul className='menu'>
             {navItems.map((item) =>
               item.children ? (
-                <li key={item.label}>
-                  <button type='button' aria-haspopup='true'>
+                <li
+                  key={item.label}
+                  className={menu === item.label ? 'open' : undefined}
+                  onMouseEnter={() => openMenu(item.label)}
+                  onMouseLeave={closeMenuSoon}
+                  onBlur={(e) => !e.currentTarget.contains(e.relatedTarget as Node) && setMenu(null)}
+                >
+                  <button
+                    type='button'
+                    aria-haspopup='true'
+                    aria-expanded={menu === item.label}
+                    onClick={() => setMenu((m) => (m === item.label ? null : item.label))}
+                  >
                     {item.label}
+                    <i className='caret' aria-hidden='true' />
                   </button>
-                  <ul className='drop'>
+                  <ul className='drop' ref={(el) => { drops.current[item.label] = el }} onMouseLeave={() => restHighlight(item.label)}>
+                    <li className='hl' aria-hidden='true' />
                     {item.children.map((c) => (
                       <li key={c.href}>
-                        <Link href={c.href} aria-current={current(c.href)}>
+                        <Link
+                          href={c.href}
+                          aria-current={current(c.href)}
+                          onClick={() => setMenu(null)}
+                          onMouseEnter={(e) => moveHighlight(item.label, e.currentTarget)}
+                          onFocus={(e) => moveHighlight(item.label, e.currentTarget)}
+                        >
                           {c.label}
                           {c.note && <small>{c.note}</small>}
                         </Link>
