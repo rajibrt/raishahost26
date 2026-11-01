@@ -168,9 +168,11 @@ export default function ContactForm({ lang = 'en' }: { lang?: Lang }) {
         />
       )}
       <h3>{t.title}</h3>
+      {/* Spam trap. Neutral id and label on purpose: a field called "Website" was filled by browser
+          autofill, and real messages were rejected as spam ("Failed validation."). */}
       <div className='hp' aria-hidden='true'>
-        <label htmlFor='company-website'>Website</label>
-        <input id='company-website' type='text' tabIndex={-1} autoComplete='off' value={form.website} onChange={set('website')} />
+        <label htmlFor='cf-hp-x9'>Leave this empty</label>
+        <input id='cf-hp-x9' name='cf-hp-x9' type='text' tabIndex={-1} autoComplete='off' data-lpignore='true' data-1p-ignore='true' value={form.website} onChange={set('website')} />
       </div>
       <div className='two'>
         <div className='field'>
