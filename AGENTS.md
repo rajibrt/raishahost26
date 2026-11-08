@@ -204,3 +204,4 @@ How it is built:
 
 ## Jago policy publication — 2026-11-08
 Owner explicitly authorized publishing Jago privacy at https://raishahost.com/jago/privacy/ in the Jago app conversation. Isolated publish/jago-privacy worktree starts from current production main (25079fa), containing only this standalone policy route/document and this note. No pending redesign branch is merged. Policy source: Jago app res/raw/privacy_policy.txt; support info@raishahost.com. Route returns static HTML without website client scripts. Run lint/type/build and local HTTP checks before the owner-authorized main push.
+Policy is live with200; Cloudflare email obfuscation was detected in the delivered HTML. Page-local email_off comments keep the owner-approved public support email readable without injected decoding scripts; no zone-wide protection changes.
