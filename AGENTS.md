@@ -201,3 +201,6 @@ How it is built:
 - Review the new `/privacy` text before it goes live.
 - Client sites with a server problem (seen while taking screenshots, November 2026): **primefinancr.com.au** and **greenpeakbd.com** sometimes print `Warning: opendir(.../wp-content/mu-plugins): Failed to open directory: Permission denied` above the page. Fix on their hosting: give the `wp-content/mu-plugins` folder normal permissions (755, owned by the account user) or create it if missing, and turn off `display_errors` in PHP settings so warnings never show to visitors.
 - Business hours and the second phone number (+880 1711-380679) shown on the old contact page: still correct?
+
+## Jago policy publication — 2026-11-08
+Owner explicitly authorized publishing Jago privacy at https://raishahost.com/jago/privacy/ in the Jago app conversation. Isolated publish/jago-privacy worktree starts from current production main (25079fa), containing only this standalone policy route/document and this note. No pending redesign branch is merged. Policy source: Jago app res/raw/privacy_policy.txt; support info@raishahost.com. Route returns static HTML without website client scripts. Run lint/type/build and local HTTP checks before the owner-authorized main push.
