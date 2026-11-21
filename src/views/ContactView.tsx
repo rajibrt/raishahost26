@@ -37,7 +37,6 @@ export const contactMetadata = (lang: Lang) => pageMeta('/contact', lang, t[lang
 export default function ContactView({ lang }: { lang: Lang }) {
   const c = t[lang]
   const ways = [
-    { ic: '☎', value: '+880 1878-037803', href: 'tel:+8801878037803' },
     { ic: '☎', value: '+880 1711-380679', href: 'tel:+8801711380679' },
     { ic: '@', value: 'info@raishahost.com', href: 'mailto:info@raishahost.com' },
     { ic: 'f', value: 'facebook.com/RaishaHost', href: 'https://facebook.com/RaishaHost' },

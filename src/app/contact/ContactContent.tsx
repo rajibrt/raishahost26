@@ -193,7 +193,6 @@ export default function ContactContent() {
 
             {[
               { icon: Phone, label: 'Phone', value: '+880 1711 380 679', href: 'tel:+8801711380679' },
-              { icon: Phone, label: 'Phone 2', value: '+880 18 7803 7803', href: 'tel:+8801878037803' },
               { icon: Mail, label: 'Email', value: 'info@raishahost.com', href: 'mailto:info@raishahost.com' },
               { icon: MapPin, label: 'Location', value: 'Bangladesh', href: null },
             ].map(({ icon: Icon, label, value, href }) => (

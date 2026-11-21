@@ -94,7 +94,7 @@ export function contactReceiptEmail(r: { name: string; message: string }) {
     <p style="margin:0 0 22px;font-size:15px;line-height:1.7;color:${C.muted};">Thank you for writing to RaishaHost. A real person from our team will reply, usually within <strong style="color:${C.text};">2–4 hours</strong> during business hours (10 am – 8 pm, Bangladesh time).</p>
     ${label('Your message')}
     <div style="background:${C.bg};border:1px solid ${C.line};border-radius:12px;padding:16px 18px;font-size:15px;line-height:1.7;color:${C.text};white-space:pre-wrap;">${r.message}</div>
-    <p style="margin:24px 0 0;font-size:15px;line-height:1.7;color:${C.muted};">Need help sooner? Call <a href="tel:+8801878037803" style="color:${C.sky};text-decoration:none;">+880 1878-037803</a>, or open a support ticket if you are already a customer.</p>
+    <p style="margin:24px 0 0;font-size:15px;line-height:1.7;color:${C.muted};">Need help sooner? Call <a href="tel:+8801711380679" style="color:${C.sky};text-decoration:none;">+880 1711-380679</a>, or open a support ticket if you are already a customer.</p>
     <div style="margin:28px 0 0;">${button(`${SITE}/hosting`, 'See our hosting plans')}</div>`
   const footer = `RaishaHost · Web hosting, VPS servers, domains and web design since 2008<br><a href="${SITE}" style="color:${C.sky};text-decoration:none;">raishahost.com</a> · <a href="https://facebook.com/RaishaHost" style="color:${C.sky};text-decoration:none;">facebook.com/RaishaHost</a>`
   return frame('We received your message and will reply soon.', body, footer)

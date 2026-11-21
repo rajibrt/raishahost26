@@ -11,7 +11,7 @@ import { basePath, langOf, localPath, ui, type Lang } from '@/i18n'
 
 gsap.registerPlugin(useGSAP)
 
-const PHONE = { label: '+880 1878-037803', href: 'tel:+8801878037803' }
+const PHONE = { label: '+880 1711-380679', href: 'tel:+8801711380679' }
 
 export default function SiteNav() {
   const pathname = usePathname()

@@ -83,15 +83,6 @@ export default function Footer() {
                 +880 1711 380 679
               </a>
               <a
-                href='tel:+8801878037803'
-                className='flex items-center gap-3 text-sm text-gray-400 hover:text-[#05CCF7] transition-colors'
-              >
-                <div className='w-8 h-8 rounded-lg bg-[#05CCF7]/10 flex items-center justify-center'>
-                  <Phone className='w-4 h-4 text-[#05CCF7]' />
-                </div>
-                +880 18 7803 7803
-              </a>
-              <a
                 href='mailto:info@raishahost.com'
                 className='flex items-center gap-3 text-sm text-gray-400 hover:text-[#05CCF7] transition-colors'
               >

@@ -41,12 +41,13 @@ The public website of **RaishaHost** (https://raishahost.com): a web hosting com
   - VPS specs: Starter 2 vCPU / 4 GB / 40 GB NVMe; Business 4 vCPU / 8 GB / 40 GB; Pro 4 vCPU / 8 GB / 80 GB. All: 20 TB bandwidth, 1 IPv4 + IPv6, root access, Ubuntu/Debian/AlmaLinux, DDoS protection, 99.9% uptime.
   - Website projects (owner-approved, November 2026): one-time price **ranges** in three tiers (WordPress, WooCommerce shops, custom code with Next.js/React), each card with "what moves the price" and a "Get a quote" button; care plans (৳3,000 / ৳7,500 / ৳15,000 a month, 2 months free yearly) and add-ons have fixed prices. All in `websitePackages`, `carePlans`, `websiteAddOns` in `src/data/plans.ts`. The RaishaHost Messenger bot quotes the same numbers: when you change any of them, tell the bot's Claude session (or the owner) so the bot is updated too.
   - Not set yet, so do not show: delivery times for website projects, USD prices for website projects, a small template "mini website" package.
+  - Each plan has `whmcsPid` (its WHMCS product). `npm run check:prices` must pass after any price change on either side. The WHMCS BDT currency shows `৳` with comma grouping.
   - Taka amounts use lakh grouping (৳1,50,000) through `bdt()` in `src/i18n/index.ts`.
 - **Never reveal** the upstream server provider, data-center country/city or our cost price anywhere on the site (this was removed from WHMCS on purpose).
 - **Money-back policy (30 days):** refunds the hosting fee for shared, VPS and reseller plans; request within 30 days of sign-up; once per client, first service only; account must be verified; domains, setup fees, payment-gateway fees, add-ons and design/development/SEO work are not refundable; free domain/SSL bundled with a plan is suspended on refund. Full text: `src/app/money-back/page.tsx`.
 - Other promises shown on the site: free SSL on every hosting plan, 99.9% uptime target, 24/7 support via tickets.
 - **No invented proof.** No fake testimonials, made-up client counts or ratings. Client names, logos and case studies only with the client's permission. The client websites on `/work` (`src/data/work.ts`) were supplied by the owner in November 2026 for the portfolio; do not add other clients without the owner's say-so. Describe each site plainly; do not invent results or figures for them.
-- Contact: phone +880 1878-037803, Facebook `facebook.com/RaishaHost` (see `src/app/layout.tsx` JSON-LD for the full list).
+- Contact: phone **+880 1711-380679** (the only number to show, owner's instruction November 2026; the old +880 1878-037803 is retired), Facebook `facebook.com/RaishaHost` (see `src/app/layout.tsx` JSON-LD for the full list).
 
 ## 4. Brand
 
@@ -89,6 +90,7 @@ The public website of **RaishaHost** (https://raishahost.com): a web hosting com
 | `src/data/plans.ts` | All plan prices and specs |
 | `src/data/work.ts`, `public/work/`, `scripts/shoot-work.mjs` | Portfolio: client sites by industry, their screenshots, and the script that takes them (headless Chrome) |
 | `design/prototypes/` | Every design version (v1–v6) with a README. **Never delete a version; add the next number** |
+| `whmcs/`, `scripts/build-whmcs-theme.mjs`, `scripts/check-whmcs-prices.mjs` | WHMCS theme for hosting.raishahost.com (child of Nexus, light mode with a dark-mode button) and its order form; see `whmcs/README.md` |
 | `scripts/fetch-media.sh`, `scripts/extract-frames.sh` | Download the Higgsfield videos and turn them into WebP frames in `public/media/<name>/` |
 
 ## 6. Commands
@@ -99,6 +101,8 @@ npm run dev                # dev server on http://localhost:3000
 npm run build && npm start # production build, closest to the live site (use this to judge 3D/scroll smoothness)
 npm run lint               # eslint
 npx tsc --noEmit -p .      # type check
+npm run check:prices       # plans.ts prices = WHMCS prices (BDT and USD)
+npm run whmcs:build        # build the WHMCS theme zip (whmcs/README.md)
 scripts/fetch-media.sh     # needs ffmpeg (macOS: brew install ffmpeg); creates public/media/* frames
 ```
 
@@ -168,6 +172,8 @@ The single place to see what is done and what is left. Update it in the same com
 - `/services` shows the website price ranges by tier, payment terms, care plans and add-ons (English and Bangla).
 - Sitemap lists every route, including `/hosting`, `/vps`, `/domains`, `/work` and `/privacy`; the footer links to `/privacy`.
 
+- WHMCS theme (November 2026): `whmcs/templates/raishahost` (child of Nexus) and `raishahost_cart` order form, **live since 8 November 2026** (System Theme = RaishaHost, Order Form = RaishaHost Cart; the Linux Shared Hosting and VPS groups now use the system default order form instead of supreme_comparison / premium_comparison). Domain links (`cart.php?a=add&domain=register&query=name.com`, from the hero and raishahost.com) now fill WHMCS 9's AI search box and search at once (`raishahost_cart/domainregister.tpl`). Homepage shows every cPanel and VPS plan with live WHMCS prices, domain search, what's included and help links. Light mode default, dark mode button, currency switch (৳ BDT / $ USD) in the header for visitors and beside each plan group, hero with a "three steps" panel (most popular plan, live price). The Starter shared plan is hidden in WHMCS; BDT currency prefix is now `৳`.
+
 ### Kept but no longer used
 
 - `src/app/services/ServicesContent.tsx`, `src/app/logo-design/LogoDesignContent.tsx`, `src/app/contact/ContactContent.tsx`, `src/components/Navbar.tsx`, `src/components/Footer.tsx`, `src/components/sections/*`, `src/components/ScrollReveal.tsx`, `src/components/ui/BorderGlow.tsx`: old design, kept until the owner agrees to remove them.
@@ -194,10 +200,12 @@ How it is built:
 
 ### Needs the owner
 
+- WHMCS theme is live. Optional: set spotlight TLDs (Domain Pricing) so the hero shows .com/.net prices; delete the sample announcement "Thank you for choosing WHMCS!".
+
 - Confirm: "Renewal prices are shown before you pay" (homepage billing card) and payment methods offered (bKash, Nagad, bank, card?).
 - Are the old testimonials (Jim J., Wayne, M L Shannon) real and may we show them? They are off the site until confirmed.
 - Confirm every client in `src/data/work.ts` is happy to be shown (London Park and RCN were earlier listed as "ask first").
 - RCN: when the new site moves from preview.rcnbd.net to rcnbd.net, remove `launching: true` in `src/data/work.ts`, change RCN's address in `scripts/shoot-work.mjs` to `https://rcnbd.net/` and run `node scripts/shoot-work.mjs rcn`.
 - Review the new `/privacy` text before it goes live.
 - Client sites with a server problem (seen while taking screenshots, November 2026): **primefinancr.com.au** and **greenpeakbd.com** sometimes print `Warning: opendir(.../wp-content/mu-plugins): Failed to open directory: Permission denied` above the page. Fix on their hosting: give the `wp-content/mu-plugins` folder normal permissions (755, owned by the account user) or create it if missing, and turn off `display_errors` in PHP settings so warnings never show to visitors.
-- Business hours and the second phone number (+880 1711-380679) shown on the old contact page: still correct?
+- Business hours shown on the old contact page: still correct?

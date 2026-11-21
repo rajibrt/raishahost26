@@ -13,7 +13,7 @@ export default function SiteFooter({ lang = 'en' }: { lang?: Lang }) {
             <img className='logo' src='/brand/raishahost-logo-on-dark.svg' alt='RaishaHost' width={170} height={22} />
             <p>{t.footerTagline}</p>
             <p>
-              <a href='tel:+8801878037803'>+880 1878-037803</a>
+              <a href='tel:+8801711380679'>+880 1711-380679</a>
               <br />
               <a href='https://facebook.com/RaishaHost' target='_blank' rel='noopener noreferrer'>
                 facebook.com/RaishaHost

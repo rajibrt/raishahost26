@@ -17,7 +17,7 @@ const navLinks = [
 
 const footerLinks = [
   { href: 'https://facebook.com/RaishaHost', label: 'Facebook' },
-  { href: 'tel:+8801878037803', label: '+880-18-7803-7803' },
+  { href: 'tel:+8801711380679', label: '+880 1711-380679' },
 ]
 
 const menuEase: [number, number, number, number] = [0.75, 0, 0.24, 1]

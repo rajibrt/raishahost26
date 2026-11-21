@@ -131,12 +131,6 @@ export default function RootLayout({
         contactType: 'customer service',
         availableLanguage: ['English', 'Bengali'],
       },
-      {
-        '@type': 'ContactPoint',
-        telephone: '+880-1878037803',
-        contactType: 'customer service',
-        availableLanguage: ['English', 'Bengali'],
-      },
     ],
     sameAs: [
       'https://facebook.com/RaishaHost',
