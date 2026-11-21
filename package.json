@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "check:prices": "node --no-warnings scripts/check-whmcs-prices.mjs",
+    "whmcs:build": "node --no-warnings scripts/build-whmcs-theme.mjs"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

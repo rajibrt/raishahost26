@@ -1,0 +1,13 @@
+# RaishaHost theme for WHMCS 9 (child of Nexus).
+# Source lives in the raishahost26 repo under whmcs/. Change it there, not on the server.
+name: "RaishaHost"
+description: "RaishaHost dark theme, built on Nexus with the raishahost.com design tokens"
+author: "RaishaHost"
+config:
+  parent: nexus
+properties:
+  serverSidePagination: false
+provides:
+  bootstrap: 4.5.3
+  jquery: 1.12.4
+  fontawesome: 5.10.1

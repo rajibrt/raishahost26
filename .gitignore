@@ -40,3 +40,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .media-src/
+
+# WHMCS theme upload zip (built by npm run whmcs:build)
+whmcs/dist/

@@ -1,0 +1,10 @@
+# RaishaHost order form for WHMCS 9 (child of Standard Cart). Use it with the RaishaHost client theme.
+# Source lives in the raishahost26 repo under whmcs/. Change it there, not on the server.
+name: "RaishaHost Cart"
+author: "RaishaHost"
+config:
+  parent: standard_cart
+dependencies:
+  bootstrap: 3||4
+  jquery: 1.12
+  fontawesome: 5

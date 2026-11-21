@@ -33,6 +33,8 @@ export interface Plan {
   /** Headline specs shown on cards and in comparison tables. */
   specs: { label: string; value: string }[]
   orderUrl: string
+  /** Product ID in WHMCS (hosting.raishahost.com). `npm run check:prices` compares both prices with it. */
+  whmcsPid: number
   featured?: boolean
 }
 
@@ -57,6 +59,7 @@ export const sharedHostingPlans: Plan[] = [
       { label: 'Control Panel', value: 'cPanel' },
     ],
     orderUrl: `${STORE}/linux-shared-hosting/economy`,
+    whmcsPid: 1,
   },
   {
     id: 'shared-standard',
@@ -76,6 +79,7 @@ export const sharedHostingPlans: Plan[] = [
       { label: 'Control Panel', value: 'cPanel' },
     ],
     orderUrl: `${STORE}/linux-shared-hosting/standard`,
+    whmcsPid: 3,
     featured: true,
   },
   {
@@ -96,6 +100,7 @@ export const sharedHostingPlans: Plan[] = [
       { label: 'Control Panel', value: 'cPanel' },
     ],
     orderUrl: `${STORE}/linux-shared-hosting/pro`,
+    whmcsPid: 4,
   },
 ]
 
@@ -128,6 +133,7 @@ export const vpsPlans: Plan[] = [
     taglineBn: 'অ্যাপ, টেস্ট সার্ভার ও ছোট অনলাইন শপ',
     specs: vpsSpecs(2, 4, 40),
     orderUrl: `${STORE}/vps`,
+    whmcsPid: 7,
   },
   {
     id: 'vps-business',
@@ -138,6 +144,7 @@ export const vpsPlans: Plan[] = [
     taglineBn: 'ব্যবসায়িক অ্যাপ ও ব্যস্ত ওয়েবসাইট',
     specs: vpsSpecs(4, 8, 40),
     orderUrl: `${STORE}/vps`,
+    whmcsPid: 8,
     featured: true,
   },
   {
@@ -149,6 +156,7 @@ export const vpsPlans: Plan[] = [
     taglineBn: 'ব্যস্ত ওয়েবসাইট, ই-কমার্স ও ERP',
     specs: vpsSpecs(4, 8, 80),
     orderUrl: `${STORE}/vps`,
+    whmcsPid: 9,
   },
 ]
 
